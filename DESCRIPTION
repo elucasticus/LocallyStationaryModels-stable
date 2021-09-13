@@ -1,0 +1,11 @@
+Package: LocallyStationaryModels
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2021-09-09
+Author: Who wrote it
+Maintainer: Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+Imports: Rcpp (>= 1.0.6)
+LinkingTo: Rcpp, RcppEigen
