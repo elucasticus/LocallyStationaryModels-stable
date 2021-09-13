@@ -1,0 +1,30 @@
+CXX=g++
+CPPFLAGS+=-Wall -I${mkEigenInc} -fopenmp
+HEADERS=$(wildcard *.hpp)
+SRCS=$(wildcard *.cpp)
+OBJS=$(SRCS:.cpp=.o)
+
+
+main:$(OBJS)
+	$(CXX) $(CPPFLAGS) -o main $^
+
+main.o:main.cpp 
+	$(CXX) $(CPPFLAGS) -c $^
+
+help.o:help.cpp
+	$(CXX) $(CPPFLAGS) -c $^
+
+gradient.o:gradient.cpp
+	$(CXX) $(CPPFLAGS) -c $^
+
+samplevar.o:samplevar.cpp
+	$(CXX) $(CPPFLAGS) -c $^
+
+grid.o:grid.cpp
+	$(CXX) $(CPPFLAGS) -c $^
+
+kernel.o:kernel.cpp
+	$(CXX) $(CPPFLAGS) -c $^
+
+clean:
+	@rm $(wildcard *.o) $(wildcard *.txt) main
