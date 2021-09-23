@@ -17,7 +17,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
     delta_ottimale = smt_.get_optimal_delta();
 
-    xatu_ = xatu("esponenziale", y, smt_, sqrt(-0.5/-1.162009e-07));
+    xatu_ = xatu("esponenziale", y, smt_, epsilon);
 }
 
 

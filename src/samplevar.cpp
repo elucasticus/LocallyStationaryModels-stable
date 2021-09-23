@@ -95,7 +95,7 @@ void samplevar::build_squaredweights()
     } 
 }
 
-samplevar::samplevar(const std::string kernel_id, const std::string grid_id, const unsigned int h, const scalar &epsilon): kernel_(kernel_id, epsilon), grid_(grid_id, epsilon), h_(h) {};
+samplevar::samplevar(const std::string &kernel_id, const std::string &grid_id, const unsigned int &h, const scalar &epsilon): kernel_(kernel_id, epsilon), grid_(grid_id, epsilon), h_(h) {};
 
 samplevar::samplevar(): kernel_(), grid_() {};
 

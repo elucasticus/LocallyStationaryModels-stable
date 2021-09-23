@@ -9,8 +9,7 @@ using namespace cd;
 
 scalar gaussian(const vector &x, const vector &y, const scalar &epsilon)
 {
-	scalar norm = (x - y).norm();
-	return std::exp(epsilon*norm*norm);
+	return std::exp(epsilon*(x - y).squaredNorm());
 }
 
 kernelfunction make_kernel(const std::string &id)

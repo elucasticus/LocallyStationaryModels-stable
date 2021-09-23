@@ -20,8 +20,8 @@ matrixIptr cubottiA(const matrixptr &d, const unsigned int &h, const double &eps
     {
         matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
 
-        scalar grid_length = (d->col(0).maxCoeff() - d->col(0).minCoeff()) * 1.01;
-        scalar grid_height = (d->col(1).maxCoeff() - d->col(1).minCoeff()) * 1.01;
+        scalar grid_length = (d->col(0).maxCoeff() - d->col(0).minCoeff()) * 1.0000001;
+        scalar grid_height = (d->col(1).maxCoeff() - d->col(1).minCoeff()) * 1.0000001;
 
         scalar cell_length = grid_length / h;
         scalar cell_height = grid_height / h;

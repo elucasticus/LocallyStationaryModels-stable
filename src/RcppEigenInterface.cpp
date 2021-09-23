@@ -9,7 +9,7 @@ using namespace std::chrono;
 // [[Rcpp::depends(RcppEigen)]]
 
 // [[Rcpp::export]]
-Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const double& epsilon, const double& h) {
+Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const double& epsilon, const unsigned int& h) {
     auto start = high_resolution_clock::now();
     
     
@@ -18,29 +18,30 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const d
    
     vectorind positions({14,17,37,87,107,117,23,34});
     
-    //matrixptr *dd = &d;
     matrixptr dd = std::make_shared<matrix>(d);
     vectorptr yy = std::make_shared<vector>(y);
     
-    //vectorptr *yy = &y;
-    
+
     crippadecarlo CD(dd, yy, epsilon, h, positions);
     vector newpos = dd->row(0);
     double delta = CD.get_delta();
     double epsilon_ = CD.get_epsilon();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+   
     
     
     return Rcpp::List::create(Rcpp::Named("positions")=positions,
                               Rcpp::Named("values")=y,
                               Rcpp::Named("ypredicted")=CD.predict_y(newpos),
+                              Rcpp::Named("predictedmean")=CD.predict_mean(newpos),
                               Rcpp::Named("delta")=delta,
-                              Rcpp::Named("delta")=epsilon_);
+                              Rcpp::Named("epsilon")=epsilon_);
     
     
     
  
-   //auto stop = high_resolution_clock::now();
-    //auto duration = duration_cast<milliseconds>(stop - start);
+  
     
 }
 

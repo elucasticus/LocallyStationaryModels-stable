@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // fullmodel
-Rcpp::List fullmodel(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const double& epsilon, const double& h);
+Rcpp::List fullmodel(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const double& epsilon, const unsigned int& h);
 RcppExport SEXP _LocallyStationaryModels_fullmodel(SEXP ySEXP, SEXP dSEXP, SEXP epsilonSEXP, SEXP hSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -20,7 +20,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
-    Rcpp::traits::input_parameter< const double& >::type h(hSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type h(hSEXP);
     rcpp_result_gen = Rcpp::wrap(fullmodel(y, d, epsilon, h));
     return rcpp_result_gen;
 END_RCPP

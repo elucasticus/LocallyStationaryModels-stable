@@ -19,7 +19,7 @@ private:
     kernel kernel_;
     grid<2> grid_;
 
-    unsigned int h_ = 3;
+    unsigned int h_;
 
     /**
      * \brief a "helper" function which built the squared weights needed by the optimizer
@@ -34,7 +34,7 @@ public:
      * \param h             a parameter proportional to the number of the cells of the grid
      * \param epsilon       the parameter regulating the kernel
 	*/
-    samplevar(const std::string kernel_id, const std::string grid_id, const unsigned int h, const cd::scalar &epsilon);
+    samplevar(const std::string &kernel_id, const std::string &grid_id, const unsigned int &h, const cd::scalar &epsilon);
     
     /**
      * \brief a default constructor for the class which calls the default constructors for both the kernel and the grid
