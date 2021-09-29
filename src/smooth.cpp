@@ -37,13 +37,14 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
 
 
 // SISTEMA CROSS-VALIDATION DI SIGMA!!!!!!!!!!!!
-smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const int min_delta, const int max_delta): anchorpos(anchorpos_), solutions(solutions_), kernel_()
+smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta): anchorpos(anchorpos_), solutions(solutions_), kernel_()
 {
     double min_error;
+    const unsigned int n_deltas = 100;
 
-    for (int i=min_delta; i<max_delta; ++i)
+    for (int i=min_delta; i<max_delta; i+= (max_delta-min_delta)/100 )
     {
-        double delta = -exp(i);
+        double delta = i;
 
         kernel_.build_simple_kernel(anchorpos_, delta);
 

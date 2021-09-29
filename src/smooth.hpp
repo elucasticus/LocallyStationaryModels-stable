@@ -2,6 +2,7 @@
 #define SMOOTH
 
 #include "kernel.hpp"
+#include "traits.hpp"
 #include <vector>
 
 
@@ -35,7 +36,7 @@ public:
      * \param min_delta     the minimum exponent for the cross-validation of delta
      * \param max_delta     the maximum exponent for the cross-validation of delta
     */
-    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const int min_delta, const int max_delta);
+    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta);
     /**
      * \brief constructor
      * \param solutions_    a shared pointer to the solutions of the optimization

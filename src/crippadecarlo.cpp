@@ -12,7 +12,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
     opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), "esponenziale");
     opt_.findallsolutions();
 
-    smt smt_(opt_.get_solutions(), d, -20, -10);
+    smt smt_(opt_.get_solutions(), d, 1, epsilon/100);
 
     delta_ottimale = smt_.get_optimal_delta();
 
