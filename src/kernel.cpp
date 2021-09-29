@@ -35,7 +35,7 @@ scalar kernel::operator()(const vector &x, const vector &y) const
 }
 
 
-void kernel::build_kernel(const matrixptr &d, const matrixptr anchorpoints)
+void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 {
 	size_t n = d->rows();
 
