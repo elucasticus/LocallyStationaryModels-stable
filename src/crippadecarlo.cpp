@@ -12,7 +12,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
     opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), "esponenziale");
     opt_.findallsolutions();
 
-    smt smt_(opt_.get_solutions(), d, exp(-20), exp(-18));
+    smt smt_(opt_.get_solutions(), anchorpoints, exp(-20), exp(-18));
 
     delta_ottimale = smt_.get_optimal_delta();
 
@@ -70,7 +70,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
     opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), "esponenziale");
     opt_.findallsolutions();
 
-    smt smt_(opt_.get_solutions(), d, delta_ottimale);
+    smt smt_(opt_.get_solutions(), anchorpoints, delta_ottimale);
 
     xatu_ = xatu("esponenziale", y, smt_, epsilon_ottimale, d);
 }
