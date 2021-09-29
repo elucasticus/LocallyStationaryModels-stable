@@ -3,7 +3,7 @@
 
 #include "traits.hpp"
 #include "smooth.hpp"
-#include "gradient.hpp"
+#include "variogramfit.hpp"
 
 /**
  * \brief class to perform kriging on the data
@@ -16,6 +16,7 @@ private:
     smt smt_;
     double b;
     cd::vectorptr means = nullptr;
+    cd::matrixptr d = nullptr;
 
     /**
      * \brief build a vector with the index of the points in the neighbourhood of radius b of the point in position pos
@@ -39,7 +40,7 @@ public:
      * \param smt_  the one used to previously smooth the variogram
      * \param b_    the radius of the neighbourhood of the point where to perform kriging
     */
-    xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_);
+    xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_);
     /**
      * \brief gammaiso set by default to exponential
     */

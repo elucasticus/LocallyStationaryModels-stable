@@ -19,7 +19,8 @@ private:
     kernel kernel_;
     grid<2> grid_;
 
-    unsigned int h_;
+    unsigned int n_angles;
+    unsigned int n_intervals;
 
     /**
      * \brief a "helper" function which built the squared weights needed by the optimizer
@@ -34,7 +35,7 @@ public:
      * \param h             a parameter proportional to the number of the cells of the grid
      * \param epsilon       the parameter regulating the kernel
 	*/
-    samplevar(const std::string &kernel_id, const std::string &grid_id, const unsigned int &h, const cd::scalar &epsilon);
+    samplevar(const std::string &kernel_id, const unsigned int &n_angles_, const unsigned int &n_intervals_, const cd::scalar &epsilon);
     
     /**
      * \brief a default constructor for the class which calls the default constructors for both the kernel and the grid
@@ -46,7 +47,7 @@ public:
      * \param dptr  a shared pointer to the matrix of the coordinates
      * \param yptr  a shared pointer to the vector of the value of Y
     */
-    void build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &yptr);
+    void build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &yptr);
 
     const cd::matrixptr get_variogram() const;
     const cd::matrixptr get_denominators() const;

@@ -5,12 +5,11 @@ using namespace cd;
 vectorind xatu::build_neighbourhood(const cd::vector &pos) const
 {
     vectorind n;
-    const cd::matrix &d = *(smt_.get_d());
 
     #pragma omp parallel for
-    for (unsigned int i=0; i< d.rows(); ++i)
+    for (unsigned int i=0; i< d->rows(); ++i)
     {
-        vector datapos = d.row(i);
+        vector datapos = d->row(i);
         #pragma omp critical
         if ((pos - datapos).norm() < b)
             n.push_back(i);
@@ -23,13 +22,12 @@ vectorind xatu::build_neighbourhood(const cd::vector &pos) const
 vectorind xatu::build_neighbourhood(const unsigned int &pos) const
 {
     vectorind n;
-    const cd::matrix &d = *(smt_.get_d());
 
     #pragma omp parallel for
-    for (unsigned int i=0; i< d.rows(); ++i)
+    for (unsigned int i=0; i< d->rows(); ++i)
     {
         #pragma omp critical
-        if ((d.row(pos) - d.row(i)).norm() < b && pos != i)
+        if ((d->row(pos) - d->row(i)).norm() < b && pos != i)
             n.push_back(i);
     }
 
@@ -40,7 +38,6 @@ vectorind xatu::build_neighbourhood(const unsigned int &pos) const
 cd::vector xatu::build_eta(cd::vector &params, vectorind &neighbourhood) const
 {
     unsigned int n = neighbourhood.size();
-    const cd::matrix &d = *(smt_.get_d());
     matrix gamma(n,n);
 
     #pragma omp parallel for
@@ -48,7 +45,7 @@ cd::vector xatu::build_eta(cd::vector &params, vectorind &neighbourhood) const
     {
         for (unsigned int j=0; j<n; ++j)
         {
-            cd::vector s = d.row(i) - d.row(j);
+            cd::vector s = d->row(i) - d->row(j);
             gamma(i, j) = gammaiso(params, s[0], s[1]);
         }
     }
@@ -124,7 +121,7 @@ double xatu::predict_y(const cd::vector &pos) const
 }
 
 
-xatu::xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_): gammaiso(make_variogramiso(id)), y(y_), smt_(smt__), b(b_) 
+xatu::xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(smt__), b(b_), d(d_) 
 {
     means = std::make_shared<vector>(y_->size());
     #pragma omp parallel for

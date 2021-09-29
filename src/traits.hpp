@@ -25,7 +25,7 @@ namespace cd
 
     /// defining function types
     using kernelfunction = std::function<scalar(const vector&, const vector&, const scalar&)>;
-    using gridfunction = std::function<matrixIptr(const matrixptr&, const unsigned int&, const double &)>;
+    using gridfunction = std::function<matrixIptr(const matrixptr&, const unsigned int&, const unsigned int&, const double &)>;
     using variogramfunction = std::function<scalar(const vector&, const scalar&, const scalar&)>;
      
 }; // namespace cd

@@ -8,92 +8,9 @@ using namespace cd;
 /// GRID FUNCTIONS
 ///-------------------------------------------------
 
-matrixIptr cubottiA(const matrixptr &d, const unsigned int &h, const double &epsilon)
+matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
 {
-    if (h == 0)
-        throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): h cannot be 0");
-    else if (d->cols() != 2)
-        throw std::domain_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.cols() must be equal to 2");
-    else if (d->rows() <= 0)
-        throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.rows() must be greater than 0");
-    else
-    {
-        matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
-
-        scalar grid_length = (d->col(0).maxCoeff() - d->col(0).minCoeff()) * 1.0000001;
-        scalar grid_height = (d->col(1).maxCoeff() - d->col(1).minCoeff()) * 1.0000001;
-
-        scalar cell_length = grid_length / h;
-        scalar cell_height = grid_height / h;
-
-        #pragma omp parallel for
-        for (unsigned int i = 0; i < d->rows() - 1; ++i)
-        {
-            for (unsigned int j = i+1; j < d->rows(); ++j)
-            {
-                if (d->operator()(j, 0) < d->operator()(i, 0))
-                    grid->operator()(i, j) = ceil( -(d->operator()(j, 0) - d->operator()(i, 0)) / cell_length ) + h * (h + floor( -(d->operator()(j, 1) - d->operator()(i, 1)) / cell_height) );
-                else
-                    grid->operator()(i, j) = ceil( (d->operator()(j, 0) - d->operator()(i, 0)) / cell_length ) + h * (h + floor( (d->operator()(j, 1) - d->operator()(i, 1)) / cell_height) );
-            }
-        }
-        return grid;
-    }
-}
-
-
-matrixIptr cubottiB(const matrixptr &d, const unsigned int &h, const double &epsilon)
-{
-    if (h == 0)
-        throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): h cannot be 0");
-    else if (d->cols() != 2)
-        throw std::domain_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.cols() must be equal to 2");
-    else if (d->rows() <= 0)
-        throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.rows() must be greater than 0");
-    else
-    {
-        matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
-
-        scalar grid_length = (d->col(0).maxCoeff() - d->col(0).minCoeff()) * 1.01;
-        scalar grid_height = (d->col(1).maxCoeff() - d->col(1).minCoeff()) * 1.01;
-
-        scalar cell_length = grid_length / h;
-        scalar cell_height = grid_height / h;
-
-        std::unordered_map<unsigned int, unsigned int> map_;
-        unsigned int counter = 0;
-
-        #pragma omp parallel for ordered
-        for (unsigned int i = 0; i < d->rows() - 1; ++i)
-        {
-            for (unsigned int j = i+1; j < d->rows(); ++j)
-            {
-                unsigned int oldposition = 0;
-                if (d->operator()(j, 0) < d->operator()(i, 0))
-                    oldposition = ceil( -(d->operator()(j, 0) - d->operator()(i, 0)) / cell_length ) + h * (h + floor( -(d->operator()(j, 1) - d->operator()(i, 1)) / cell_height) );
-                else
-                    oldposition = ceil( (d->operator()(j, 0) - d->operator()(i, 0)) / cell_length ) + h * (h + floor( (d->operator()(j, 1) - d->operator()(i, 1)) / cell_height) );
-                #pragma omp ordered
-                {
-                    auto iterator = map_.find(oldposition);
-                    if (iterator == map_.end())
-                    {
-                        map_.insert(std::make_pair(oldposition, counter));
-                        grid->operator()(i, j) = counter;
-                        counter++;
-                    }
-                    else
-                        grid->operator()(i, j) = map_.at(oldposition);
-                }
-            }
-        }
-        return grid;
-    }
-}
-
-matrixIptr Pizza(const matrixptr &d, const unsigned int &h, const double &epsilon)
-{
-    if (h == 0)
+    if (n_angles == 0 || n_intervals == 0)
         throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): h cannot be 0");
     else if (d->cols() != 2)
         throw std::domain_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.cols() must be equal to 2");
@@ -103,8 +20,8 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &h, const double &epsilo
     {
         matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
         scalar b = 2*epsilon;
-        scalar cell_length = b / h;
-        scalar cell_angle = 3.14159265358979323846 / (h);
+        scalar cell_length = b / n_intervals;
+        scalar cell_angle = 3.14159265358979323846 / (n_angles);
 
         //#pragma omp parallel for collapse(2)
         for (unsigned int i = 0; i < d->rows() - 1; ++i)
@@ -119,7 +36,7 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &h, const double &epsilo
                 if (radius > b)
                     grid->operator()(i, j) = -1;
                 else
-                    grid->operator()(i, j) = floor( (3.14159265358979323846/2 + angle) / cell_angle ) + h * ( floor( (radius) / cell_length) );
+                    grid->operator()(i, j) = floor( (3.14159265358979323846/2 + angle) / cell_angle ) + n_intervals * ( floor( (radius) / cell_length) );
             }
         }
         return grid;
@@ -130,14 +47,7 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &h, const double &epsilo
 template<>
 gridfunction make_grid<2>(const std::string &id)
 {
-    if (id == "cubottiA")
-        return cubottiA;
-    else if (id == "cubottiB")
-        return cubottiB;
-    else if (id == "Pizza")
-        return Pizza;
-    else
-        return Pizza;
+    return Pizza;
 }
 
 ///--------------------------------------------------------------------------
@@ -146,9 +56,9 @@ gridfunction make_grid<2>(const std::string &id)
 /// GRID CLASS
 ///-------------------------------------------------
 
-void grid<2>::build_grid(const matrixptr &d, const unsigned int &h)
+void grid<2>::build_grid(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals)
 {
-    g = f(d, h, sqrt(-0.5/epsilon));
+    g = f(d, n_angles, n_intervals, epsilon);
     build_normh(d);
 }
 

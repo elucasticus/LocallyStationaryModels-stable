@@ -11,9 +11,8 @@
 class smt
 {
 private:
-    cd::vectorind anchorpos;
     cd::matrixptr solutions = nullptr;
-    cd::matrixptr data = nullptr;
+    cd::matrixptr anchorpos = nullptr;
 
     kernel kernel_;
 
@@ -36,7 +35,7 @@ public:
      * \param min_delta     the minimum exponent for the cross-validation of delta
      * \param max_delta     the maximum exponent for the cross-validation of delta
     */
-    smt(const cd::matrixptr solutions_, const cd::vectorind &anchorpos_, const cd::matrixptr &d, const int min_delta, const int max_delta);
+    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const int min_delta, const int max_delta);
     /**
      * \brief constructor
      * \param solutions_    a shared pointer to the solutions of the optimization
@@ -44,7 +43,7 @@ public:
      * \param d             a shared pointer to the matrix of the coordinates
      * \param delta         a user-chosen value for delta
     */
-    smt(const cd::matrixptr solutions_, const cd::vectorind &anchorpos_, const cd::matrixptr &d, const double delta);
+    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const double delta);
     /**
      * \brief calls the default constructor for kernel_
     */
@@ -57,16 +56,11 @@ public:
     cd::vector smooth_vector(const unsigned int &pos) const;
     cd::vector smooth_vector(const cd::vector &pos) const;
 
-    /**
-     * \brief smooth all the parameters for all the solutions
-    */
-    void smooth_solutions();
-
     const cd::matrixptr get_solutions() const;
 
     double get_optimal_delta() const;
 
-    const cd::matrixptr get_d() const;
+    const cd::matrixptr get_anchorpos() const;
 };
 
 

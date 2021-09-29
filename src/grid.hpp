@@ -4,21 +4,12 @@
 #include "traits.hpp"
 
 /**
- * \brief these two functions build a 2D-grid using a "a-cubotti" algorithm to partition the domain
- * \param d     a shared pointer to the matrix of the coordinates
- * \param h     a integer number proportional to the number of "cubotti"
-*/
-cd::matrixIptr cubottiA(const cd::matrixptr &d, const unsigned int &h, const double &epsilon);
-cd::matrixIptr cubottiB(const cd::matrixptr &d, const unsigned int &h, const double &epsilon);
-
-/**
  * \brief these function build a 2D-grid using a "a fette di pizza" (slices-of-pizza like) algorithm to partition the domain
  * \param d     a shared pointer to the matrix of the coordinates
  * \param h     a integer number proportional to the number of the slices
  * it is highly suggeted to use this partition instead of the "a-cubotti" one
 */
-cd::matrixIptr Pizza(const cd::matrixptr &d, const unsigned int &h, const double &epsilon);
-
+cd::matrixIptr Pizza(const cd::matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon);
 
 
 /**
@@ -76,7 +67,7 @@ public:
      * \param d     a shared pointer to the matrix of the coordinates
      * \param h     a integer number proportional to the number of cells of the grid
     */
-    void build_grid(const cd::matrixptr &d, const unsigned int &h);
+    void build_grid(const cd::matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals);
 
     const cd::matrixIptr get_grid() const;
     const cd::vectorptr get_normh() const;

@@ -3,15 +3,14 @@
 
 using namespace cd;
 
-void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &yptr)
+void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &yptr)
 {
-    grid_.build_grid(dptr, h_);
-
-    kernel_.build_kernel(dptr);
+    grid_.build_grid(dptr, n_angles, n_intervals);
 
     
     const matrix &d = *(dptr);
     const vector &y = *(yptr);
+    const matrix &a = *(anchorpointsptr);
     const matrixIptr g = grid_.get_grid();
     const matrixptr K = kernel_.get_kernel();
 
@@ -23,8 +22,10 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &
 
         size_t hh = g->maxCoeff();
 
-        variogram = std::make_shared<matrix>(matrix::Zero(hh+1, n));
-        denominators = std::make_shared<matrix>(matrix::Zero(hh+1, n));
+        size_t N = a.rows();
+
+        variogram = std::make_shared<matrix>(matrix::Zero(hh+1, N));
+        denominators = std::make_shared<matrix>(matrix::Zero(hh+1, N));
 
 
         matrix Y(n, n);
@@ -34,7 +35,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &
         {
             for (size_t j = 1; j < n; ++j)
             {
-                Y(i, j) = (y(i) - y(j)) * (y(i) - y(j));
+                Y(i, j) = (y(i) - y(j)) * (y(i) - y(j)); // DA GENERALIZZARE AL CASO FUNZIONALE!!!!!!!!!!
                 Y(j, i) = Y(i, j);
             }
         }
@@ -44,7 +45,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &
             int k = 0;
             /// for every location in d
             #pragma omp for
-            for (size_t l=0; l < n; ++l)
+            for (size_t l=0; l < N; ++l)
             {
                 Eigen::VectorXi counters = Eigen::VectorXi::Zero(hh+1);
                 /// for every couple of locations in d
@@ -56,8 +57,9 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &
                         k = g->operator()(i, j);
                         if (k >= 0)
                         {
-                            variogram->operator()(k, l) += K->operator()(l, i) * K->operator()(l, j) * Y(i, j);
-                            denominators->operator()(k, l) += K->operator()(l, i) * K->operator()(l, j);
+                            scalar prodotto = kernel_(a.row(l), d.row(i)) * kernel_(a.row(l), d.row(j));
+                            variogram->operator()(k, l) += prodotto * Y(i, j);
+                            denominators->operator()(k, l) += prodotto;
                             counters[k]++;
                         }   
                     }
@@ -80,12 +82,13 @@ void samplevar::build_squaredweights()
     const vectorptr normh = grid_.get_normh();
 
     size_t n = g->rows();
+    size_t N = denominators->cols();
     size_t htot = normh->rows();
 
-    squaredweights = std::make_shared<matrix>(matrix::Zero(n, htot));
+    squaredweights = std::make_shared<matrix>(matrix::Zero(N, htot));
 
     #pragma omp parallel for
-    for (size_t k = 0; k < n ; ++k)
+    for (size_t k = 0; k < N ; ++k)
     {
         for (size_t h = 0 ; h < htot; ++h)
         {
@@ -95,7 +98,7 @@ void samplevar::build_squaredweights()
     } 
 }
 
-samplevar::samplevar(const std::string &kernel_id, const std::string &grid_id, const unsigned int &h, const scalar &epsilon): kernel_(kernel_id, epsilon), grid_(grid_id, epsilon), h_(h) {};
+samplevar::samplevar(const std::string &kernel_id, const unsigned int &n_angles_, const unsigned int &n_intervals_, const scalar &epsilon): kernel_(kernel_id, epsilon), grid_("Pizza", epsilon), n_angles(n_angles_), n_intervals(n_intervals_) {};
 
 samplevar::samplevar(): kernel_(), grid_() {};
 

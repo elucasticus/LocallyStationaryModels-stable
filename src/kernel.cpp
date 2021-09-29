@@ -1,5 +1,4 @@
 #include "kernel.hpp"
-#include "help.hpp"
 
 using namespace cd;
 
@@ -9,7 +8,7 @@ using namespace cd;
 
 scalar gaussian(const vector &x, const vector &y, const scalar &epsilon)
 {
-	return std::exp(epsilon*(x - y).squaredNorm());
+	return std::exp((x - y).squaredNorm()/(2*epsilon*epsilon));
 }
 
 kernelfunction make_kernel(const std::string &id)
@@ -25,7 +24,7 @@ kernelfunction make_kernel(const std::string &id)
 
 kernel::kernel(const std::string &id, const scalar &epsilon_): epsilon(epsilon_), f(make_kernel(id)) {};
 
-kernel::kernel(): kernel("Gaussian", -4.162009e-07) {};
+kernel::kernel(): kernel("Gaussian", 1.) {};
 
 scalar kernel::operator()(const vector &x, const vector &y) const
 {

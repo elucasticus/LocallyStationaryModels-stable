@@ -11,12 +11,12 @@ double smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
     double numerator = 0;
     double denominator = 0;
 
-    for(size_t i=0; i<anchorpos.size(); ++i)
+    for(size_t i=0; i<anchorpos->rows(); ++i)
     {
-        if (anchorpos[i]!=pos)
+        if (i!=pos)
         {
-            numerator += K(pos, anchorpos[i]) * solutions->operator()(anchorpos[i], n);
-            denominator += K(pos, anchorpos[i]);
+            numerator += K(pos, i) * solutions->operator()(i, n);
+            denominator += K(pos, i);
         }
     }
     return numerator/denominator;
@@ -27,17 +27,17 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
     double numerator = 0;
     double denominator = 0;
 
-    for(size_t i=0; i<anchorpos.size(); ++i)
+    for(size_t i=0; i<anchorpos->rows(); ++i)
     {
-        numerator += kernel_(pos, data->row(anchorpos[i])) * solutions->operator()(anchorpos[i], n);
-        denominator += kernel_(pos, data->row(anchorpos[i]));
+        numerator += kernel_(pos, anchorpos->row(i)) * solutions->operator()(i, n);
+        denominator += kernel_(pos, anchorpos->row(i));
     }
     return numerator/denominator;
 }
 
 
-
-smt::smt(const cd::matrixptr solutions_, const vectorind &anchorpos_, const matrixptr &d, const int min_delta, const int max_delta): anchorpos(anchorpos_), solutions(solutions_), data(d), kernel_()
+// SISTEMA CROSS-VALIDATION DI SIGMA!!!!!!!!!!!!
+smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const int min_delta, const int max_delta): anchorpos(anchorpos_), solutions(solutions_), kernel_()
 {
     double min_error;
 
@@ -45,14 +45,14 @@ smt::smt(const cd::matrixptr solutions_, const vectorind &anchorpos_, const matr
     {
         double delta = -exp(i);
 
-        kernel_.build_simple_kernel(d, delta);
+        kernel_.build_simple_kernel(anchorpos_, delta);
 
         double error = 0;
 
-        for(size_t j=0; j<anchorpos.size(); ++j)
+        for(size_t j=0; j<anchorpos->rows(); ++j)
         {
-            double predicted_value = smooth_value(anchorpos[j], 3);
-            double real_value = solutions->operator()(anchorpos[j], 3);
+            double predicted_value = smooth_value(j, 3);
+            double real_value = solutions->operator()(j, 3);
 
             error += (real_value - predicted_value)*(real_value - predicted_value);
         }
@@ -63,15 +63,15 @@ smt::smt(const cd::matrixptr solutions_, const vectorind &anchorpos_, const matr
         }
     }
 
-    kernel_.build_simple_kernel(d, optimal_delta);
+    kernel_.build_simple_kernel(anchorpos, optimal_delta);
 }
 
 
 
-smt::smt(const cd::matrixptr solutions_, const vectorind &anchorpos_, const matrixptr &d, const double delta): anchorpos(anchorpos_),  solutions(solutions_),
-    data(d), kernel_("gaussian", delta), optimal_delta(delta)
+smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const double delta): anchorpos(anchorpos_),  solutions(solutions_),
+    kernel_("gaussian", delta), optimal_delta(delta)
 {
-    kernel_.build_simple_kernel(d);
+    kernel_.build_simple_kernel(anchorpos);
 }
 
 
@@ -93,19 +93,6 @@ cd::vector smt::smooth_vector(const vector &pos) const
     return result;
 }
 
-
-void smt::smooth_solutions()
-{
-    for (unsigned int i=0; i<solutions->rows(); ++i)
-    {
-        if (std::find(anchorpos.begin(), anchorpos.end(), i) == anchorpos.end())
-        {
-            vector result = smooth_vector(i);
-            solutions->row(i) = result;
-        }
-    }
-}
-
 const cd::matrixptr smt::get_solutions() const
 {
     return solutions;
@@ -116,9 +103,9 @@ double smt::get_optimal_delta() const
     return optimal_delta;
 }
 
-const cd::matrixptr smt::get_d() const 
+const cd::matrixptr smt::get_anchorpos() const 
 {
-    return data;
+    return anchorpos;
 }
 
 smt::smt(): kernel_() {};
