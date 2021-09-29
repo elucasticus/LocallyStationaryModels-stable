@@ -4,7 +4,7 @@ using namespace cd;
 using namespace LBFGSpp;
 using namespace std::chrono;
 
-crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const unsigned int n_angles, const unsigned int n_intervals, const vectorind &indici): d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon) 
+crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const unsigned int n_angles, const unsigned int n_intervals): d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon) 
 {
     samplevar samplevar_("gaussian", n_angles, n_intervals, epsilon_ottimale);
     samplevar_.build_samplevar(d, anchorpoints, y);
@@ -22,7 +22,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
 
 
-crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double min_epsilon, const double max_epsilon, const unsigned int n_angles, const unsigned int n_intervals, const vectorind &indici): d(d_), y(y_), anchorpoints(anchorpoints_)
+crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double min_epsilon, const double max_epsilon, const unsigned int n_angles, const unsigned int n_intervals): d(d_), y(y_), anchorpoints(anchorpoints_)
 {
     double min_error;
 
@@ -50,7 +50,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
                 }
             }
 
-            crippadecarlo CDi(di, yi, anchorpoints, epsilon, n_angles, n_intervals, indici);
+            crippadecarlo CDi(di, yi, anchorpoints, epsilon, n_angles, n_intervals);
             double prediction = CDi.predict_y(d->row(i));
             double real = y->operator()(i);
             error += (prediction - real) * (prediction - real);

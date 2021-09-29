@@ -30,8 +30,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const d
    
     
     
-    return Rcpp::List::create(Rcpp::Named("positions")=positions,
-                              Rcpp::Named("values")=y,
+    return Rcpp::List::create(Rcpp::Named("values")=y,
                               Rcpp::Named("ypredicted")=CD.predict_y(newpos),
                               Rcpp::Named("predictedmean")=CD.predict_mean(newpos),
                               Rcpp::Named("delta")=delta,
