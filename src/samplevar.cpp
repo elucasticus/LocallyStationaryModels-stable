@@ -7,12 +7,13 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
 {
     grid_.build_grid(dptr, n_angles, n_intervals);
 
-    
+    kernel_.build_kernel(dptr, anchorpointsptr);
+
     const matrix &d = *(dptr);
     const vector &y = *(yptr);
     const matrix &a = *(anchorpointsptr);
     const matrixIptr g = grid_.get_grid();
-    const matrixptr K = kernel_.get_kernel();
+    const matrix &K = *(kernel_.get_kernel());
 
     if (d.rows() != y.size())
         throw std::length_error("void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &yptr): d and y must have the same number of rows");
@@ -57,7 +58,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
                         k = g->operator()(i, j);
                         if (k >= 0)
                         {
-                            scalar prodotto = kernel_(a.row(l), d.row(i)) * kernel_(a.row(l), d.row(j));
+                            scalar prodotto = K(l, i) * K(l, j);
                             variogram->operator()(k, l) += prodotto * Y(i, j);
                             denominators->operator()(k, l) += prodotto;
                             counters[k]++;

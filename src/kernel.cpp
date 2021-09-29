@@ -35,24 +35,35 @@ scalar kernel::operator()(const vector &x, const vector &y) const
 }
 
 
-void kernel::build_kernel(const matrixptr &d)
+void kernel::build_kernel(const matrixptr &d, const matrixptr anchorpoints)
 {
 	size_t n = d->rows();
 
-	build_simple_kernel(d);
+	size_t N = anchorpoints->rows();
 
-	/// create a vector with the sum on each row of k
-	vector sums(n);
+	k->resize(N, n);
 
 	#pragma omp parallel for
-	for (size_t i=0; i < n; ++i)
+	for (size_t i = 0; i < N; ++i)
+	{
+		for (size_t j = 0; j < n; ++j)
+		{
+			k->operator()(i, j) = this->operator()(anchorpoints->row(i), d->row(j));
+		}
+	}
+
+	/// create a vector with the sum on each row of k
+	vector sums(N);
+
+	#pragma omp parallel for
+	for (size_t i=0; i < N; ++i)
 	{
 		sums(i) = (k->row(i)).sum();
 	}
 
 	/// fill k with the new values
 	#pragma omp parallel for
-	for (size_t i = 0; i < n; ++i)
+	for (size_t i = 0; i < N; ++i)
 	{
 		for (size_t j = 0; j < n; ++j)
 		{

@@ -48,7 +48,7 @@ public:
      * \brief builds the "star" version of the kernel needed for the empiric variogram
      * \param coordinates    a shared pointer to the matrix with all the coordinates
     */
-    void build_kernel(const cd::matrixptr &coordinates);
+    void build_kernel(const cd::matrixptr &coordinates, const cd::matrixptr &anchorpoints);
 
     /**
      * \brief these functions build the "standard" version of the kernel needed for smoothing
