@@ -9,20 +9,19 @@ using namespace std::chrono;
 // [[Rcpp::depends(RcppEigen)]]
 
 // [[Rcpp::export]]
-Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const double& epsilon, const unsigned int& h) {
+Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals) {
     auto start = high_resolution_clock::now();
     
     
     //d = stampante::caricamatrice("d.csv");
    //y = stampante::caricavettore("y.csv");
    
-    vectorind positions({14,17,37,87,107,117,23,34});
-    
+
     matrixptr dd = std::make_shared<matrix>(d);
     vectorptr yy = std::make_shared<vector>(y);
     
 
-    crippadecarlo CD(dd, yy, epsilon, h, positions);
+    crippadecarlo CD(dd, yy, dd ,epsilon, n_angles,n_intervals);
     vector newpos = dd->row(0);
     double delta = CD.get_delta();
     double epsilon_ = CD.get_epsilon();
