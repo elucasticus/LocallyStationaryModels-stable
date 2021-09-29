@@ -42,9 +42,9 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
     double min_error;
     const unsigned int n_deltas = 100;
 
-    for (int i=min_delta; i<max_delta; i+= (max_delta-min_delta)/100 )
+    for (int i=0; i<n_deltas; i++)
     {
-        double delta = i;
+        double delta = min_delta + i*(max_delta-min_delta)/n_deltas;
 
         kernel_.build_simple_kernel(anchorpos_, delta);
 
@@ -57,7 +57,7 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
 
             error += (real_value - predicted_value)*(real_value - predicted_value);
         }
-        if (i==min_delta || error < min_error)
+        if (i==0 || error < min_error)
         {
             optimal_delta = delta;
             min_error = error;
