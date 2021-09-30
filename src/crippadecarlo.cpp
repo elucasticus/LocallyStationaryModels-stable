@@ -9,6 +9,8 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
     samplevar samplevar_("gaussian", n_angles, n_intervals, epsilon_ottimale);
     samplevar_.build_samplevar(d, anchorpoints, y);
 
+    empvar = samplevar_.get_variogram();
+
     opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), "esponenziale");
     opt_.findallsolutions();
 
@@ -104,4 +106,9 @@ double crippadecarlo::get_delta() const
 const cd::matrixptr crippadecarlo::get_solutions() const
 {
     return solutions;
+}
+
+const cd::matrixptr crippadecarlo::get_empiricvariogram() const
+{
+    return empvar;
 }
