@@ -20,6 +20,8 @@ private:
 
     xatu xatu_;
 
+    cd::matrixptr solutions = nullptr;
+
 public:
     crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const unsigned int n_angles, const unsigned int n_intervals);
     crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double min_epsilon, const double max_epsilon, const unsigned int n_angles, const unsigned int n_intervals);
@@ -29,6 +31,7 @@ public:
 
     double get_epsilon() const;
     double get_delta() const;
+    const cd::matrixptr get_solutions() const;
 };
 
 
