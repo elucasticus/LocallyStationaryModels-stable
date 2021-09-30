@@ -22,6 +22,7 @@ private:
 
     cd::matrixptr solutions = nullptr;
     cd::matrixptr empvar = nullptr;
+    cd::matrixptr kernelmatrix = nullptr;
 
 public:
     crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const unsigned int n_angles, const unsigned int n_intervals);
@@ -34,6 +35,7 @@ public:
     double get_delta() const;
     const cd::matrixptr get_solutions() const;
     const cd::matrixptr get_empiricvariogram() const;
+    const cd::matrixptr get_kernel() const;
 };
 
 

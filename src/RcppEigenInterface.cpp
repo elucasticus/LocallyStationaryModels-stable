@@ -34,6 +34,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
     
     return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
                               Rcpp::Named("values")=y,
+                              Rcpp::Named("kernel")=*(CD.get_kernel()),
                               Rcpp::Named("empiricvariogram")=*(CD.get_empiricvariogram()),
                               Rcpp::Named("solutions")=*(CD.get_solutions()),
                               Rcpp::Named("ypredicted")=CD.predict_y(newpos),
