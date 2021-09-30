@@ -10,6 +10,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
     samplevar_.build_samplevar(d, anchorpoints, y);
 
     kernelmatrix = samplevar_.get_kernel();
+    gridptr = samplevar_.get_grid();
 
     empvar = samplevar_.get_variogram();
 
@@ -118,4 +119,9 @@ const cd::matrixptr crippadecarlo::get_empiricvariogram() const
 const cd::matrixptr crippadecarlo::get_kernel() const
 {
     return kernelmatrix;
+}
+
+const cd::matrixIptr crippadecarlo::get_grid() const
+{
+    return gridptr;
 }
