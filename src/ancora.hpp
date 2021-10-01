@@ -20,11 +20,11 @@ private:
     cd::vector cubotti() 
     {
         unsigned int n = data->rows();
-        center_x = (data->col(0)).minCoeff()*0.99;
-        center_y = (data->col(1)).minCoeff()*0.99;
+        center_x = (data->col(0)).minCoeff()*0.999999;
+        center_y = (data->col(1)).minCoeff()*0.999999;
 
-        larghezza = (data->col(0)).maxCoeff()*1.01 - center_x;
-        altezza = (data->col(1)).maxCoeff()*1.01 - center_y;
+        larghezza = (data->col(0)).maxCoeff()*1.000001 - center_x;
+        altezza = (data->col(1)).maxCoeff()*1.000001 - center_y;
 
         larghezza_cubo = larghezza/n_cubotti;
         altezza_cubo = altezza/n_cubotti;
@@ -64,8 +64,8 @@ public:
         for (unsigned int i=0; i<anchorpos.rows(); ++i)
         {
             unsigned int I = positions[i];
-            anchorpos(i,0) = center_x + (I - floor(I/n_cubotti)*n_cubotti)*larghezza_cubo - larghezza_cubo/2;
-            anchorpos(i,1) = center_y + ceil(I/n_cubotti)*altezza_cubo - altezza_cubo/2;
+            anchorpos(i,0) = center_x + (I - floor((I*0.999999)/n_cubotti)*n_cubotti)*larghezza_cubo - larghezza_cubo/2;
+            anchorpos(i,1) = center_y + ceil((I*0.999999)/n_cubotti)*altezza_cubo - altezza_cubo/2;
         }
 
         return anchorpos;
