@@ -30,7 +30,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
     double epsilon_ = CD.get_epsilon();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
-   
+
     
     
     return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
@@ -53,6 +53,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
 
 
 // [[Rcpp::export]]
+
 Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cubotti) {
     auto start = high_resolution_clock::now();
     

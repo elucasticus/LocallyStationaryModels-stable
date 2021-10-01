@@ -27,9 +27,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// find_anchorpoints
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd& d, const unsigned int& n_cubotti);
+RcppExport SEXP _LocallyStationaryModels_find_anchorpoints(SEXP dSEXP, SEXP n_cubottiSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type n_cubotti(n_cubottiSEXP);
+    rcpp_result_gen = Rcpp::wrap(find_anchorpoints(d, n_cubotti));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_fullmodel", (DL_FUNC) &_LocallyStationaryModels_fullmodel, 6},
+    {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
     {NULL, NULL, 0}
 };
 

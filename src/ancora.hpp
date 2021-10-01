@@ -1,4 +1,4 @@
-#ifdef ANCORA
+#ifndef ANCORA
 #define ANCORA
 
 #include "traits.hpp"
@@ -33,7 +33,7 @@ private:
     }
 
 public:
-    ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(n_cubotti);
+    ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(n_cubotti){};
 
     const cd::matrixptr find_anchorpoints() const
     {
