@@ -33,7 +33,7 @@ private:
     }
 
 public:
-    ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(n_cubotti){};
+    ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(h_){};
 
     const cd::matrixptr find_anchorpoints() const
     {
@@ -55,15 +55,16 @@ public:
         double larghezza_cubo = larghezza/n_cubotti;
         double altezza_cubo = altezza/n_cubotti;
 
-        cd::matrixptr anchorpos(positions.size(), data->cols());
-        for (unsigned int i=0; i<anchorpos->rows(); ++i)
+        cd::matrix anchorpos(positions.size(), data->cols());
+
+        for (unsigned int i=0; i<anchorpos.rows(); ++i)
         {
             unsigned int I = positions[i];
             anchorpos(i,0) = (I - 2*n_cubotti)*larghezza_cubo - larghezza_cubo/2;
             anchorpos(i,1) = floor(I/n_cubotti)*altezza_cubo - altezza_cubo/2;
         }
 
-        return anchorpos;
+        return std::make_shared<cd::matrix>(anchorpos);
     }
 };
 
