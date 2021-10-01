@@ -10,15 +10,23 @@ class ancora
 private:
     cd::matrixptr data;
     double n_cubotti;
+    double larghezza = 0;
+    double altezza = 0;
+    double larghezza_cubo = 0;
+    double altezza_cubo = 0;
+    double cd::vector center(2);
 
     cd::vector cubotti() const
     {
         unsigned int n = data->rows();
-        double larghezza = (data->col(0)).maxCoeff() - (data->col(0)).minCoeff();
-        double altezza = (data->col(1)).maxCoeff() - (data->col(1)).minCoeff();
+        center(0) = (data->col(0)).minCoeff();
+        center(1) = (data->col(1)).minCoeff();
 
-        double larghezza_cubo = larghezza/n_cubotti;
-        double altezza_cubo = altezza/n_cubotti;
+        larghezza = (data->col(0)).maxCoeff() - center(0);
+        altezza = (data->col(1)).maxCoeff() - center(1);
+
+        larghezza_cubo = larghezza/n_cubotti;
+        altezza_cubo = altezza/n_cubotti;
 
 
 
@@ -26,7 +34,7 @@ private:
         for (unsigned int i=0; i<n; ++i)
         {
             cd::vector coordinates = data->row(i);
-            result(i) = ceil(coordinates(0)/larghezza_cubo) + 2*n_cubotti*floor(coordinates(1)/altezza_cubo);
+            result(i) = ceil((coordinates(0)-center(0))/larghezza_cubo) + n_cubotti*floor((coordinates(1)-center(1))/altezza_cubo);
         }
 
         return result;
@@ -49,19 +57,14 @@ public:
                 positions.push_back(pos);
         }
 
-        double larghezza = (data->col(0)).maxCoeff() - (data->col(0)).minCoeff();
-        double altezza = (data->col(1)).maxCoeff() - (data->col(1)).minCoeff();
-
-        double larghezza_cubo = larghezza/n_cubotti;
-        double altezza_cubo = altezza/n_cubotti;
 
         cd::matrix anchorpos(positions.size(), data->cols());
 
         for (unsigned int i=0; i<anchorpos.rows(); ++i)
         {
             unsigned int I = positions[i];
-            anchorpos(i,0) = (I - 2*n_cubotti)*larghezza_cubo - larghezza_cubo/2;
-            anchorpos(i,1) = floor(I/n_cubotti)*altezza_cubo - altezza_cubo/2;
+            anchorpos(i,0) = center(0) + (I - floor(I/n_cubotti)*n_cubotti)*larghezza_cubo - larghezza_cubo/2;
+            anchorpos(i,1) = center(1) + ceil(I/n_cubotti)*altezza_cubo - altezza_cubo/2;
         }
 
         return std::make_shared<cd::matrix>(anchorpos);
