@@ -2,6 +2,7 @@
 
 #include <RcppEigen.h>
 #include "crippadecarlo.hpp"
+#include "ancora.hpp"
 using namespace cd;
 using namespace LBFGSpp;
 using namespace std::chrono;
@@ -50,3 +51,24 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
     
 }
 
+
+// [[Rcpp::export]]
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cubotti) {
+    auto start = high_resolution_clock::now();
+    
+    
+    //d = stampante::caricamatrice("d.csv");
+   //y = stampante::caricavettore("y.csv");
+   
+
+    matrixptr dd = std::make_shared<matrix>(d);
+
+    ancora a(dd, n_cubotti);
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+   
+    
+    
+    return Rcpp::List::create(Rcpp::Named("anchorpoints")=*(a.find_anchorpoints())); 
+}
