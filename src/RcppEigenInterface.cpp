@@ -65,11 +65,8 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
     matrixptr dd = std::make_shared<matrix>(d);
 
     ancora a(dd, n_cubotti);
-
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
    
     
     
-    return Rcpp::List::create(Rcpp::Named("anchorpoints")=*(a.find_anchorpoints())); 
+    return Rcpp::List::create(Rcpp::Named("anchorpoints")=a.find_anchorpoints()); 
 }
