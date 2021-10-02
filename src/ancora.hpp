@@ -70,6 +70,9 @@ public:
 
         return anchorpos;
     }
+
+    std::pair<double, double> get_center() const{return std::make_pair(center_x, center_y);}
+    std::pair<double, double> get_dimensionecubotti() const{return std::make_pair(larghezza_cubo, altezza_cubo);}
 };
 
 #endif //ANCORA

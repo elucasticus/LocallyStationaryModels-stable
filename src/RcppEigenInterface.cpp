@@ -65,8 +65,14 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
     matrixptr dd = std::make_shared<matrix>(d);
 
     ancora a(dd, n_cubotti);
+
+    cd::matrix anchorpos = a.find_anchorpoints();
    
     
     
-    return Rcpp::List::create(Rcpp::Named("anchorpoints")=a.find_anchorpoints()); 
+    return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpos,
+                            Rcpp::Named("center_x")=a.get_center().first,
+                            Rcpp::Named("center_y")=a.get_center().second,
+                            Rcpp::Named("width")=a.get_dimensionecubotti().first,
+                            Rcpp::Named("height")=a.get_dimensionecubotti().second); 
 }
