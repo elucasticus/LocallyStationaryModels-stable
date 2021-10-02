@@ -42,15 +42,25 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
                               Rcpp::Named("ypredicted")=CD.predict_y(newpos),
                               Rcpp::Named("predictedmean")=CD.predict_mean(newpos),
                               Rcpp::Named("delta")=delta,
-                              Rcpp::Named("epsilon")=epsilon_);
-    
-    
-    
- 
-  
-    
+                              Rcpp::Named("epsilon")=epsilon_);   
 }
 
+
+// [[Rcpp::export]]
+Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions) {
+
+    matrixptr dd = std::make_shared<matrix>(d);
+    vectorptr yy = std::make_shared<vector>(y);
+    matrixptr solutionsptr = std::make_shared<matrix>(solutions);
+    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+    
+    vector newpos = dd->row(0);
+
+    crippadecarlo CD(dd, yy, anchorpointsptr, epsilon, delta, solutionsptr);
+
+    return Rcpp::List::create(Rcpp::Named("ypredicted")=CD.predict_y(newpos),
+                              Rcpp::Named("predictedmean")=CD.predict_mean(newpos));    
+}
 
 // [[Rcpp::export]]
 

@@ -1,4 +1,4 @@
 useDynLib(LocallyStationaryModels)
 import(RcppEigen)
 importFrom(Rcpp, evalCpp)
-export("fullmodel","find_anchorpoints")
+export("fullmodel","find_anchorpoints","predikt")

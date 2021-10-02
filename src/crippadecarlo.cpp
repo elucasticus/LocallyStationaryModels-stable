@@ -26,6 +26,12 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
     xatu_ = xatu("esponenziale", y, smt_, epsilon, d);
 }
 
+crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const double delta, const cd::matrixptr &solutions_):
+    d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon), delta_ottimale(delta)
+{
+    smt smt_(solutions_, anchorpoints, delta_ottimale);
+    xatu_ = xatu("esponenziale", y, smt_, epsilon, d);
+}
 
 
 
