@@ -19,7 +19,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
     solutions = opt_.get_solutions();
 
-    smt smt_(opt_.get_solutions(), anchorpoints, 1, 10*epsilon);
+    smt smt_(opt_.get_solutions(), anchorpoints, epsilon/2, 10*epsilon);
 
     delta_ottimale = smt_.get_optimal_delta();
 

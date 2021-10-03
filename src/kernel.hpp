@@ -5,7 +5,7 @@
 #include <string>
 
 /**
- * \return e^(epsilon*norm(x-y)^2)
+ * \return e^(-norm(x-y)^2/epsilon^2)
 */
 cd::scalar gaussian(const cd::vector &x, const cd::vector &y, const cd::scalar &epsilon);
 

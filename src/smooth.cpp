@@ -13,11 +13,9 @@ double smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
 
     for(size_t i=0; i<anchorpos->rows(); ++i)
     {
-        if (i!=pos)
-        {
             numerator += K(pos, i) * solutions->operator()(i, n);
             denominator += K(pos, i);
-        }
+            
     }
     return numerator/denominator;
 }
@@ -47,6 +45,8 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
         double delta = min_delta + i*(max_delta-min_delta)/n_deltas;
 
         kernel_.build_simple_kernel(anchorpos_, delta);
+        const matrix &Kk = *(kernel_.get_kernel());
+        
 
         double error = 0;
 
@@ -54,8 +54,9 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
         {
             double predicted_value = smooth_value(j, 3);
             double real_value = solutions->operator()(j, 3);
+            double weightk2= (Kk.row(j).sum()-Kk(j,j))*(Kk.row(j).sum()-Kk(j,j));
 
-            error += (real_value - predicted_value)*(real_value - predicted_value);
+            error += (real_value - predicted_value)*(real_value - predicted_value)/weightk2;
         }
         if (i==0 || error < min_error)
         {
