@@ -83,7 +83,7 @@ double xatu::predict_mean(const cd::vector &pos) const
 
 double xatu::predict_mean(const unsigned int &pos) const
 {
-    cd::vector params = smt_.get_solutions()->row(pos);
+    cd::vector params = smt_.smooth_vector(d->row(pos));
 
     vectorind neighbourhood = build_neighbourhood(pos);
     unsigned int n = neighbourhood.size();

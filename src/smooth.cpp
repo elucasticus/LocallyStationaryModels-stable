@@ -34,7 +34,7 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
 }
 
 
-// SISTEMA CROSS-VALIDATION DI SIGMA!!!!!!!!!!!!
+
 smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta): anchorpos(anchorpos_), solutions(solutions_), kernel_()
 {
     double min_error;
