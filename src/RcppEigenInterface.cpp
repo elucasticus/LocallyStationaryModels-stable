@@ -10,7 +10,8 @@ using namespace std::chrono;
 // [[Rcpp::depends(RcppEigen)]]
 
 // [[Rcpp::export]]
-Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals) {
+Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, 
+    const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
     auto start = high_resolution_clock::now();
     
     
@@ -24,7 +25,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
     
     
 
-    crippadecarlo CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals);
+    crippadecarlo CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals, kernel_id, variogram_id);
     vector newpos = dd->row(0);
     double delta = CD.get_delta();
     double epsilon_ = CD.get_epsilon();
@@ -56,7 +57,7 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     
     vector newpos = dd->row(0);
 
-    crippadecarlo CD(dd, yy, anchorpointsptr, epsilon, delta, solutionsptr);
+    crippadecarlo CD(dd, yy, anchorpointsptr, epsilon, delta, solutionsptr, "esponenziale");
 
     return Rcpp::List::create(Rcpp::Named("ypredicted")=CD.predict_y(newpos),
                               Rcpp::Named("predictedmean")=CD.predict_mean(newpos));    

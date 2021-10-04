@@ -4,9 +4,10 @@ using namespace cd;
 using namespace LBFGSpp;
 using namespace std::chrono;
 
-crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double epsilon, const unsigned int n_angles, const unsigned int n_intervals): d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon) 
+crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double epsilon, const unsigned int n_angles, 
+    const unsigned int n_intervals, const std::string &kernel_id, const std::string &variogram_id): d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon) 
 {
-    samplevar samplevar_("gaussian", n_angles, n_intervals, epsilon_ottimale);
+    samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon_ottimale);
     samplevar_.build_samplevar(d, anchorpoints, y);
 
     kernelmatrix = samplevar_.get_kernel();
@@ -14,7 +15,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
     empvar = samplevar_.get_variogram();
 
-    opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), "esponenziale",parameters);
+    opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), variogram_id, parameters);
     opt_.findallsolutions();
 
     solutions = opt_.get_solutions();
@@ -23,14 +24,15 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
     delta_ottimale = smt_.get_optimal_delta();
 
-    xatu_ = xatu("esponenziale", y, smt_, epsilon, d);
+    xatu_ = xatu(variogram_id, y, smt_, epsilon, d);
 }
 
-crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const double delta, const cd::matrixptr &solutions_):
+crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const double delta, const cd::matrixptr &solutions_, 
+    const std::string &variogram_id):
     d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon), delta_ottimale(delta)
 {
     smt smt_(solutions_, anchorpoints, delta_ottimale);
-    xatu_ = xatu("esponenziale", y, smt_, epsilon, d);
+    xatu_ = xatu(variogram_id, y, smt_, epsilon, d);
 }
 
 
@@ -63,7 +65,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
                 }
             }
 
-            crippadecarlo CDi(di, yi, anchorpoints, parameters, epsilon, n_angles, n_intervals);
+            crippadecarlo CDi(di, yi, anchorpoints, parameters, epsilon, n_angles, n_intervals, "gaussian", "esponenziale");
             double prediction = CDi.predict_y(d->row(i));
             double real = y->operator()(i);
             error += (prediction - real) * (prediction - real);
