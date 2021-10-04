@@ -48,19 +48,18 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
 
 
 // [[Rcpp::export]]
-Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions) {
+Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
+    const Eigen::MatrixXd &positions) {
 
     matrixptr dd = std::make_shared<matrix>(d);
     vectorptr yy = std::make_shared<vector>(y);
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-    
-    vector newpos = dd->row(0);
 
     crippadecarlo CD(dd, yy, anchorpointsptr, epsilon, delta, solutionsptr, "esponenziale");
 
-    return Rcpp::List::create(Rcpp::Named("ypredicted")=CD.predict_y(newpos),
-                              Rcpp::Named("predictedmean")=CD.predict_mean(newpos));    
+    return Rcpp::List::create(Rcpp::Named("ypredicted")=CD.predict_ys(positions),
+                              Rcpp::Named("predictedmean")=CD.predict_means(positions));    
 }
 
 // [[Rcpp::export]]

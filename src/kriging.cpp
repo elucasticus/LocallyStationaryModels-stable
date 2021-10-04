@@ -130,3 +130,19 @@ xatu::xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, con
 };
 
 xatu::xatu(): gammaiso(make_variogramiso("esponenziale")) {}
+
+cd::vector xatu::predict_means(const cd::matrix &pos) const
+{
+    vector result(pos.rows());
+    for (size_t i=0; i<pos.rows(); ++i)
+        result(i) = predict_mean(pos.row(i));
+    return result;
+}
+
+cd::vector xatu::predict_ys(const cd::matrix &pos) const
+{
+    vector result(pos.rows());
+    for (size_t i=0; i<pos.rows(); ++i)
+        result(i) = predict_y(pos.row(i));
+    return result;
+}

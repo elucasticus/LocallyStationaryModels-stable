@@ -31,8 +31,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // predikt
-Rcpp::List predikt(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions);
-RcppExport SEXP _LocallyStationaryModels_predikt(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP) {
+Rcpp::List predikt(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions, const Eigen::MatrixXd& positions);
+RcppExport SEXP _LocallyStationaryModels_predikt(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP, SEXP positionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -42,7 +42,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type solutions(solutionsSEXP);
-    rcpp_result_gen = Rcpp::wrap(predikt(y, d, anchorpoints, epsilon, delta, solutions));
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type positions(positionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(predikt(y, d, anchorpoints, epsilon, delta, solutions, positions));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -61,7 +62,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_fullmodel", (DL_FUNC) &_LocallyStationaryModels_fullmodel, 9},
-    {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 6},
+    {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 7},
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
     {NULL, NULL, 0}
 };

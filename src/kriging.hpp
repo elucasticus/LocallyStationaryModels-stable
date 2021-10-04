@@ -53,11 +53,15 @@ public:
     double predict_mean(const cd::vector &pos) const;
     double predict_mean(const unsigned int &pos) const;
 
+    cd::vector predict_means(const cd::matrix &pos) const;
+
     /**
      * \brief predict the mean value of Y in position pos
      * \param pos   a vector of coordinates or the index of the position
     */
     double predict_y(const cd::vector &pos) const;
+
+    cd::vector predict_ys(const cd::matrix &pos) const;
 };
 
 

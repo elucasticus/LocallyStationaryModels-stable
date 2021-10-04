@@ -5,8 +5,8 @@ fullmodel <- function(y, d, anchorpoints, parameters, epsilon, n_angles, n_inter
     .Call('_LocallyStationaryModels_fullmodel', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id)
 }
 
-predikt <- function(y, d, anchorpoints, epsilon, delta, solutions) {
-    .Call('_LocallyStationaryModels_predikt', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, delta, solutions)
+predikt <- function(y, d, anchorpoints, epsilon, delta, solutions, positions) {
+    .Call('_LocallyStationaryModels_predikt', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, delta, solutions, positions)
 }
 
 find_anchorpoints <- function(d, n_cubotti) {

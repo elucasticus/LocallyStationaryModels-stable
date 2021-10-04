@@ -134,3 +134,14 @@ const cd::matrixIptr crippadecarlo::get_grid() const
 {
     return gridptr;
 }
+
+
+cd::vector crippadecarlo::predict_means(const cd::matrix &pos) const
+{
+    return xatu_.predict_means(pos);
+}
+
+cd::vector crippadecarlo::predict_ys(const cd::matrix &pos) const
+{
+    return xatu_.predict_ys(pos);
+}

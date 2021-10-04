@@ -41,6 +41,9 @@ public:
     const cd::matrixptr get_empiricvariogram() const;
     const cd::matrixptr get_kernel() const;
     const cd::matrixIptr get_grid() const;
+
+    cd::vector predict_means(const cd::matrix &pos) const;
+    cd::vector predict_ys(const cd::matrix &pos) const;
 };
 
 
