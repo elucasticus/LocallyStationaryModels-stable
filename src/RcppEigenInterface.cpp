@@ -10,7 +10,7 @@ using namespace std::chrono;
 // [[Rcpp::depends(RcppEigen)]]
 
 // [[Rcpp::export]]
-Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals) {
+Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals) {
     auto start = high_resolution_clock::now();
     
     
@@ -24,7 +24,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
     
     
 
-    crippadecarlo CD(dd, yy, anchorpointsptr ,epsilon, n_angles,n_intervals);
+    crippadecarlo CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals);
     vector newpos = dd->row(0);
     double delta = CD.get_delta();
     double epsilon_ = CD.get_epsilon();

@@ -70,6 +70,7 @@ private:
     cd::vectorptr x;
     cd::vectorptr y;
     std::string id;
+    cd::vector initialparameters;
 
     cd::matrixptr solutions = nullptr;
 
@@ -89,7 +90,7 @@ public:
      * \param id                    the name of the variogram of your choice
     */
     opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_,
-    const std::string &id_);
+    const std::string &id_, const cd::vector &initialparameters_);
 
     /**
      * \brief find the optimal solution in different positions

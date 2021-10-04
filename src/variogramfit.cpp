@@ -92,10 +92,10 @@ funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogra
 
 
 
-opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_): 
-    empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_) 
+opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_, const cd::vector &initialparameters_): 
+    empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_), initialparameters(initialparameters_) 
 {
-    solutions = std::make_shared<matrix>(matrix::Zero(empiricvariogram->cols(),4));
+    solutions = std::make_shared<matrix>(matrix::Zero(empiricvariogram->cols(),initialparameters.size()));
 };
 
 
@@ -112,15 +112,21 @@ vector opt::findonesolution(const unsigned int pos) const
     LBFGSBSolver<double> solver(param);
 
     // Bounds
-    Eigen::VectorXd lb(4);
-    lb << 1e-08,1e-08,1e-08,1e-08;
-    Eigen::VectorXd ub(4);
+    Eigen::VectorXd lb(cd::vector::Zero(initialparameters.size()));
+    
+    for(size_t e=0; e<lb.size(); e++)
+        lb(e)=1e-08;
+   
+   
     auto inf = std::numeric_limits<double>::infinity();
-    ub << inf,inf,M_PI_2,inf;
+    Eigen::VectorXd ub(cd::vector::Zero(initialparameters.size()));
+    for(size_t e=0; e<ub.size(); e++)
+        ub(e)=inf;
+    ub(2) = M_PI_2;
+    
 
-    // Initial guess
-    vector x(4);
-    x << 200,200,0.01,100;
+    
+    cd::vector x(initialparameters);
     // x will be overwritten to be the best point found
     double fx;
     /*int niter = */solver.minimize(fun, x, fx, lb, ub);
@@ -134,7 +140,7 @@ void opt::findsomesolutions(const vectorind &pos)
     for (unsigned int i = 0; i < pos.size(); ++i)
     {
         vector sol = findonesolution(pos[i]);
-        for (unsigned int j = 0; j < 4; ++j)
+        for (unsigned int j = 0; j < initialparameters.size(); ++j)
         {
             solutions->operator()(pos[i], j) = sol[j];
         }
@@ -147,7 +153,7 @@ void opt::findallsolutions()
     for (unsigned int i=0; i<empiricvariogram->cols(); ++i)
     {
         vector sol = findonesolution(i);
-        for (unsigned int j = 0; j < 4; ++j)
+        for (unsigned int j = 0; j < initialparameters.size(); ++j)
         {
             solutions->operator()(i, j) = sol[j];
         }
