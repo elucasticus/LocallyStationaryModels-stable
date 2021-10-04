@@ -37,7 +37,8 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
 
 
-crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double min_epsilon, const double max_epsilon, const unsigned int n_angles, const unsigned int n_intervals): d(d_), y(y_), anchorpoints(anchorpoints_)
+crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double min_epsilon, const double max_epsilon, 
+const unsigned int n_angles, const unsigned int n_intervals, const std::string &kernel_id, const std::string &variogram_id): d(d_), y(y_), anchorpoints(anchorpoints_)
 {
     double min_error;
 
@@ -65,7 +66,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
                 }
             }
 
-            crippadecarlo CDi(di, yi, anchorpoints, parameters, epsilon, n_angles, n_intervals, "gaussian", "esponenziale");
+            crippadecarlo CDi(di, yi, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id);
             double prediction = CDi.predict_y(d->row(i));
             double real = y->operator()(i);
             error += (prediction - real) * (prediction - real);
@@ -79,15 +80,15 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
         }
     }
 
-    samplevar samplevar_("gaussian", n_angles, n_intervals, epsilon_ottimale);
+    samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon_ottimale);
     samplevar_.build_samplevar(d, anchorpoints, y);
 
-    opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), "esponenziale",parameters);
+    opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), variogram_id, parameters);
     opt_.findallsolutions();
 
     smt smt_(opt_.get_solutions(), anchorpoints, delta_ottimale);
 
-    xatu_ = xatu("esponenziale", y, smt_, epsilon_ottimale, d);
+    xatu_ = xatu(variogram_id, y, smt_, epsilon_ottimale, d);
 }
 
 
