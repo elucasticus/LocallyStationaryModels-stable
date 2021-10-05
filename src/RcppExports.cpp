@@ -59,11 +59,31 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rawmodel
+Rcpp::List rawmodel(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const Eigen::VectorXd& parameters, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const std::string& variogram_id);
+RcppExport SEXP _LocallyStationaryModels_rawmodel(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP parametersSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP variogram_idSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type parameters(parametersSEXP);
+    Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type n_angles(n_anglesSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type n_intervals(n_intervalsSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type variogram_id(variogram_idSEXP);
+    rcpp_result_gen = Rcpp::wrap(rawmodel(y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_fullmodel", (DL_FUNC) &_LocallyStationaryModels_fullmodel, 9},
     {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 7},
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
+    {"_LocallyStationaryModels_rawmodel", (DL_FUNC) &_LocallyStationaryModels_rawmodel, 9},
     {NULL, NULL, 0}
 };
 

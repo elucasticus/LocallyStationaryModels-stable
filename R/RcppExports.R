@@ -13,3 +13,7 @@ find_anchorpoints <- function(d, n_cubotti) {
     .Call('_LocallyStationaryModels_find_anchorpoints', PACKAGE = 'LocallyStationaryModels', d, n_cubotti)
 }
 
+rawmodel <- function(y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id) {
+    .Call('_LocallyStationaryModels_rawmodel', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id)
+}
+
