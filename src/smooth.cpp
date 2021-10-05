@@ -11,11 +11,11 @@ double smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
     double numerator = 0;
     double denominator = 0;
 
+    #pragma omp parallel for reduction(+:numerator,denominator)
     for(size_t i=0; i<anchorpos->rows(); ++i)
     {
-            numerator += K(pos, i) * solutions->operator()(i, n);
-            denominator += K(pos, i);
-            
+        numerator += K(pos, i) * solutions->operator()(i, n);
+        denominator += K(pos, i);
     }
     return numerator/denominator;
 }
@@ -25,6 +25,7 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
     double numerator = 0;
     double denominator = 0;
 
+    #pragma omp parallel for reduction(+:numerator,denominator)
     for(size_t i=0; i<anchorpos->rows(); ++i)
     {
         numerator += kernel_(pos, anchorpos->row(i)) * solutions->operator()(i, n);
@@ -40,6 +41,7 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
     double min_error;
     const unsigned int n_deltas = 1000;
 
+    #pragma omp parallel ordered for
     for (int i=0; i<n_deltas; i++)
     {
         double delta = min_delta + i*(max_delta-min_delta)/n_deltas;
@@ -58,10 +60,13 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
 
             error += (real_value - predicted_value)*(real_value - predicted_value)/weightk2;
         }
-        if (i==0 || error < min_error)
+        #pragma omp ordered
         {
-            optimal_delta = delta;
-            min_error = error;
+            if (i==0 || error < min_error)
+            {
+                optimal_delta = delta;
+                min_error = error;
+            }
         }
     }
 
@@ -80,6 +85,7 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const doub
 cd::vector smt::smooth_vector(const unsigned int &pos) const
 {
     vector result(solutions->cols());
+    #pragma omp parallel for
     for (unsigned int i=0; i<solutions->cols(); ++i)
         result(i) = smooth_value(pos, i);
 
@@ -89,6 +95,7 @@ cd::vector smt::smooth_vector(const unsigned int &pos) const
 cd::vector smt::smooth_vector(const vector &pos) const
 {
     vector result(solutions->cols());
+    #pragma omp parallel for
     for (unsigned int i=0; i<solutions->cols(); ++i)
         result(i) = smooth_value(pos, i);
 

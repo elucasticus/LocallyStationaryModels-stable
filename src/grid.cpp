@@ -23,7 +23,7 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigne
         scalar cell_length = b / n_intervals;
         scalar cell_angle = 3.14159265358979323846 / (n_angles);
 
-        //#pragma omp parallel for collapse(2)
+        #pragma omp parallel for
         for (unsigned int i = 0; i < d->rows() - 1; ++i)
         {
             for (unsigned int j = i+1; j < d->rows(); ++j)

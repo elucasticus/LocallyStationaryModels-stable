@@ -137,6 +137,7 @@ vector opt::findonesolution(const unsigned int pos) const
 
 void opt::findsomesolutions(const vectorind &pos)
 {    
+    #pragma omp parallel for
     for (unsigned int i = 0; i < pos.size(); ++i)
     {
         vector sol = findonesolution(pos[i]);
