@@ -28,7 +28,7 @@ private:
 public:
     crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double epsilon, const unsigned int n_angles, const unsigned int n_intervals,
         const std::string &kernel_id, const std::string &variogram_id);
-    crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double min_epsilon, const double max_epsilon, const unsigned int n_angles, 
+    crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double min_epsilon, const double max_epsilon, const unsigned int& nepsilons,  const unsigned int n_angles, 
         const unsigned int n_intervals, const std::string &kernel_id, const std::string &variogram_id);
     crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const double delta, const cd::matrixptr &solutions_, const std::string &variogram_id);
     

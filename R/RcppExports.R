@@ -17,3 +17,7 @@ rawmodel <- function(y, d, anchorpoints, parameters, epsilon, n_angles, n_interv
     .Call('_LocallyStationaryModels_rawmodel', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id)
 }
 
+fullmodelCV <- function(y, d, anchorpoints, parameters, epsilonmin, epsilonmax, nepsilons, n_angles, n_intervals, kernel_id, variogram_id) {
+    .Call('_LocallyStationaryModels_fullmodelCV', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilonmin, epsilonmax, nepsilons, n_angles, n_intervals, kernel_id, variogram_id)
+}
+

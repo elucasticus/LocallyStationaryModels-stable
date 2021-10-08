@@ -101,3 +101,32 @@ Rcpp::List rawmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Ei
                               Rcpp::Named("delta")=delta,
                               Rcpp::Named("epsilon")=epsilon_);   
 }
+
+
+// [[Rcpp::export]]
+Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilonmin, const double& epsilonmax, const unsigned int& nepsilons
+                      , const unsigned int& n_angles, 
+                     const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
+  auto start = high_resolution_clock::now(); 
+  
+  matrixptr dd = std::make_shared<matrix>(d);
+  vectorptr yy = std::make_shared<vector>(y);
+  matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+  
+  crippadecarlo CD(dd, yy, anchorpointsptr , parameters, epsilonmin, epsilonmax, nepsilons, n_angles,n_intervals, kernel_id, variogram_id);
+  double delta = CD.get_delta();
+  double epsilon_ = CD.get_epsilon();
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<milliseconds>(stop - start);
+  
+  return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
+                            Rcpp::Named("values")=y,
+                            Rcpp::Named("kernel")=*(CD.get_kernel()),
+                            Rcpp::Named("grid")=*(CD.get_grid()),
+                            Rcpp::Named("empiricvariogram")=*(CD.get_empiricvariogram()),
+                            Rcpp::Named("solutions")=*(CD.get_solutions()),
+                            Rcpp::Named("ypredicted")=CD.predict_ys(anchorpoints),
+                            Rcpp::Named("predictedmean")=CD.predict_means(anchorpoints),
+                            Rcpp::Named("delta")=delta,
+                            Rcpp::Named("epsilon")=epsilon_);   
+}

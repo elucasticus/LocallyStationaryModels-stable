@@ -37,14 +37,14 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
 
 
-crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double min_epsilon, const double max_epsilon, 
+crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const cd::vector &parameters, const double min_epsilon, const double max_epsilon, const unsigned int& nepsilons, 
 const unsigned int n_angles, const unsigned int n_intervals, const std::string &kernel_id, const std::string &variogram_id): d(d_), y(y_), anchorpoints(anchorpoints_)
 {
     double min_error;
 
-    for(int k=min_epsilon; k<max_epsilon; ++k)
+    for(int k=min_epsilon; k<=max_epsilon; k+=(max_epsilon-min_epsilon)/(nepsilons-1))
     {
-        double epsilon = -exp(k);
+        double epsilon = k;
 
         std::cout << "provo con epsilon = " << epsilon << std::endl;
 
