@@ -42,7 +42,7 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
 {
     double min_error;
 
-    for(int k=min_epsilon; k<=max_epsilon; k+=(max_epsilon-min_epsilon)/(nepsilons-1))
+    for(double k=min_epsilon; k<=max_epsilon; k+=(max_epsilon-min_epsilon)/(nepsilons-1))
     {
         double epsilon = k;
 
