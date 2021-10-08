@@ -99,6 +99,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// smoothing
+Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd& anchorpoints, const double& delta, const Eigen::MatrixXd& positions);
+RcppExport SEXP _LocallyStationaryModels_smoothing(SEXP solutionsSEXP, SEXP anchorpointsSEXP, SEXP deltaSEXP, SEXP positionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd >::type solutions(solutionsSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
+    Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type positions(positionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(smoothing(solutions, anchorpoints, delta, positions));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_fullmodel", (DL_FUNC) &_LocallyStationaryModels_fullmodel, 9},
@@ -106,6 +120,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
     {"_LocallyStationaryModels_rawmodel", (DL_FUNC) &_LocallyStationaryModels_rawmodel, 9},
     {"_LocallyStationaryModels_fullmodelCV", (DL_FUNC) &_LocallyStationaryModels_fullmodelCV, 11},
+    {"_LocallyStationaryModels_smoothing", (DL_FUNC) &_LocallyStationaryModels_smoothing, 4},
     {NULL, NULL, 0}
 };
 

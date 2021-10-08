@@ -21,3 +21,7 @@ fullmodelCV <- function(y, d, anchorpoints, parameters, epsilonmin, epsilonmax, 
     .Call('_LocallyStationaryModels_fullmodelCV', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilonmin, epsilonmax, nepsilons, n_angles, n_intervals, kernel_id, variogram_id)
 }
 
+smoothing <- function(solutions, anchorpoints, delta, positions) {
+    .Call('_LocallyStationaryModels_smoothing', PACKAGE = 'LocallyStationaryModels', solutions, anchorpoints, delta, positions)
+}
+

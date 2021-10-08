@@ -130,3 +130,19 @@ Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const
                             Rcpp::Named("delta")=delta,
                             Rcpp::Named("epsilon")=epsilon_);   
 }
+
+
+// [[Rcpp::export]]
+Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions)
+{
+    matrixptr solutionsptr = std::make_shared<matrix>(solutions);
+    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+    
+    smt smt_(solutionsptr, anchorpointsptr, delta);
+    
+    Eigen::MatrixXd result(positions.rows(), solutions.cols());
+    for (size_t i=0; i<positions.rows(); ++i)
+        result.row(i)=smt_.smooth_vector(positions.row(i));
+
+    return Rcpp::List::create(Rcpp::Named("parameters")=result);
+}
