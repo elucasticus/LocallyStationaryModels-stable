@@ -1,5 +1,5 @@
 #include "variogramfit.hpp"
-#include <math.h>
+#include <cmath>
 #include <iostream>
 
 using namespace cd;
@@ -28,8 +28,25 @@ cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::
     return sigma * sigma * (1 - exp(-h));
 }
 
+cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+{
+    double lambda1 = params[0];
+    double lambda2 = params[1];
+    double phi = params[2];
+    double sigma = params[3];
+    double nu = params[4];
+
+    scalar h = compute_anisotropic_h(lambda1, lambda2, phi, x, y);
+    return sigma * sigma * std::pow(2*std::sqrt(nu)*h, nu)*std::cyl_bessel_k(nu, 2*std::sqrt(nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1));
+}
+
+
 cd::variogramfunction make_variogramiso(const std::string &id)
 {
+    if(id == "exponential" || id == "esponenziale")
+        return exponential;
+    if(id == "matern" || id == "Matern")
+        return matern;
     return exponential;
 }
 

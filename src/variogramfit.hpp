@@ -17,6 +17,8 @@ cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &la
 cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
 
 
+cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
+
 /**
  * \brief allows to select between different functions for the variogram
  * \param id    the name of your favourite variogram
