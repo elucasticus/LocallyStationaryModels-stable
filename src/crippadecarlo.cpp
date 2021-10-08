@@ -82,12 +82,21 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
 
     samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon_ottimale);
     samplevar_.build_samplevar(d, anchorpoints, y);
-
+    
+    kernelmatrix = samplevar_.get_kernel();
+    gridptr = samplevar_.get_grid();
+    
+    empvar = samplevar_.get_variogram();
+    
     opt opt_(samplevar_.get_variogram(), samplevar_.get_squaredweights(), samplevar_.get_x(),  samplevar_.get_y(), variogram_id, parameters);
     opt_.findallsolutions();
-
-    smt smt_(opt_.get_solutions(), anchorpoints, delta_ottimale);
-
+    
+    solutions = opt_.get_solutions();
+    
+    smt smt_(opt_.get_solutions(), anchorpoints, epsilon_ottimale/10, 10*epsilon_ottimale);
+    
+    delta_ottimale = smt_.get_optimal_delta();
+    
     xatu_ = xatu(variogram_id, y, smt_, epsilon_ottimale, d);
 }
 
