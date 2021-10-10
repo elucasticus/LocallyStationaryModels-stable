@@ -43,15 +43,25 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
 Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
     const Eigen::MatrixXd &positions) {
 
+    auto start = high_resolution_clock::now();
+  
     matrixptr dd = std::make_shared<matrix>(d);
     vectorptr yy = std::make_shared<vector>(y);
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
     crippadecarlo CD(dd, yy, anchorpointsptr, epsilon, delta, solutionsptr, "esponenziale");
+    
+    vector predicted_ys(CD.predict_ys(positions));
+    vector predicted_means(CD.predict_means(positions));
+    
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    
+    Rcpp::Rcout << predicted_ys.size() << " pairs of values predicted in " << duration.count() << " ms" << std::endl;
 
-    return Rcpp::List::create(Rcpp::Named("ypredicted")=CD.predict_ys(positions),
-                              Rcpp::Named("predictedmean")=CD.predict_means(positions));    
+    return Rcpp::List::create(Rcpp::Named("ypredicted")=predicted_ys,
+                              Rcpp::Named("predictedmean")=predicted_means);    
 }
 
 // [[Rcpp::export]]
