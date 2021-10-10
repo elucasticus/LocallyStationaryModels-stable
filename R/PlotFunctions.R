@@ -10,10 +10,10 @@ plot.lsm<-function(model, a, y, d)
   newpoints <- data.frame(latitude = double(), longitude = double())
   for (i in 1:dim(g)[1])
   {
-    newpoints<-rbind(newpoints, c(g$latitude[i]+a$width/2, g$longitude[i]))
-    newpoints<-rbind(newpoints, c(g$latitude[i]-a$width/2, g$longitude[i]))
-    newpoints<-rbind(newpoints, c(g$latitude[i], g$longitude[i]+a$height/2))
-    newpoints<-rbind(newpoints, c(g$latitude[i], g$longitude[i]-a$height/2))
+    #newpoints<-rbind(newpoints, c(g$latitude[i]+a$width/2, g$longitude[i]))
+    #newpoints<-rbind(newpoints, c(g$latitude[i]-a$width/2, g$longitude[i]))
+    #newpoints<-rbind(newpoints, c(g$latitude[i], g$longitude[i]+a$height/2))
+    #newpoints<-rbind(newpoints, c(g$latitude[i], g$longitude[i]-a$height/2))
     newpoints<-rbind(newpoints, c(g$latitude[i]+a$width/sqrt(2), g$longitude[i]+a$height/sqrt(2)))
     newpoints<-rbind(newpoints, c(g$latitude[i]+a$width/sqrt(2), g$longitude[i]-a$height/sqrt(2)))
     newpoints<-rbind(newpoints, c(g$latitude[i]-a$width/sqrt(2), g$longitude[i]+a$height/sqrt(2)))
@@ -30,22 +30,25 @@ plot.lsm<-function(model, a, y, d)
   
   ###DATI INIZIALI
   dd <- as.data.frame(d)
-  windows()
-  p <- ggplot(dd, aes(x=V1, y=V2, color=y)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  print(p)
+  #windows()
+  #p <- ggplot(dd, aes(x=V1, y=V2, color=y)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
+  #print(p)
   
-  windows()
+  x11(ypos=-100, xpos=-100)
   p <- ggplot(dd, aes(x=V1, y=V2, size=y)) + geom_point()
   print(p)
   
   
   ###ELLISSI
-  windows()
+  x11(ypos=-100,xpos=-100)
   p <- ggplot(g, aes(x=latitude, y=longitude)) + geom_point(colour="black") + geom_ellipse(aes(x0 = latitude, y0 = longitude, a = lambda1, b = lambda2, angle = phi), data = g) + coord_fixed()
   print(p)
   
   ###PARAMETERS
-  windows()
-  p <- ggplot(allpoints, aes(x=latitude, y=longitude, color=sigma)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  print(p)
+  x11(height=600, width=600, ypos=-100,xpos=-100)
+  p1 <- ggplot(allpoints, aes(x=latitude, y=longitude, color=lambda1)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
+  p2 <- ggplot(allpoints, aes(x=latitude, y=longitude, color=lambda2)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
+  p3 <- ggplot(allpoints, aes(x=latitude, y=longitude, color=phi)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
+  p4 <- ggplot(allpoints, aes(x=latitude, y=longitude, color=sigma)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
+  plot_grid(p1,p2,p3,p4,labels="AUTO")
 }
