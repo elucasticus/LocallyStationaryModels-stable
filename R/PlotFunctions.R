@@ -55,5 +55,7 @@ plot.lsm<-function(model, a, y, d)
   predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2])
   means <- ggplot(allpoints, aes(x=latitude, y=longitude, color=predictedvalues$predictedmean)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
   ys <- ggplot(allpoints, aes(x=latitude, y=longitude, color=predictedvalues$ypredicted)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
+  means<-means+labs(color="mean")
+  ys<-ys+labs(color="y")
   print(plot_grid(means, ys,labels="AUTO"))
 }
