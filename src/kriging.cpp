@@ -134,6 +134,7 @@ xatu::xatu(): gammaiso(make_variogramiso("esponenziale")) {}
 cd::vector xatu::predict_means(const cd::matrix &pos) const
 {
     vector result(pos.rows());
+    #pragma omp parallel for
     for (size_t i=0; i<pos.rows(); ++i)
         result(i) = predict_mean(pos.row(i));
     return result;
@@ -142,6 +143,7 @@ cd::vector xatu::predict_means(const cd::matrix &pos) const
 cd::vector xatu::predict_ys(const cd::matrix &pos) const
 {
     vector result(pos.rows());
+    #pragma omp parallel for
     for (size_t i=0; i<pos.rows(); ++i)
         result(i) = predict_y(pos.row(i));
     return result;
