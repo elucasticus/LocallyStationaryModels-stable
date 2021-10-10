@@ -34,18 +34,16 @@ plot.lsm<-function(model, a, y, d)
   #p <- ggplot(dd, aes(x=V1, y=V2, color=y)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
   #print(p)
   
-  x11(ypos=-100, xpos=-100)
+  par(ask=TRUE)
   p <- ggplot(dd, aes(x=V1, y=V2, size=y)) + geom_point()
   print(p)
   
   
   ###ELLISSI
-  x11(ypos=-100,xpos=-100)
   p <- ggplot(g, aes(x=latitude, y=longitude)) + geom_ellipse(aes(x0 = latitude, y0 = longitude, a = lambda1, b = lambda2, angle = phi), data = g) + coord_fixed()
   print(p)
   
   ###PARAMETERS
-  x11(height=600, width=600, ypos=-100,xpos=-100)
   p1 <- ggplot(allpoints, aes(x=latitude, y=longitude, color=lambda1)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
   p2 <- ggplot(allpoints, aes(x=latitude, y=longitude, color=lambda2)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
   p3 <- ggplot(allpoints, aes(x=latitude, y=longitude, color=phi)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
@@ -55,7 +53,6 @@ plot.lsm<-function(model, a, y, d)
   
   ###FUNCTION VALUES
   predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2])
-  x11(ypos=-100, xpos=-100, height=300, width=800)
   means <- ggplot(allpoints, aes(x=latitude, y=longitude, color=predictedvalues$predictedmean)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
   ys <- ggplot(allpoints, aes(x=latitude, y=longitude, color=predictedvalues$ypredicted)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
   print(plot_grid(means, ys,labels="AUTO"))
