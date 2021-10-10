@@ -23,6 +23,8 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
     double epsilon_ = CD.get_epsilon();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
+    
+    Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
   
     return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
                               Rcpp::Named("values")=y,
@@ -92,6 +94,8 @@ Rcpp::List rawmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Ei
     double epsilon_ = CD.get_epsilon();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
+    
+    Rcpp::Rcout << "task successfully completed in " << duration.count() << " ms" << std::endl;
   
     return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
                               Rcpp::Named("kernel")=*(CD.get_kernel()),
@@ -118,6 +122,8 @@ Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const
   double epsilon_ = CD.get_epsilon();
   auto stop = high_resolution_clock::now();
   auto duration = duration_cast<milliseconds>(stop - start);
+  
+  Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
   
   return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
                             Rcpp::Named("values")=y,
