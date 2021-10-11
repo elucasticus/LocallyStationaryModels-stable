@@ -58,4 +58,6 @@ plot.lsm<-function(model, a, y, d)
   means<-means+labs(color="mean")
   ys<-ys+labs(color="y")
   print(plot_grid(means, ys,labels="AUTO"))
+  
+  return(allpoints)
 }
