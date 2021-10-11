@@ -48,8 +48,8 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
 
         std::cout << "provo con epsilon = " << epsilon << std::endl;
 
-        double delta;
         double error = 0;
+        #pragma omp parallel for reduction(+:error)
         for (unsigned int i=0; i<d->rows(); ++i)
         {
             matrixptr di = std::make_shared<matrix>(d->rows()-1, d->cols());
@@ -70,13 +70,11 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
             double prediction = CDi.predict_y(d->row(i));
             double real = y->operator()(i);
             error += (prediction - real) * (prediction - real);
-            delta = CDi.delta_ottimale;
         }
         if (k == min_epsilon || error < min_error)
         {
             epsilon_ottimale = epsilon;
             min_error = error;
-            delta_ottimale = delta;
         }
     }
 
