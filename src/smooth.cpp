@@ -42,7 +42,7 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
     const unsigned int n_deltas = 1000;
 
     #pragma omp parallel ordered for
-    for (int i=0; i<n_deltas; i++)
+    for (int i=0; i<=n_deltas; i++)
     {
         double delta = min_delta + i*(max_delta-min_delta)/n_deltas;
 

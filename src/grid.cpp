@@ -18,10 +18,13 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigne
         throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.rows() must be greater than 0");
     else
     {
+        double pi = 4*std::atan(1.);
+      
         matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
-        scalar b = 2*epsilon;
-        scalar cell_length = b / n_intervals;
-        scalar cell_angle = 3.14159265358979323846 / (n_angles);
+        double b = 2*epsilon;
+        double cell_length = b / n_intervals;
+        double cell_angle = pi / (n_angles);
+        
 
         #pragma omp parallel for
         for (unsigned int i = 0; i < d->rows() - 1; ++i)
@@ -31,12 +34,15 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigne
                 scalar deltax =  d->operator()(j, 0) - d->operator()(i, 0);
                 scalar deltay =  d->operator()(j, 1) - d->operator()(i, 1);
                 scalar radius =  std::sqrt( deltax*deltax + deltay*deltay );
-                scalar angle  =  std::atan( deltay / deltax );
+                //scalar angle  =  std::atan( deltay / deltax );
 
-                if (radius > b)
+                if (radius >= b)
                     grid->operator()(i, j) = -1;
-                else
-                    grid->operator()(i, j) = floor( (3.14159265358979323846/2 + angle) / cell_angle ) + n_intervals * ( floor( (radius) / cell_length) );
+                else if (deltax>0)
+                    grid->operator()(i, j) = floor( radius / cell_length ) + n_intervals *  floor( (pi/2 + std::atan( deltay / deltax )) / cell_angle );
+                else 
+                  grid->operator()(i, j) = floor( radius / cell_length );
+                
             }
         }
         return grid;
