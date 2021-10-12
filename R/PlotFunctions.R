@@ -94,7 +94,11 @@ plotvario<-function(anchorpoints,grid,n_angles,n_intervals,empvariogram,pos,epsi
   
   par(ask=TRUE)
   for (i in 1:n_angles){
-    plot(coordnormh , empvariogram[(n_intervals*(i-1)+1):(n_intervals*i),pos] , ylab="Empiric Anisotropic Variogram")
+    plot(coordnormh , empvariogram[(n_intervals*(i-1)+1):(n_intervals*i),pos] , xlab=paste("Distance",
+      "  (",
+      as.character(180*(i-1)/n_angles),"\u00B0 -",
+      as.character(180*i/n_angles),"\u00B0 )"),
+         ylab= paste("Empiric Anisotropic Variogram"))
   }
   
   
