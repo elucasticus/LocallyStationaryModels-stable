@@ -11,4 +11,4 @@ mmypoints <- plot.lsm(r,a,y,d)
 griglia<-buildgrid(y,d,a$anchorpoints,550,8,8,"gaussian")
 plotgrid(d,griglia$grid ,10)
 
-plotvario(a,griglia$grid,8,8,griglia$empiricvariogram,3,550)
+plotvario(a,griglia$grid,8,8,griglia$empiricvariogram,10,550)
