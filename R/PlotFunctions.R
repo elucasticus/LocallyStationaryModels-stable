@@ -64,7 +64,7 @@ plot.lsm<-function(model, a, y, d)
 
 
 
-plotgrid<-function(grid,index){
+plotgrid<-function(d,grid,index){
   
   plot(d)
   grid=as.data.frame(grid)
