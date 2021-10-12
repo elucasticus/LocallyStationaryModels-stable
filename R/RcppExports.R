@@ -25,3 +25,7 @@ smoothing <- function(solutions, anchorpoints, delta, positions) {
     .Call('_LocallyStationaryModels_smoothing', PACKAGE = 'LocallyStationaryModels', solutions, anchorpoints, delta, positions)
 }
 
+buildgrid <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id) {
+    .Call('_LocallyStationaryModels_buildgrid', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
+}
+

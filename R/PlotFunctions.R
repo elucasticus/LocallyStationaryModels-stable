@@ -61,3 +61,23 @@ plot.lsm<-function(model, a, y, d)
   
   return(allpoints)
 }
+
+
+
+plotgrid<-function(grid,index){
+  
+  plot(d)
+  grid=as.data.frame(grid)
+  
+  for (i in 1:dim(d)[1]){
+    for (j in i:dim(d)[1]){
+      
+      if(grid[i,j]==index){
+        segments(d[i,1],d[i,2],d[j,1],d[j,2])
+                 
+      }
+      
+    }
+  }
+  
+}

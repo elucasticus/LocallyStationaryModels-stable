@@ -162,3 +162,26 @@ Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anc
 
     return Rcpp::List::create(Rcpp::Named("parameters")=result);
 }
+
+
+
+
+
+// [[Rcpp::export]]
+Rcpp::List buildgrid(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
+                     const unsigned int& n_intervals, const std::string &kernel_id) {
+
+  samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon);
+  matrixptr dd = std::make_shared<matrix>(d);
+  vectorptr yy = std::make_shared<vector>(y);
+  matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+  samplevar_.build_samplevar(dd, anchorpointsptr, yy);
+  
+  matrixIptr  gridptr = samplevar_.get_grid();
+  
+
+
+  return Rcpp::List::create(
+                            Rcpp::Named("grid")=*(gridptr)
+                            );   
+}

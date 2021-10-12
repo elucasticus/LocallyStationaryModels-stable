@@ -38,7 +38,7 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigne
 
                 if (radius >= b)
                     grid->operator()(i, j) = -1;
-                else if (deltax>0)
+                else if (deltax!=0)
                     grid->operator()(i, j) = floor( radius / cell_length ) + n_intervals *  floor( (pi/2 + std::atan( deltay / deltax )) / cell_angle );
                 else 
                   grid->operator()(i, j) = floor( radius / cell_length );
