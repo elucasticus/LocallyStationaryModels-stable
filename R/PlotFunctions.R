@@ -81,3 +81,22 @@ plotgrid<-function(d,grid,index){
   }
   
 }
+
+
+plotvario<-function(anchorpoints,grid,n_angles,n_intervals,empvariogram,pos,epsilon){
+  b=2*epsilon
+  diminterval = b/n_intervals
+  
+  coordnormh = numeric(n_intervals)
+  for ( i in 1:n_intervals){
+    coordnormh[i] = diminterval/2 + (i-1)*diminterval
+  }
+  
+  par(ask=TRUE)
+  for (i in 1:n_angles){
+    plot(coordnormh , empvariogram[(n_intervals*(i-1)+1):(n_intervals*i),pos] )
+  }
+  
+  
+  
+}

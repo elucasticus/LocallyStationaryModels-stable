@@ -176,12 +176,12 @@ Rcpp::List buildgrid(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
   vectorptr yy = std::make_shared<vector>(y);
   matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
   samplevar_.build_samplevar(dd, anchorpointsptr, yy);
-  
+  matrixptr empvarioptr = samplevar_.get_variogram();
   matrixIptr  gridptr = samplevar_.get_grid();
   
-
-
-  return Rcpp::List::create(
+  
+  
+  return Rcpp::List::create(Rcpp::Named("empiricvariogram")=*(empvarioptr),
                             Rcpp::Named("grid")=*(gridptr)
-                            );   
+  );   
 }
