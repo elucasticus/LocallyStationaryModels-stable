@@ -154,7 +154,7 @@ vector opt::findonesolution(const unsigned int pos) const
 
 void opt::findsomesolutions(const vectorind &pos)
 {    
-    #pragma omp parallel for
+    //#pragma omp parallel for  RIMUOVERE IL COMMENTO FA CRASHARE R
     for (unsigned int i = 0; i < pos.size(); ++i)
     {
         vector sol = findonesolution(pos[i]);
@@ -167,7 +167,7 @@ void opt::findsomesolutions(const vectorind &pos)
 
 void opt::findallsolutions()
 {
-    #pragma omp parallel for
+    //#pragma omp parallel for RIMUOVERE IL COMMENTO FA CRASHARE R
     for (unsigned int i=0; i<empiricvariogram->cols(); ++i)
     {
         vector sol = findonesolution(i);
