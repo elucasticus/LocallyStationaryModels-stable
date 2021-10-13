@@ -66,7 +66,7 @@ plot.lsm<-function(model, a, y, d)
 
 plotgrid<-function(d,grid,index){
   
-  plot(d)
+  plot(d,xlab="Latitude",ylab="Longitude")
   grid=as.data.frame(grid)
   
   for (i in 1:dim(d)[1]){
@@ -83,7 +83,7 @@ plotgrid<-function(d,grid,index){
 }
 
 
-plotvario<-function(anchorpoints,grid,n_angles,n_intervals,empvariogram,pos,epsilon){
+plotvario<-function(n_angles,n_intervals,empvariogram,pos,epsilon){
   b=2*epsilon
   diminterval = b/n_intervals
   

@@ -1,6 +1,7 @@
 #include "variogramfit.hpp"
 #include <cmath>
 #include <iostream>
+#include <cfloat>
 
 using namespace cd;
 using namespace LBFGSpp;
@@ -82,18 +83,20 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
     {
         truegamma[h] = gammaiso(params, x->operator[](h), y->operator[](h));
     }
+    
     for (unsigned int i=0; i<params.size(); ++i)
     {
         vector paramsdeltaplus(params);
         vector paramsdeltaminus(params);
 
-        double increment = 1e-6;
+        double increment = 10e-6*params[i];
 
         paramsdeltaplus[i] += increment;
         paramsdeltaminus[i] -= increment;
 
         grad[i] = (funzionedaottimizzare::operator()(paramsdeltaplus) - funzionedaottimizzare::operator()(paramsdeltaminus))/(2*increment);
     }
+    
     vector empiricgamma = empiricvariogram->col(x0);
     return w.transpose() * (truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma);
 }
