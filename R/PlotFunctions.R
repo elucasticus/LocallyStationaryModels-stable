@@ -25,8 +25,8 @@ plot.lsm<-function(model, a, y, d)
   parameters<-as.data.frame(parameters)
   colnames(parameters)<-c("lambda1", "lambda2", "phi", "sigma")
   
-  newpos<-cbind(newpoints, parameters)
-  allpoints<-rbind(g, newpos)
+  allpoints<-cbind(newpoints, parameters)
+  #allpoints<-rbind(g, newpos)
   
   ###DATI INIZIALI
   dd <- as.data.frame(d)
