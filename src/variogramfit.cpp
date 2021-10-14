@@ -149,7 +149,15 @@ vector opt::findonesolution(const unsigned int pos) const
     cd::vector x(initialparameters);
     // x will be overwritten to be the best point found
     double fx;
-    /*int niter = */solver.minimize(fun, x, fx, lb, ub);
+
+    try
+    {
+        /*int niter = */solver.minimize(fun, x, fx, lb, ub);
+    } catch (std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+        x = initialparameters;
+    }
 
     return x;
 }
