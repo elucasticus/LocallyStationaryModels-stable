@@ -41,12 +41,25 @@ cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scala
     return sigma * sigma * std::pow(2*std::sqrt(nu)*h, nu)*std::cyl_bessel_k(nu, 2*std::sqrt(nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1));
 }
 
+cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+{
+    double lambda1 = params[0];
+    double lambda2 = params[1];
+    double phi = params[2];
+    double sigma = params[3];
+    
+    scalar h = compute_anisotropic_h(lambda1, lambda2, phi, x, y);
+    return sigma * sigma * (1 - exp(-h*h));
+}
+
 
 cd::variogramfunction make_variogramiso(const std::string &id)
 {
     if(id == "exponential" || id == "esponenziale")
         return exponential;
     if(id == "matern" || id == "Matern")
+        return matern;
+    if(id == "gaussian" || id == "Gaussian")
         return matern;
     return exponential;
 }
@@ -165,7 +178,7 @@ vector opt::findonesolution(const unsigned int pos) const
 
 void opt::findsomesolutions(const vectorind &pos)
 {    
-    //#pragma omp parallel for  RIMUOVERE IL COMMENTO FA CRASHARE R
+    #pragma omp parallel for  //RIMUOVERE IL COMMENTO FA CRASHARE R
     for (unsigned int i = 0; i < pos.size(); ++i)
     {
         vector sol = findonesolution(pos[i]);
@@ -178,7 +191,7 @@ void opt::findsomesolutions(const vectorind &pos)
 
 void opt::findallsolutions()
 {
-    //#pragma omp parallel for RIMUOVERE IL COMMENTO FA CRASHARE R
+    #pragma omp parallel for //RIMUOVERE IL COMMENTO FA CRASHARE R
     for (unsigned int i=0; i<empiricvariogram->cols(); ++i)
     {
         vector sol = findonesolution(i);
