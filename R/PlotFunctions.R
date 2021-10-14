@@ -36,28 +36,33 @@ plot.lsm<-function(model, a, y, d)
   
   par(ask=TRUE)
   p <- ggplot(dd, aes(x=V1, y=V2, size=y)) + geom_point() + labs(x="X", y="Y")
+  p <- p + labs(title = "Bubble plot of the initial data", fontface = 'bold') + theme_light()
   print(p)
   
   
   ###ELLISSI
-  p <- ggplot(g, aes(x=X, y=Y)) + geom_ellipse(aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = g) + coord_fixed()
+  p <- ggplot(g, aes(x=X, y=Y)) + geom_ellipse(aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = g) + coord_fixed() + theme_light()
   print(p)
   
   ###PARAMETERS
-  p1 <- ggplot(allpoints, aes(x=X, y=Y, color=lambda1)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  p2 <- ggplot(allpoints, aes(x=X, y=Y, color=lambda2)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  p3 <- ggplot(allpoints, aes(x=X, y=Y, color=phi)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  p4 <- ggplot(allpoints, aes(x=X, y=Y, color=sigma)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  print(plot_grid(p1,p2,p3,p4,labels="AUTO"))
+  p1 <- ggplot(allpoints, aes(x=X, y=Y, color=lambda1)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
+  p2 <- ggplot(allpoints, aes(x=X, y=Y, color=lambda2)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
+  p3 <- ggplot(allpoints, aes(x=X, y=Y, color=phi)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
+  p4 <- ggplot(allpoints, aes(x=X, y=Y, color=sigma)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
+  title <- ggdraw() + draw_label("Parameters", fontface='bold')
+  p <- plot_grid(p1,p2,p3,p4)
+  print(plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
   
   ###FUNCTION VALUES
   predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2])
   means <- ggplot(allpoints, aes(x=X, y=Y, color=predictedvalues$predictedmean)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
   ys <- ggplot(allpoints, aes(x=X, y=Y, color=predictedvalues$ypredicted)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  means<-means+labs(color="mean")
-  ys<-ys+labs(color="y")
-  print(plot_grid(means, ys,labels="AUTO"))
+  means<-means+labs(color="mean") + theme_light()
+  ys<-ys+labs(color="f(*)") + theme_light()
+  title <- ggdraw() + draw_label("Predicted mean and f(*)", fontface='bold')
+  p <- plot_grid(means, ys)
+  print(plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
   return(allpoints)
 }
