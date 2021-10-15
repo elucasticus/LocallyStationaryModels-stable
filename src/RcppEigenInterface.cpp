@@ -32,7 +32,9 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
                               Rcpp::Named("mean.x")=*(samplevar_.get_x()),
                               Rcpp::Named("mean.y")=*(samplevar_.get_y()),
                               Rcpp::Named("squaredweigths")=*(samplevar_.get_squaredweights()),
-                              Rcpp::Named("empiricvariogram")=*(samplevar_.get_variogram())
+                              Rcpp::Named("empiricvariogram")=*(samplevar_.get_variogram()),
+                              Rcpp::Named("anchorpoints")=anchorpoints,
+                              Rcpp::Named("epsilon")=epsilon
                               );
 }
 
