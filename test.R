@@ -24,5 +24,6 @@ solu<-findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredwe
 mypoints<-plot.lsm(solu,a,y,d)
 
 ###IN ALTERNATIVA (DA SISTEMARE)
-vario<-variogramlsm(y,d,a$anchorpoints,500,8,8,"gaussian")
-solu<-findsolutions.lsm(vario, "gaussian", c(200,200,0.01,100))
+vario<-variogramlsm(y,d,a$anchorpoints,350,8,8,"gaussian")
+solu<-findsolutions.lsm(vario, "esponenziale", c(200,200,0.01,100))
+previsions <- predict.lsm(solu, d, y, d, TRUE)
