@@ -41,7 +41,10 @@ plot.lsm<-function(model, a, y, d)
   
   
   ###ELLISSI
-  p <- ggplot(g, aes(x=X, y=Y)) + geom_ellipse(aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = g) + coord_fixed() + theme_light()
+  ellissi<-g
+  ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/a$width)
+  ellissi$lambda1 <- a$width
+  p <- ggplot(ellissi, aes(x=X, y=Y)) + geom_ellipse(aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = ellissi) + coord_fixed() + theme_light()
   print(p)
   
   ###PARAMETERS

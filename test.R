@@ -9,6 +9,7 @@ k<-meuse$cadmium
 a<-find_anchorpoints(d,40)
 
 r<-rawmodel(k,d,a$anchorpoints,c(200,200,0.01,100),350,8,8,"gaussian","esponenziale")
+x11(height = 600, width = 800, ypos = -100, xpos = -100)
 mmypoints <- plot.lsm(r,a,k,d)
 
 
