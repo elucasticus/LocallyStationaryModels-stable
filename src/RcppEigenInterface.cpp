@@ -62,7 +62,9 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
 
     return Rcpp::List::create(Rcpp::Named("solutions")=*(opt_.get_solutions()),
-                              Rcpp::Named("delta")=delta_ottimale
+                              Rcpp::Named("delta")=delta_ottimale,
+                              Rcpp::Named("epsilon")=epsilon,
+                              Rcpp::Named("anchorpoints")=anchorpoints
                               );    
 }
 

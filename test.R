@@ -21,3 +21,4 @@ plotvario(8,8,griglia$empiricvariogram,5,500)
 ###IN ALTERNATIVA
 vario<-variogramlsm(y,d,a$anchorpoints,500,8,8,"gaussian")
 solu<-findsolutionslsm(a$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, "esponenziale", c(200,200,0.01,100),350)
+plot.lsm(solu,a,y,d)
