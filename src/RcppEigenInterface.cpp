@@ -10,6 +10,68 @@ using namespace std::chrono;
 // [[Rcpp::depends(RcppEigen)]]
 
 // [[Rcpp::export]]
+Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
+    const unsigned int& n_intervals, const std::string &kernel_id) {
+    
+    auto start = high_resolution_clock::now();
+  
+    matrixptr dd = std::make_shared<matrix>(d);
+    vectorptr yy = std::make_shared<vector>(y);
+    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+
+    samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon);
+    samplevar_.build_samplevar(dd, anchorpointsptr, yy);
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    
+    Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
+
+    return Rcpp::List::create(Rcpp::Named("kernel")=*(samplevar_.get_kernel()),
+                              Rcpp::Named("grid")=*(samplevar_.get_grid()),
+                              Rcpp::Named("mean.x")=*(samplevar_.get_x()),
+                              Rcpp::Named("mean.y")=*(samplevar_.get_y()),
+                              Rcpp::Named("squaredweigths")=*(samplevar_.get_squaredweights()),
+                              Rcpp::Named("empiricvariogram")=*(samplevar_.get_variogram())
+                              );
+}
+
+
+//[[Rcpp::export]]
+Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
+    const Eigen::VectorXd &parameters, const double &epsilon) {
+    
+    auto start = high_resolution_clock::now();
+  
+    matrixptr empiricvariogramptr = std::make_shared<matrix>(empiricvariogram);
+    matrixptr squaredweightsptr = std::make_shared<matrix>(squaredweights);
+    vectorptr xptr = std::make_shared<vector>(x);
+    vectorptr yptr = std::make_shared<vector>(y);
+    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+    
+    opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters);
+    opt_.findallsolutions();
+
+    smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon/2);
+
+    double delta_ottimale = smt_.get_optimal_delta();
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    
+    Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
+
+    return Rcpp::List::create(Rcpp::Named("solutions")=*(opt_.get_solutions()),
+                              Rcpp::Named("delta")=delta_ottimale
+                              );    
+}
+
+
+///---------------///
+/// OLD FUNCTIONS ///
+///---------------///
+
+// [[Rcpp::export]]
 Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, 
     const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
     auto start = high_resolution_clock::now(); 

@@ -3,22 +3,21 @@ library(ggforce)
 library(cowplot)
 library(sp)           ## Data management
 data(meuse)
-k<-meuse$cadmium
+y<-meuse$cadmium
 
 
 a<-find_anchorpoints(d,40)
 
-r<-rawmodel(k,d,a$anchorpoints,c(200,200,0.01,100),350,8,8,"gaussian","esponenziale")
+r<-rawmodel(y,d,a$anchorpoints,c(200,200,0.01,100),350,8,8,"gaussian","esponenziale")
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
-mmypoints <- plot.lsm(r,a,k,d)
+mmypoints <- plot.lsm(r,a,y,d)
 
-
-
-
-
-griglia2<-buildgrid(y,d,a2$anchorpoints,500,8,8,"gaussian")
+griglia2<-buildgrid(y,d,a$anchorpoints,500,8,8,"gaussian")
 plotgrid(d,griglia$grid ,9)
 
 plotvario(8,8,griglia$empiricvariogram,5,500)
 
 
+###IN ALTERNATIVA
+vario<-variogramlsm(y,d,a$anchorpoints,500,8,8,"gaussian")
+solu<-findsolutionslsm(a$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, "esponenziale", c(200,200,0.01,100),350)

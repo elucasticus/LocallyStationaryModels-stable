@@ -1,4 +1,4 @@
 useDynLib(LocallyStationaryModels)
 import(RcppEigen)
 importFrom(Rcpp, evalCpp)
-export("fullmodel","find_anchorpoints","predikt","rawmodel","fullmodelCV","smoothing","plot.lsm","buildgrid","plotgrid","plotvario")
+export("fullmodel","find_anchorpoints","predikt","rawmodel","fullmodelCV","smoothing","plot.lsm","buildgrid","plotgrid","plotvario","variogramlsm","findsolutionslsm")
