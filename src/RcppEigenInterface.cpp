@@ -187,6 +187,7 @@ Rcpp::List rawmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Ei
 Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilonmin, const double& epsilonmax, const unsigned int& nepsilons
                       , const unsigned int& n_angles, 
                      const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
+  Rcpp::Rcout << "WARNING: the execution of this function may require a lot of time, proceed only at your own risk" << std::endl;
   auto start = high_resolution_clock::now(); 
   
   matrixptr dd = std::make_shared<matrix>(d);
