@@ -1,6 +1,18 @@
-findsolutions.lsm<-function(vario, id, initial.position)
+findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
 {
-  return(findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, initial.position,vario$epsilon))
+  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, initial.position,vario$epsilon)
+  if (bool)
+  {
+    for (i in 1:dim(result$solutions)[1])
+    {
+      if (norm((result$solutions[i, ]-initial.position), type="2") < 1e-12)
+      {
+        result$solutions <- result$solutions[-i,]
+        result$anchorpoints <- result$anchorpoints[-i, ]
+      }
+    }
+  }
+  return(result)
 }
 
 predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
