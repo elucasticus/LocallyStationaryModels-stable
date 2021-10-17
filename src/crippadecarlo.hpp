@@ -18,7 +18,7 @@ private:
     double epsilon_ottimale;
     double delta_ottimale;
 
-    xatu xatu_;
+    predictor predictor_;
 
     cd::matrixptr solutions = nullptr;
     cd::matrixptr empvar = nullptr;

@@ -8,7 +8,7 @@
 /**
  * \brief class to perform kriging on the data
 */
-class xatu
+class predictor
 {
 private:
     cd::variogramfunction gammaiso;
@@ -40,11 +40,11 @@ public:
      * \param smt_  the one used to previously smooth the variogram
      * \param b_    the radius of the neighbourhood of the point where to perform kriging
     */
-    xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_);
+    predictor(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_);
     /**
      * \brief gammaiso set by default to exponential
     */
-    xatu();
+    predictor();
 
     /**
      * \brief predict the mean value of Y in position pos

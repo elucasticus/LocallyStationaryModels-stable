@@ -24,7 +24,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
 
     delta_ottimale = smt_.get_optimal_delta();
 
-    xatu_ = xatu(variogram_id, y, smt_, epsilon, d);
+    predictor_ = predictor(variogram_id, y, smt_, epsilon, d);
 }
 
 crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::matrixptr anchorpoints_, const double epsilon, const double delta, const cd::matrixptr &solutions_, 
@@ -32,7 +32,7 @@ crippadecarlo::crippadecarlo(const cd::matrixptr &d_, const cd::vectorptr &y_, c
     d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon), delta_ottimale(delta)
 {
     smt smt_(solutions_, anchorpoints, delta_ottimale);
-    xatu_ = xatu(variogram_id, y, smt_, epsilon, d);
+    predictor_ = predictor(variogram_id, y, smt_, epsilon, d);
 }
 
 
@@ -95,7 +95,7 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
     
     delta_ottimale = smt_.get_optimal_delta();
     
-    xatu_ = xatu(variogram_id, y, smt_, epsilon_ottimale, d);
+    predictor_ = predictor(variogram_id, y, smt_, epsilon_ottimale, d);
 }
 
 
@@ -104,12 +104,12 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
 
 double crippadecarlo::predict_mean(const cd::vector &pos) const
 {
-    return xatu_.predict_mean(pos);
+    return predictor_.predict_mean(pos);
 }
 
 double crippadecarlo::predict_y(const cd::vector &pos) const
 {
-    return xatu_.predict_y(pos);
+    return predictor_.predict_y(pos);
 }
 
 double crippadecarlo::get_epsilon() const
@@ -145,10 +145,10 @@ const cd::matrixIptr crippadecarlo::get_grid() const
 
 cd::vector crippadecarlo::predict_means(const cd::matrix &pos) const
 {
-    return xatu_.predict_means(pos);
+    return predictor_.predict_means(pos);
 }
 
 cd::vector crippadecarlo::predict_ys(const cd::matrix &pos) const
 {
-    return xatu_.predict_ys(pos);
+    return predictor_.predict_ys(pos);
 }

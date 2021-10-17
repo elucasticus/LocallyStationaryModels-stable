@@ -2,7 +2,7 @@
 
 using namespace cd;
 
-vectorind xatu::build_neighbourhood(const cd::vector &pos) const
+vectorind predictor::build_neighbourhood(const cd::vector &pos) const
 {
     vectorind n;
 
@@ -19,7 +19,7 @@ vectorind xatu::build_neighbourhood(const cd::vector &pos) const
 }
 
 
-vectorind xatu::build_neighbourhood(const unsigned int &pos) const
+vectorind predictor::build_neighbourhood(const unsigned int &pos) const
 {
     vectorind n;
 
@@ -35,7 +35,7 @@ vectorind xatu::build_neighbourhood(const unsigned int &pos) const
 }
 
 
-cd::vector xatu::build_eta(cd::vector &params, vectorind &neighbourhood) const
+cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) const
 {
     unsigned int n = neighbourhood.size();
     matrix gamma(n,n);
@@ -62,7 +62,7 @@ cd::vector xatu::build_eta(cd::vector &params, vectorind &neighbourhood) const
 }
 
 
-double xatu::predict_mean(const cd::vector &pos) const
+double predictor::predict_mean(const cd::vector &pos) const
 {
     cd::vector params = smt_.smooth_vector(pos);
 
@@ -81,7 +81,7 @@ double xatu::predict_mean(const cd::vector &pos) const
 }
 
 
-double xatu::predict_mean(const unsigned int &pos) const
+double predictor::predict_mean(const unsigned int &pos) const
 {
     cd::vector params = smt_.smooth_vector(d->row(pos));
 
@@ -101,7 +101,7 @@ double xatu::predict_mean(const unsigned int &pos) const
 
 
 
-double xatu::predict_y(const cd::vector &pos) const
+double predictor::predict_y(const cd::vector &pos) const
 {
     double m0 = predict_mean(pos);
     double result = m0;
@@ -121,7 +121,7 @@ double xatu::predict_y(const cd::vector &pos) const
 }
 
 
-xatu::xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(smt__), b(b_), d(d_) 
+predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(smt__), b(b_), d(d_) 
 {
     means = std::make_shared<vector>(y_->size());
     #pragma omp parallel for
@@ -129,9 +129,9 @@ xatu::xatu(const std::string &id, const cd::vectorptr &y_, const smt &smt__, con
         means->operator()(i) = predict_mean(i);
 };
 
-xatu::xatu(): gammaiso(make_variogramiso("esponenziale")) {}
+predictor::predictor(): gammaiso(make_variogramiso("esponenziale")) {}
 
-cd::vector xatu::predict_means(const cd::matrix &pos) const
+cd::vector predictor::predict_means(const cd::matrix &pos) const
 {
     vector result(pos.rows());
     #pragma omp parallel for
@@ -140,7 +140,7 @@ cd::vector xatu::predict_means(const cd::matrix &pos) const
     return result;
 }
 
-cd::vector xatu::predict_ys(const cd::matrix &pos) const
+cd::vector predictor::predict_ys(const cd::matrix &pos) const
 {
     vector result(pos.rows());
     #pragma omp parallel for
