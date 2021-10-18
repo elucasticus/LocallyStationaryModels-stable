@@ -31,6 +31,8 @@ private:
      * \param neighbourhood     a "neighbourhood" vector build with the previous functions
     */
     cd::vector build_eta(cd::vector &params, cd::vectorind &neighbourhood) const;
+    cd::vector build_etakriging(const cd::vector &params,const cd::vector &pos) const;
+    
 
 public:
     /**

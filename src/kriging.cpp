@@ -1,5 +1,6 @@
 #include "kriging.hpp"
 
+
 using namespace cd;
 
 vectorind predictor::build_neighbourhood(const cd::vector &pos) const
@@ -27,7 +28,7 @@ vectorind predictor::build_neighbourhood(const unsigned int &pos) const
     for (unsigned int i=0; i< d->rows(); ++i)
     {
         #pragma omp critical
-        if ((d->row(pos) - d->row(i)).norm() < b && pos != i)
+        if ((d->row(pos) - d->row(i)).norm() < b)
             n.push_back(i);
     }
 
@@ -59,6 +60,40 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
     vector eta = (gamma * ones) / denominator;
 
     return eta;
+}
+
+cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
+{
+    
+    unsigned int n = d->rows();
+    
+    vector etakriging(n);
+    vector C0(n);
+    matrix correlationmatrix(n,n);
+    double sigma2 = params[3]*params[3];
+    
+    for (unsigned int i=0; i<n; ++i)
+    {
+       for (unsigned int j=0; j<n; ++j)
+        {
+            cd::vector s = d->row(i) - d->row(j);
+            correlationmatrix(i, j) = sigma2-gammaiso(params, s[0], s[1]);
+        }
+    }
+    
+    
+    for (unsigned int i=0; i<n; ++i)
+    {
+    cd::vector s0 = d->row(i) - pos;
+    C0(i) = sigma2-gammaiso(params, s0[0], s0[1]);
+    }
+    
+    etakriging = correlationmatrix.inverse()*C0;
+    
+    //double krigingvariance = params(3) - C0.transpose()*etakriging;
+    return etakriging;
+    
+    
 }
 
 
@@ -103,19 +138,16 @@ double predictor::predict_mean(const unsigned int &pos) const
 
 double predictor::predict_y(const cd::vector &pos) const
 {
+    unsigned int n=d->rows();
     double m0 = predict_mean(pos);
     double result = m0;
 
-    vectorind neighbourhood = build_neighbourhood(pos);
-    unsigned int n = neighbourhood.size();
-
     cd::vector params = smt_.smooth_vector(pos);
 
-    vector eta(build_eta(params, neighbourhood));
+    vector etakriging(build_etakriging(params, pos));
 
-    #pragma omp parallel for reduction(+:result)
     for (unsigned int i=0; i<n; ++i)
-        result += eta(i) * (y->operator()(neighbourhood[i]) - means->operator()(neighbourhood[i]));
+        result += etakriging(i)*(y->operator()(i)-means->operator()(i)); //sistemare predict mean 
     
     return result;
 }

@@ -1,20 +1,20 @@
 #include "variogramfit.hpp"
 #include <cmath>
-#include <iostream>
 #include <cfloat>
+#include <iostream>
 
 using namespace cd;
 using namespace LBFGSpp;
 
 cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y)
 {
-    scalar xx = x * x;
-    scalar yy = y * y;
-    scalar xy = x * y;
 
-    return sqrt((lambda2 * lambda2 * xx * cos(phi) * cos(phi) + lambda1 * lambda1 * yy * cos(phi) * cos(phi)
-    + lambda1 * lambda1 * xx * sin(phi) * sin(phi) + lambda2 * lambda2 * yy * sin(phi) * sin(phi)
-    + lambda1 * lambda1 * xy * sin(2 * phi) - lambda2 * lambda2 * xy * sin(2 * phi)) / (lambda1 * lambda1 * lambda2 * lambda2));
+    return sqrt( x*(x*(cos(phi)*cos(phi)/lambda1*lambda1 + sin(phi)*sin(phi)/lambda2*lambda2)
+                        - y*((cos(phi)*sin(phi))/lambda1*lambda1
+                                 - (cos(phi)*sin(phi))/lambda2*lambda2))
+                                 + y*(y*(cos(phi)*cos(phi)/lambda2*lambda2 + sin(phi)*sin(phi)/lambda1*lambda1)
+                                 - x*((cos(phi)*sin(phi))/lambda1*lambda1
+                                 - (cos(phi)*sin(phi))/lambda2*lambda2)));
 }
 
 
