@@ -12,14 +12,14 @@ dnew=(d[!(d[,1]>180000&d[,2]<330500),])
 ynew=y[!(d[,1]>180000&d[,2]<330500)]
 a<-find_anchorpoints(dnew,10)
 
-r<-rawmodel(ynew,dnew,a$anchorpoints,c(300,600,0.51,4),350,8,8,"gaussian","esponenziale")
+r<-rawmodel(ynew,dnew,a$anchorpoints,c(300,300,0.01,10),290,8,8,"gaussian","esponenziale")
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
 mypoints <- plot.lsm(r,a,ynew,dnew)
 
 griglia2<-buildgrid(y,d,a$anchorpoints,500,8,8,"gaussian")
-plotgrid(d,griglia$grid ,9)
+plotgrid(d,griglia2$grid ,9)
 
-plotvario(8,8,griglia$empiricvariogram,5,500)
+plotvario(8,8,griglia2$empiricvariogram,5,350)
 
 
 ###IN ALTERNATIVA
@@ -29,6 +29,6 @@ mypoints<-plot.lsm(solu,a,y,d)
 
 
 ###IN ALTERNATIVA (DA SISTEMARE)
-vario<-variogramlsm(ynew,dnew,a$anchorpoints,320,8,8,"gaussian")
+vario<-variogramlsm(ynew,dnew,a$anchorpoints,390,8,8,"gaussian")
 solu<-findsolutions.lsm(vario, "esponenziale", c(5000,6000,0.51,100))
 previsions <- predict.lsm(solu, dnew, ynew, dnew)
