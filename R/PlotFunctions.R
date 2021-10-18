@@ -44,8 +44,10 @@ plot.lsm<-function(model, a, y, d)
   ellissi<-g
   ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/a$width)
   ellissi$lambda1 <- a$width
-  p <- ggplot(ellissi, aes(x=X, y=Y)) + geom_ellipse(aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = ellissi) + coord_fixed() + theme_light()
-  print(p)
+  p1 <- ggplot(ellissi, aes(x=X, y=Y)) + geom_ellipse(aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = ellissi) + coord_fixed() + theme_light()
+  p2 <- ggplot(ellissi, aes(x=X, y=Y)) + geom_segment(aes(x=X, y=Y, xend=X+lambda1*cos(phi), yend=Y+lambda1*sin(phi)), arrow = arrow(length = unit(2, "mm")), data = ellissi)
+  p2 <- p2 + geom_segment(aes(x=X, y=Y, xend=X-lambda1*cos(phi), yend=Y-lambda1*sin(phi)), arrow = arrow(length = unit(2, "mm")), data = ellissi) + coord_fixed() + theme_light()
+  print(plot_grid(p1, p2))
   
   ###PARAMETERS
   p1 <- ggplot(allpoints, aes(x=X, y=Y, color=lambda1)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()

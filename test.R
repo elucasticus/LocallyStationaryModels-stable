@@ -10,9 +10,9 @@ y<-meuse$cadmium
 
 dnew=(d[!(d[,1]>180000&d[,2]<330500),])
 ynew=y[!(d[,1]>180000&d[,2]<330500)]
-a<-find_anchorpoints(dnew,10)
+a<-find_anchorpoints(dnew,30)
 
-r<-rawmodel(ynew,dnew,a$anchorpoints,c(300,300,0.01,10),290,8,8,"gaussian","esponenziale")
+r<-rawmodel(ynew,dnew,a$anchorpoints,c(200,200,0.01,100),350,8,8,"gaussian","esponenziale")
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
 mypoints <- plot.lsm(r,a,ynew,dnew)
 
