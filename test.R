@@ -25,10 +25,10 @@ plotvario(8,8,griglia2$empiricvariogram,5,350)
 ###IN ALTERNATIVA
 vario<-variogramlsm(y,d,a$anchorpoints,350,8,8,"gaussian")
 solu<-findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, "esponenziale", c(200,200,0.01,100),vario$epsilon)
-mypoints<-plot.lsm(solu,a,y,d)
+mypoints<-plot.lsm(solu,a,ynew,dnew)
 
 
 ###IN ALTERNATIVA (DA SISTEMARE)
-vario<-variogramlsm(ynew,dnew,a$anchorpoints,350,8,8,"gaussian")
-solu<-findsolutions.lsm(vario, "esponenziale", c(200,200,0.51,100))
+vario<-variogramlsm(ynew,dnew,a$anchorpoints,300,8,8,"gaussian")
+solu<-findsolutions.lsm(vario, "esponenziale", c(200,200,0.01,100))
 previsions <- predict.lsm(solu, dnew, ynew, dnew)

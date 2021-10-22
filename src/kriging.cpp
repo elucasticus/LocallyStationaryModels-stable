@@ -23,12 +23,14 @@ vectorind predictor::build_neighbourhood(const cd::vector &pos) const
 vectorind predictor::build_neighbourhood(const unsigned int &pos) const
 {
     vectorind n;
+    const vector &pospos = d->row(pos);
 
     #pragma omp parallel for
     for (unsigned int i=0; i< d->rows(); ++i)
     {
+        const vector &posi =  d->row(i);
         #pragma omp critical
-        if ((d->row(pos) - d->row(i)).norm() < b)
+        if ((pospos - posi).norm() < b)
             n.push_back(i);
     }
 
