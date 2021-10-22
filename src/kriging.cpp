@@ -46,7 +46,9 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
     {
         for (unsigned int j=0; j<n; ++j)
         {
-            cd::vector s = d->row(i) - d->row(j);
+            const vector &posi = d->row(i);
+            const vector &posj = d->row(j);
+            cd::vector s = posi - posj;
             gamma(i, j) = gammaiso(params, s[0], s[1]);
         }
     }
@@ -76,7 +78,9 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
     {
        for (unsigned int j=0; j<n; ++j)
         {
-            cd::vector s = d->row(i) - d->row(j);
+            const vector &posi = d->row(i);
+            const vector &posj = d->row(j);
+            cd::vector s = posi - posj;
             correlationmatrix(i, j) = sigma2-gammaiso(params, s[0], s[1]);
         }
     }
@@ -84,8 +88,9 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
     
     for (unsigned int i=0; i<n; ++i)
     {
-    cd::vector s0 = d->row(i) - pos;
-    C0(i) = sigma2-gammaiso(params, s0[0], s0[1]);
+        const vector &posi = d->row(i);
+        cd::vector s0 = posi - pos;
+        C0(i) = sigma2-gammaiso(params, s0[0], s0[1]);
     }
     
     etakriging = correlationmatrix.inverse()*C0;

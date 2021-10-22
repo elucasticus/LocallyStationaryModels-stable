@@ -29,6 +29,6 @@ mypoints<-plot.lsm(solu,a,y,d)
 
 
 ###IN ALTERNATIVA (DA SISTEMARE)
-vario<-variogramlsm(ynew,dnew,a$anchorpoints,390,8,8,"gaussian")
-solu<-findsolutions.lsm(vario, "esponenziale", c(5000,6000,0.51,100))
+vario<-variogramlsm(ynew,dnew,a$anchorpoints,350,8,8,"gaussian")
+solu<-findsolutions.lsm(vario, "esponenziale", c(200,200,0.51,100))
 previsions <- predict.lsm(solu, dnew, ynew, dnew)
