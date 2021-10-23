@@ -7,11 +7,9 @@ vectorind predictor::build_neighbourhood(const cd::vector &pos) const
 {
     vectorind n;
 
-    #pragma omp parallel for
     for (unsigned int i=0; i< d->rows(); ++i)
     {
         vector datapos = d->row(i);
-        #pragma omp critical
         if ((pos - datapos).norm() < b)
             n.push_back(i);
     }
@@ -25,11 +23,9 @@ vectorind predictor::build_neighbourhood(const unsigned int &pos) const
     vectorind n;
     const vector &pospos = d->row(pos);
 
-    #pragma omp parallel for
     for (unsigned int i=0; i< d->rows(); ++i)
     {
         const vector &posi =  d->row(i);
-        #pragma omp critical
         if ((pospos - posi).norm() < b)
             n.push_back(i);
     }
@@ -68,7 +64,6 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 
 cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
 {
-    
     unsigned int n = d->rows();
     
     vector etakriging(n);
@@ -76,21 +71,16 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
     matrix correlationmatrix(n,n);
     double sigma2 = params[3]*params[3];
     
+    #pragma omp parallel for
     for (unsigned int i=0; i<n; ++i)
     {
-       for (unsigned int j=0; j<n; ++j)
+        const vector &posi = d->row(i);
+        for (unsigned int j=0; j<n; ++j)
         {
-            const vector &posi = d->row(i);
             const vector &posj = d->row(j);
             cd::vector s = posi - posj;
             correlationmatrix(i, j) = sigma2-gammaiso(params, s[0], s[1]);
         }
-    }
-    
-    
-    for (unsigned int i=0; i<n; ++i)
-    {
-        const vector &posi = d->row(i);
         cd::vector s0 = posi - pos;
         C0(i) = sigma2-gammaiso(params, s0[0], s0[1]);
     }
@@ -99,8 +89,6 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
     
     //double krigingvariance = params(3) - C0.transpose()*etakriging;
     return etakriging;
-    
-    
 }
 
 
@@ -153,6 +141,7 @@ double predictor::predict_y(const cd::vector &pos) const
 
     vector etakriging(build_etakriging(params, pos));
 
+    #pragma omp parallel for reduction(+:result)
     for (unsigned int i=0; i<n; ++i)
         result += etakriging(i)*(y->operator()(i)-means->operator()(i)); //sistemare predict mean 
     
