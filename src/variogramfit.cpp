@@ -77,7 +77,6 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
     vector w = squaredweights->row(x0);
     vector truegamma(empiricvariogram->rows());
 
-    #pragma omp parallel for
     for (unsigned int h = 0; h < truegamma.size(); ++h)
     {
         truegamma[h] = gammaiso(params, x->operator[](h), y->operator[](h));
@@ -91,7 +90,6 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
     vector w = squaredweights->row(x0);
     vector truegamma(empiricvariogram->rows());
 
-    #pragma omp parallel for
     for (unsigned int h = 0; h < truegamma.size(); ++h)
     {
         truegamma[h] = gammaiso(params, x->operator[](h), y->operator[](h));
