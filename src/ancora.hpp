@@ -5,6 +5,9 @@
 #include <vector>
 #include <algorithm>
 
+/**
+ * \brief   a simple class to find the anchorpoints given the data
+*/
 class ancora
 {
 private:

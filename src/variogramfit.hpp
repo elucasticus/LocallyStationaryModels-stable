@@ -19,6 +19,8 @@ cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::
 
 cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
 
+cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
+
 /**
  * \brief allows to select between different functions for the variogram
  * \param id    the name of your favourite variogram

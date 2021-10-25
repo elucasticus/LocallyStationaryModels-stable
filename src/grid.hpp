@@ -4,23 +4,24 @@
 #include "traits.hpp"
 
 /**
- * \brief these function build a 2D-grid using a "a fette di pizza" (slices-of-pizza like) algorithm to partition the domain
- * \param d     a shared pointer to the matrix of the coordinates
- * \param h     a integer number proportional to the number of the slices
- * it is highly suggeted to use this partition instead of the "a-cubotti" one
+ * \brief               this function builds a 2D-grid using a "a fette di pizza" (slices-of-pizza like) algorithm to partition the domain
+ * \param d             a shared pointer to the matrix of the coordinates
+ * \param n_angles      number of slices of the pizza
+ * \param n_intervals   number of the pieces for each slice of the pizza
+ * \param epsilon       the same epsilon regulating the kernel
 */
 cd::matrixIptr Pizza(const cd::matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon);
 
 
 /**
- * \brief allow to select between the preferred method to build the grid
+ * \brief       allow to select between the preferred method to build the grid
  * \param id	name of the function of choice
 */
 cd::gridfunction make_grid(const std::string &id);
 
 
 /**
- * \brief the two-dimensional version of the grid class
+ * \brief   two-dimensional version of the grid class
 */
 class grid
 {
@@ -33,27 +34,29 @@ private:
     double epsilon;
 
     /**
-     * \brief a "helper" function to build the vector containing the position of the centers of the cells of the grid
+     * \brief           a "helper" function to build the vector containing the position of the centers of the cells of the grid
      * \param data      a shared pointer to the matrix of the coordinates
     */
     void build_normh(const cd::matrixptr &data);
 
 public:
     /**
-	 * \brief constructor
-	 * \param id 	name of the grid function
+	 * \brief           constructor
+	 * \param id 	    name of the grid function
+     * \param epsilon   the same epsilon regulating the kernel
 	*/
 	grid(const std::string &id, const double epsilon_);
 
     /**
-     * \brief use the Pizza style by default
+     * \brief   use the Pizza style by default
     */
     grid();
 
     /**
-     * \brief build the grid
-     * \param d     a shared pointer to the matrix of the coordinates
-     * \param h     a integer number proportional to the number of cells of the grid
+     * \brief               build the grid
+     * \param d             a shared pointer to the matrix of the coordinates
+     * \param n_angles      number of slices of the pizza
+     * \param n_intervals   number of the pieces for each slice of the pizza
     */
     void build_grid(const cd::matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals);
 

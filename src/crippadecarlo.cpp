@@ -104,12 +104,12 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
 
 double crippadecarlo::predict_mean(const cd::vector &pos) const
 {
-    return predictor_.predict_mean(pos);
+    return predictor_.predict_mean<cd::vector, double>(pos);
 }
 
 double crippadecarlo::predict_y(const cd::vector &pos) const
 {
-    return predictor_.predict_y(pos);
+    return predictor_.predict_y<cd::vector, double>(pos);
 }
 
 double crippadecarlo::get_epsilon() const
@@ -145,10 +145,10 @@ const cd::matrixIptr crippadecarlo::get_grid() const
 
 cd::vector crippadecarlo::predict_means(const cd::matrix &pos) const
 {
-    return predictor_.predict_means(pos);
+    return predictor_.predict_mean<cd::matrix, cd::vector>(pos);
 }
 
 cd::vector crippadecarlo::predict_ys(const cd::matrix &pos) const
 {
-    return predictor_.predict_ys(pos);
+    return predictor_.predict_y<cd::matrix, cd::vector>(pos);
 }

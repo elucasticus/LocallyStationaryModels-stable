@@ -92,7 +92,8 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
 }
 
 
-double predictor::predict_mean(const cd::vector &pos) const
+template<>
+double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
 {
     cd::vector params = smt_.smooth_vector(pos);
 
@@ -111,7 +112,8 @@ double predictor::predict_mean(const cd::vector &pos) const
 }
 
 
-double predictor::predict_mean(const unsigned int &pos) const
+template<>
+double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) const
 {
     cd::vector params = smt_.smooth_vector(d->row(pos));
 
@@ -130,11 +132,22 @@ double predictor::predict_mean(const unsigned int &pos) const
 }
 
 
+template<>
+cd::vector predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos) const
+{
+    vector result(pos.rows());
+    #pragma omp parallel for
+    for (size_t i=0; i<pos.rows(); ++i)
+        result(i) = predict_mean<cd::vector, double>(pos.row(i));
+    return result;
+}
 
-double predictor::predict_y(const cd::vector &pos) const
+
+template<>
+double predictor::predict_y<cd::vector, double>(const cd::vector &pos) const
 {
     unsigned int n=d->rows();
-    double m0 = predict_mean(pos);
+    double m0 = predict_mean<cd::vector, double>(pos);
     double result = m0;
 
     cd::vector params = smt_.smooth_vector(pos);
@@ -149,30 +162,23 @@ double predictor::predict_y(const cd::vector &pos) const
 }
 
 
+template<>
+cd::vector predictor::predict_y<cd::matrix, cd::vector>(const cd::matrix &pos) const
+{
+    vector result(pos.rows());
+    #pragma omp parallel for
+    for (size_t i=0; i<pos.rows(); ++i)
+        result(i) = predict_y<cd::vector, double>(pos.row(i));
+    return result;
+}
+
+
 predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(smt__), b(b_), d(d_) 
 {
     means = std::make_shared<vector>(y_->size());
     #pragma omp parallel for
     for (unsigned int i=0; i<means->size(); ++i)
-        means->operator()(i) = predict_mean(i);
+        means->operator()(i) = predict_mean<unsigned int, double>(i);
 };
 
 predictor::predictor(): gammaiso(make_variogramiso("esponenziale")) {}
-
-cd::vector predictor::predict_means(const cd::matrix &pos) const
-{
-    vector result(pos.rows());
-    #pragma omp parallel for
-    for (size_t i=0; i<pos.rows(); ++i)
-        result(i) = predict_mean(pos.row(i));
-    return result;
-}
-
-cd::vector predictor::predict_ys(const cd::matrix &pos) const
-{
-    vector result(pos.rows());
-    #pragma omp parallel for
-    for (size_t i=0; i<pos.rows(); ++i)
-        result(i) = predict_y(pos.row(i));
-    return result;
-}
