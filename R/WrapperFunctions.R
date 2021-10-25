@@ -45,7 +45,7 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
     A <- as.data.frame(result)
     colnames(D) <- c("X", "Y")
     colnames(A) <- c("X", "Y")
-    p <- ggplot(data = D, aes(x=X, y=Y)) + geom_point() + geom_point(data = A, aes(x=X, y=Y, color="red"), shape = 3) + labs(color="anchorpoints") + theme_light() + coord_fixed()
+    p <- ggplot(data = D, aes(x=X, y=Y)) + geom_point() + geom_point(data = A, aes(x=X, y=Y, color="red"), shape = 3) + theme_light() + theme(legend.position = "none") + coord_fixed()
     print(p)
   }
   return(result)
