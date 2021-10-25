@@ -67,7 +67,7 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
             }
 
             crippadecarlo CDi(di, yi, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id);
-            double prediction = CDi.predict_y(d->row(i));
+            double prediction = CDi.predict_y<cd::vector, double>(d->row(i));
             double real = y->operator()(i);
             error += (prediction - real) * (prediction - real);
         }
@@ -100,17 +100,20 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
 
 
 
-
-
-double crippadecarlo::predict_mean(const cd::vector &pos) const
+/*
+template<class Input, class Output>
+Output crippadecarlo::predict_mean(const Input &pos) const
 {
-    return predictor_.predict_mean<cd::vector, double>(pos);
+    return predictor_.predict_mean<Input, Output>(pos);
 }
 
-double crippadecarlo::predict_y(const cd::vector &pos) const
+
+template<class Input, class Output>
+Output crippadecarlo::predict_y(const Input &pos) const
 {
-    return predictor_.predict_y<cd::vector, double>(pos);
+    return predictor_.predict_y<Input, Output>(pos);
 }
+*/
 
 double crippadecarlo::get_epsilon() const
 {
@@ -140,15 +143,4 @@ const cd::matrixptr crippadecarlo::get_kernel() const
 const cd::matrixIptr crippadecarlo::get_grid() const
 {
     return gridptr;
-}
-
-
-cd::vector crippadecarlo::predict_means(const cd::matrix &pos) const
-{
-    return predictor_.predict_mean<cd::matrix, cd::vector>(pos);
-}
-
-cd::vector crippadecarlo::predict_ys(const cd::matrix &pos) const
-{
-    return predictor_.predict_y<cd::matrix, cd::vector>(pos);
 }

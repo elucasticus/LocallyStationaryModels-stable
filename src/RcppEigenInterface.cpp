@@ -98,8 +98,8 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
                               Rcpp::Named("grid")=*(CD.get_grid()),
                               Rcpp::Named("empiricvariogram")=*(CD.get_empiricvariogram()),
                               Rcpp::Named("solutions")=*(CD.get_solutions()),
-                              Rcpp::Named("ypredicted")=CD.predict_ys(anchorpoints),
-                              Rcpp::Named("predictedmean")=CD.predict_means(anchorpoints),
+                              Rcpp::Named("ypredicted")=CD.predict_y<cd::matrix, cd::vector>(anchorpoints),
+                              Rcpp::Named("predictedmean")=CD.predict_mean<cd::matrix, cd::vector>(anchorpoints),
                               Rcpp::Named("delta")=delta,
                               Rcpp::Named("epsilon")=epsilon_);   
 }
@@ -118,8 +118,8 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
 
     crippadecarlo CD(dd, yy, anchorpointsptr, epsilon, delta, solutionsptr, "esponenziale");
     
-    vector predicted_ys(CD.predict_ys(positions));
-    vector predicted_means(CD.predict_means(positions));
+    vector predicted_ys(CD.predict_y<cd::matrix, cd::vector>(positions));
+    vector predicted_means(CD.predict_mean<cd::matrix, cd::vector>(positions));
     
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
@@ -208,8 +208,8 @@ Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const
                             Rcpp::Named("grid")=*(CD.get_grid()),
                             Rcpp::Named("empiricvariogram")=*(CD.get_empiricvariogram()),
                             Rcpp::Named("solutions")=*(CD.get_solutions()),
-                            Rcpp::Named("ypredicted")=CD.predict_ys(anchorpoints),
-                            Rcpp::Named("predictedmean")=CD.predict_means(anchorpoints),
+                            Rcpp::Named("ypredicted")=CD.predict_y<cd::matrix, cd::vector>(anchorpoints),
+                            Rcpp::Named("predictedmean")=CD.predict_mean<cd::matrix, cd::vector>(anchorpoints),
                             Rcpp::Named("delta")=delta,
                             Rcpp::Named("epsilon")=epsilon_);   
 }
