@@ -29,10 +29,10 @@ private:
     
 public:
     /**
-	 * \brief constructor
+	 * \brief               constructor
 	 * \param kernel_id     the name of the function you want to use for the kernel
-     * \param grid_id       the name of the partition you want for the grid
-     * \param h             a parameter proportional to the number of the cells of the grid
+     * \param n_angles      the number of angles to be passed to the grid
+     * \param n_intervals   the number of inervals to be passed to the grid
      * \param epsilon       the parameter regulating the kernel
 	*/
     samplevar(const std::string &kernel_id, const unsigned int &n_angles_, const unsigned int &n_intervals_, const cd::scalar &epsilon);
@@ -43,9 +43,10 @@ public:
     samplevar();
 
     /**
-     * \brief builds the matrix of the empiric variogram
-     * \param dptr  a shared pointer to the matrix of the coordinates
-     * \param yptr  a shared pointer to the vector of the value of Y
+     * \brief                   builds the matrix of the empiric variogram
+     * \param dptr              a shared pointer to the matrix of the coordinates of the original dataset
+     * \param anchorpointsptr   a shared pointer to the matrix of the coordinates of the anchorpoitns 
+     * \param yptr              a shared pointer to the vector of the value of Y
     */
     void build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &yptr);
 
@@ -54,10 +55,8 @@ public:
     const cd::matrixptr get_squaredweights() const;
     const cd::vectorptr get_x() const;
     const cd::vectorptr get_y() const;
-
     const cd::matrixptr get_kernel() const;
     const cd::matrixIptr get_grid() const;
-
     const cd::vectorptr get_normh() const;
 };
 

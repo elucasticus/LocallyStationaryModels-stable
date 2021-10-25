@@ -69,7 +69,6 @@ plot.lsm<-function(model, a, y, d, n_points = 4)
 }
 
 
-
 plotgrid<-function(d,grid,index){
   
   plot(d,xlab="Latitude",ylab="Longitude")
@@ -85,7 +84,6 @@ plotgrid<-function(d,grid,index){
       
     }
   }
-  
 }
 
 
@@ -106,7 +104,4 @@ plotvario<-function(n_angles,n_intervals,empvariogram,pos,epsilon){
       as.character(180*i/n_angles),"\u00B0 )"),
          ylab= paste("Empiric Anisotropic Variogram"))
   }
-  
-  
-  
 }
