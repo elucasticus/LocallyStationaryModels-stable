@@ -6,13 +6,13 @@
 #include <vector>
 
 /**
- * \brief a very simple "helper" function to calculate the value of the parameter "h" needed in different functions
+ * \brief   a very simple "helper" function to calculate the value of the parameter "h" needed in different functions
 */
 cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y);
 
 
 /**
- * \return sigma*sigma*(1-e^-h)
+ * \return  sigma*sigma*(1-e^-h)
 */
 cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
 
@@ -22,7 +22,7 @@ cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scala
 cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
 
 /**
- * \brief allows to select between different functions for the variogram
+ * \brief       allows to select between different functions for the variogram
  * \param id    the name of your favourite variogram
 */
 cd::variogramfunction make_variogramiso(const std::string &id);
@@ -42,7 +42,7 @@ struct funzionedaottimizzare
     cd::variogramfunction gammaiso;
 
     /**
-     * \brief constructor
+     * \brief                       constructor
      * \param empiricvariogram_     a shared pointer to the empiric variogram
      * \param squaredweights_       a shared pointer to the squared weights
      * \param x_                    a shared pointer to the vector of the abscissas of the centers
@@ -79,19 +79,20 @@ private:
     cd::matrixptr solutions = nullptr;
 
     /**
-     * \brief find the optimal solution for the point in position pos
+     * \brief       find the optimal solution for the point in position pos
      * \param pos   the index of the position in which find the optimal solution
     */
     cd::vector findonesolution(const unsigned int pos) const;
 
 public:
     /**
-     * \brief constructor
+     * \brief                       constructor
      * \param empiricvariogram_     a shared pointer to the empiric variogram
      * \param squaredweights_       a shared pointer to the squared weights
      * \param x_                    a shared pointer to the vector of the abscissas of the centers
      * \param y_                    a shared pointer to the vector of the ordinates of the centers
      * \param id                    the name of the variogram of your choice
+     * \param initialparameters_    the initial value of the parameters required from the optimizer to start the search for a minimum
     */
     opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_,
     const std::string &id_, const cd::vector &initialparameters_);
@@ -103,7 +104,7 @@ public:
     //void findsomesolutions(const cd::vectorind &pos);
 
     /**
-     * \brief find the optimal solution in all the position
+     * \brief   find the optimal solution in all the position
     */
     void findallsolutions();
 

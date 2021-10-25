@@ -51,7 +51,7 @@ public:
     smt();
 
     /**
-     * \brief smooth all the parameters for a point in position pos
+     * \brief       smooth all the parameters for a point in position pos
      * \param pos   a vector of coordinates or the index of the position of the point where to find the smoothed value of the parameters
     */
     template<class Input>
