@@ -12,8 +12,10 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
       }
     }
   }
+  class(result) <- "lsm"
   return(result)
 }
+
 
 predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
 {
@@ -31,6 +33,22 @@ predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
     print(plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   }
   return(predictedvalues)
+}
+
+
+find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
+{
+  result <- find_anchorpoints(dataset, n)
+  if (bool)
+  {
+    D <- as.data.frame(dataset)
+    A <- as.data.frame(result)
+    colnames(D) <- c("X", "Y")
+    colnames(A) <- c("X", "Y")
+    p <- ggplot(data = D, aes(x=X, y=Y)) + geom_point() + geom_point(data = A, aes(x=X, y=Y, color="red"), shape = 3) + labs(color="anchorpoints") + theme_light() + coord_fixed()
+    print(p)
+  }
+  return(result)
 }
 
 
