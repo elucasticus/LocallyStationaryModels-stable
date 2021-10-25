@@ -20,7 +20,7 @@ private:
     double optimal_delta = 0;
 
     /**
-     * \brief smooth a single parameter for a point in position pos
+     * \brief       smooth a single parameter for a point in position pos
      * \param pos   a vector of coordinates or the index of the position of the point where to find the smoothed value of the parameter
      * \param n     the index of the parameter to obtain
     */
@@ -54,13 +54,19 @@ public:
      * \brief smooth all the parameters for a point in position pos
      * \param pos   a vector of coordinates or the index of the position of the point where to find the smoothed value of the parameters
     */
-    cd::vector smooth_vector(const unsigned int &pos) const;
-    cd::vector smooth_vector(const cd::vector &pos) const;
+    template<class Input>
+    cd::vector smooth_vector(const Input &pos) const
+    {
+        cd::vector result(solutions->cols());
+        #pragma omp parallel for
+        for (unsigned int i=0; i<solutions->cols(); ++i)
+            result(i) = smooth_value(pos, i);
+
+        return result;
+    };
 
     const cd::matrixptr get_solutions() const;
-
     double get_optimal_delta() const;
-
     const cd::matrixptr get_anchorpos() const;
 };
 

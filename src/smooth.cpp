@@ -81,8 +81,9 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const doub
     kernel_.build_simple_kernel(anchorpos);
 }
 
-
-cd::vector smt::smooth_vector(const unsigned int &pos) const
+/*
+template<class Input>
+cd::vector smt::smooth_vector(const Input &pos) const
 {
     vector result(solutions->cols());
     #pragma omp parallel for
@@ -91,16 +92,8 @@ cd::vector smt::smooth_vector(const unsigned int &pos) const
 
     return result;
 }
+*/
 
-cd::vector smt::smooth_vector(const vector &pos) const
-{
-    vector result(solutions->cols());
-    #pragma omp parallel for
-    for (unsigned int i=0; i<solutions->cols(); ++i)
-        result(i) = smooth_value(pos, i);
-
-    return result;
-}
 
 const cd::matrixptr smt::get_solutions() const
 {
