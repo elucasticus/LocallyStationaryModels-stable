@@ -50,8 +50,7 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigne
 }
 
 
-template<>
-gridfunction make_grid<2>(const std::string &id)
+gridfunction make_grid(const std::string &id)
 {
     return Pizza;
 }
@@ -62,25 +61,25 @@ gridfunction make_grid<2>(const std::string &id)
 /// GRID CLASS
 ///-------------------------------------------------
 
-void grid<2>::build_grid(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals)
+void grid::build_grid(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals)
 {
     g = f(d, n_angles, n_intervals, epsilon);
     build_normh(d);
 }
 
-grid<2>::grid(const std::string &id, const double epsilon_): f(make_grid<2>(id)), epsilon(epsilon_){};
+grid::grid(const std::string &id, const double epsilon_): f(make_grid(id)), epsilon(epsilon_){};
 
-grid<2>::grid(): grid("Pizza",-1.162009e-07) {};
+grid::grid(): grid("Pizza",-1.162009e-07) {};
 
-const matrixIptr grid<2>::get_grid() const {return g;}
+const matrixIptr grid::get_grid() const {return g;}
 
-const vectorptr grid<2>::get_normh() const {return normh;}
+const vectorptr grid::get_normh() const {return normh;}
 
-const vectorptr grid<2>::get_x() const {return x;}
+const vectorptr grid::get_x() const {return x;}
 
-const vectorptr grid<2>::get_y() const {return y;}
+const vectorptr grid::get_y() const {return y;}
 
-void grid<2>::build_normh(const matrixptr &data)
+void grid::build_normh(const matrixptr &data)
 {
     const matrix &d = *(data);
     size_t n = g->rows();

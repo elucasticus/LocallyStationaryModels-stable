@@ -17,7 +17,7 @@ private:
     cd::matrixptr squaredweights = nullptr;
 
     kernel kernel_;
-    grid<2> grid_;
+    grid grid_;
 
     unsigned int n_angles;
     unsigned int n_intervals;

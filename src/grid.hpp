@@ -16,25 +16,13 @@ cd::matrixIptr Pizza(const cd::matrixptr &d, const unsigned int &n_angles, const
  * \brief allow to select between the preferred method to build the grid
  * \param id	name of the function of choice
 */
-template<unsigned int T>
 cd::gridfunction make_grid(const std::string &id);
-template<>
-cd::gridfunction make_grid<2>(const std::string &id);
-
-
-/**
- * \brief a class containing all the info related to the grid
-*/
-template<unsigned int n>
-class grid
-{};
 
 
 /**
  * \brief the two-dimensional version of the grid class
 */
-template<>
-class grid<2>
+class grid
 {
 private:
     cd::gridfunction f;

@@ -16,6 +16,7 @@ y<-meuse$cadmium
 dnew=(d[!(d[,1]>180000&d[,2]<330500),])
 ynew=y[!(d[,1]>180000&d[,2]<330500)]
 
+
 head(dnew)
 head(ynew)
 
