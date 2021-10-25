@@ -28,9 +28,9 @@ class grid
 private:
     cd::gridfunction f;
     cd::matrixIptr g = std::make_shared<cd::matrixI>(0,0);
-    cd::vectorptr normh = std::make_shared<cd::vector>(0);
-    cd::vectorptr x = std::make_shared<cd::vector>(0);
-    cd::vectorptr y = std::make_shared<cd::vector>(0);
+    cd::vectorptr normh = nullptr;
+    cd::vectorptr x = nullptr;
+    cd::vectorptr y = nullptr;
     double epsilon;
 
     /**

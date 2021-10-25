@@ -100,7 +100,7 @@ public:
      * \brief find the optimal solution in different positions
      * \param pos   a vector containing the indeces of all the positions
     */
-    void findsomesolutions(const cd::vectorind &pos);
+    //void findsomesolutions(const cd::vectorind &pos);
 
     /**
      * \brief find the optimal solution in all the position

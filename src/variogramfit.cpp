@@ -66,11 +66,9 @@ cd::variogramfunction make_variogramiso(const std::string &id)
 
 
 
-
-///--------------------------------------------------------------------------
-
-
-
+/**
+ * DECLARAION OF FUNZIONEDAOTTIMIZZARE FUNCTIONS
+*/
 
 cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
 {
@@ -84,6 +82,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
     vector empiricgamma = empiricvariogram->col(x0);
     return w.transpose() * (truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma);
 }
+
 
 cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &grad)
 {
@@ -119,9 +118,9 @@ funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogra
 
 
 
-///--------------------------------------------------------------------------
-
-
+/**
+ * DECLARATIONS OF OPT FUNCTIONS
+*/
 
 opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_, const cd::vector &initialparameters_): 
     empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_), initialparameters(initialparameters_) 
@@ -174,6 +173,7 @@ vector opt::findonesolution(const unsigned int pos) const
 }
 
 
+/*
 void opt::findsomesolutions(const vectorind &pos)
 {    
     #pragma omp parallel for  //RIMUOVERE IL COMMENTO FA CRASHARE R
@@ -186,6 +186,8 @@ void opt::findsomesolutions(const vectorind &pos)
         }
     }
 }
+*/
+
 
 void opt::findallsolutions()
 {
@@ -200,7 +202,5 @@ void opt::findallsolutions()
     }
 }
 
-cd::matrixptr opt::get_solutions() const
-{
-    return solutions;
-}
+
+cd::matrixptr opt::get_solutions() const {return solutions;}

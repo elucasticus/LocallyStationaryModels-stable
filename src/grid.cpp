@@ -85,11 +85,11 @@ void grid::build_normh(const matrixptr &data)
     size_t n = g->rows();
     size_t hh = g->maxCoeff()+1;
 
-    x->resize(hh);
-    y->resize(hh);
-    normh->resize(hh);
+    x = std::make_shared<vector>(vector::Zero(hh));
+    y = std::make_shared<vector>(vector::Zero(hh));
+    normh = std::make_shared<vector>(vector::Zero(hh));
   
-    vector nn = vector::Zero(hh);
+    Eigen::VectorXi nn = Eigen::VectorXi::Zero(hh);
     int k = 0;
 
     for (size_t i = 0; i < n-1 ; ++i)
@@ -110,7 +110,6 @@ void grid::build_normh(const matrixptr &data)
             }
         }
     }
-    #pragma omp parallel for
     for (size_t u = 0; u < hh; ++u) 
     {
         if (nn[u] != 0)

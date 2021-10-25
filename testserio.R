@@ -38,6 +38,7 @@ max(previsions$ypredicted - ynew)
 
 
 
+
 # Test the performace of our model
 n <- sample(1:100, 10)
 dtrain <- dnew[-n, ]
@@ -64,3 +65,20 @@ mypoints<-plot.lsm(solutrain,atrain,ytrain,dtrain)
 # Kriging on the validate dataset
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
 previsionstrain <- predict.lsm(solu, dvalidate, ytrain, dtrain)
+
+
+
+
+
+
+
+
+
+# Build the empiric variogram
+v1<-variogramlsm(ynew,dnew,a$anchorpoints,300,8,8,"gaussian")
+# Find the solutions
+s1<-findsolutions.lsm(v1, "esponenziale", c(200,200,0.01,100))
+# Build the empiric variogram
+v2<-variogramlsm(ynew,dnew,a$anchorpoints,3000,8,8,"gaussian")
+# Find the solutions
+s2<-findsolutions.lsm(v2, "esponenziale", c(200,200,0.01,100))
