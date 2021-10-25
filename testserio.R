@@ -10,7 +10,7 @@ library(sp)           ## Data management
 # Load the data
 data(meuse)
 d <- cbind(meuse$x, meuse$y)
-y<-meuse$cadmium
+y<-meuse$elev
 
 # Delete problematic data points
 dnew=(d[!(d[,1]>180000&d[,2]<330500),])
@@ -23,9 +23,9 @@ head(ynew)
 # Find anchorpoints
 a<-find_anchorpoints(dnew,30)
 # Build the empiric variogram
-vario<-variogramlsm(ynew,dnew,a$anchorpoints,300,8,8,"gaussian")
+vario<-variogramlsm(ynew,dnew,a$anchorpoints,350,8,8,"gaussian")
 # Find the solutions
-solu<-findsolutions.lsm(vario, "esponenziale", c(200,200,0.01,100))
+solu<-findsolutions.lsm(vario, "matern", c(200,200,0.01,100))
 
 # Plot of the solutions
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
