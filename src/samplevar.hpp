@@ -1,5 +1,5 @@
-#ifndef SAMPLEVAR
-#define SAMPLEVAR
+#ifndef LOCALLY_STATIONARY_MODELS_SAMPLEVAR
+#define LOCALLY_STATIONARY_MODELS_SAMPLEVAR
 
 #include "traits.hpp"
 #include "kernel.hpp"
@@ -60,4 +60,4 @@ public:
     const cd::vectorptr get_normh() const;
 };
 
-#endif // SAMPLEVAR
+#endif // LOCALLY_STATIONARY_MODELS_SAMPLEVAR

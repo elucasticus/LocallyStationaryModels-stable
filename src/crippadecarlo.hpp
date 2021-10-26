@@ -1,5 +1,5 @@
-#ifndef CRIPPADECARLO
-#define CRIPPADECARLO
+#ifndef LOCALLY_STATIONARY_MODELS_CRIPPADECARLO
+#define LOCALLY_STATIONARY_MODELS_CRIPPADECARLO
 
 #include "samplevar.hpp"
 #include "variogramfit.hpp"
@@ -53,4 +53,4 @@ public:
 
 
 
-#endif //CRIPPADECARLO
+#endif //LOCALLY_STATIONARY_MODELS_CRIPPADECARLO

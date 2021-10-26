@@ -1,5 +1,5 @@
-#ifndef KRIGING
-#define KRIGING
+#ifndef LOCALLY_STATIONARY_MODELS_KRIGING
+#define LOCALLY_STATIONARY_MODELS_KRIGING
 
 #include "traits.hpp"
 #include "smooth.hpp"
@@ -75,4 +75,4 @@ public:
 
 
 
-#endif //KRIGIGN
+#endif //LOCALLY_STATIONARY_MODELS_KRIGIGN

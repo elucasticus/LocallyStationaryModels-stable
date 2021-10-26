@@ -1,5 +1,5 @@
-#ifndef ANCORA
-#define ANCORA
+#ifndef LOCALLY_STATIONARY_MODELS_ANCORA
+#define LOCALLY_STATIONARY_MODELS_ANCORA
 
 #include "traits.hpp"
 #include <vector>
@@ -78,4 +78,4 @@ public:
     std::pair<double, double> get_dimensionecubotti() const{return std::make_pair(larghezza_cubo, altezza_cubo);}
 };
 
-#endif //ANCORA
+#endif //LOCALLY_STATIONARY_MODELS_ANCORA

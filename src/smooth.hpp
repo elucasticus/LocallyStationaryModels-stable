@@ -1,5 +1,5 @@
-#ifndef SMOOTH
-#define SMOOTH
+#ifndef LOCALLY_STATIONARY_MODELS_SMOOTH
+#define LOCALLY_STATIONARY_MODELS_SMOOTH
 
 #include "kernel.hpp"
 #include "traits.hpp"
@@ -71,4 +71,4 @@ public:
 };
 
 
-#endif //SMOOTH
+#endif //LOCALLY_STATIONARY_MODELS_SMOOTH

@@ -1,5 +1,5 @@
-#ifndef GRID
-#define GRID
+#ifndef LOCALLY_STATIONARY_MODELS_GRID
+#define LOCALLY_STATIONARY_MODELS_GRID
 
 #include "traits.hpp"
 
@@ -71,4 +71,4 @@ public:
 
 
 
-#endif // GRID
+#endif // LOCALLY_STATIONARY_MODELS_GRID

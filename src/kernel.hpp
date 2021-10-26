@@ -1,5 +1,5 @@
-#ifndef KERNEL
-#define KERNEL
+#ifndef LOCALLY_STATIONARY_MODELS_KERNEL
+#define LOCALLY_STATIONARY_MODELS_KERNEL
 
 #include "traits.hpp"
 #include <string>
@@ -63,4 +63,4 @@ public:
 };
 
 
-#endif // KERNEL
+#endif // LOCALLY_STATIONARY_MODELS_KERNEL

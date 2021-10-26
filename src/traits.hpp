@@ -1,5 +1,5 @@
-#ifndef TRAITS
-#define TRAITS
+#ifndef LOCALLY_STATIONARY_MODELS_TRAITS
+#define LOCALLY_STATIONARY_MODELS_TRAITS
 
 #include <functional>
 #include <memory>
@@ -36,4 +36,4 @@ namespace cd
 
 
 
-#endif //TRAITS
+#endif //LOCALLY_STATIONARY_MODELS_TRAITS

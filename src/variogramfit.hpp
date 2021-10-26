@@ -1,5 +1,5 @@
-#ifndef GRADIENT
-#define GRADIENT
+#ifndef LOCALLY_STATIONARY_MODELS_GRADIENT
+#define LOCALLY_STATIONARY_MODELS_GRADIENT
 
 #include "traits.hpp"
 #include "LBFGSB.h"
@@ -114,4 +114,4 @@ public:
 
 
 
-#endif //GRADIENT
+#endif //LOCALLY_STATIONARY_MODELS_GRADIENT
