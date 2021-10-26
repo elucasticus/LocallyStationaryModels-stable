@@ -69,6 +69,18 @@ plot.lsm<-function(model, a, y, d, n_points = 4)
 }
 
 
+plot.parameters<-function(allpoints)
+{
+  ###PARAMETERS
+  for (i in 3:dim(allpoints)[2])
+  {
+    par(ask=TRUE)
+    p <- ggplot(allpoints, aes(x=X, y=Y, color=allpoints[,i])) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light() + labs(color = colnames(allpoints)[i])
+    print(p)
+  }
+}
+
+
 plotgrid<-function(d,grid,index){
   
   plot(d,xlab="Latitude",ylab="Longitude")
