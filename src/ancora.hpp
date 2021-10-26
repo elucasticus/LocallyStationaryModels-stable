@@ -24,6 +24,9 @@ private:
     double center_x = 0;
     double center_y = 0;
 
+    /**
+     * \brief   return the index of the position in the grid of each of the points of the dataset "data"
+    */
     cd::vector cubotti() 
     {
         unsigned int n = data->rows();
@@ -50,10 +53,15 @@ private:
 
 public:
     /**
-     * \brief   constructor
+     * \brief           constructor
+     * \param data_     shared pointer to the matrix with the coordinates of the dataset points
+     * \param h_        the number of squares per row and coloumn of the grid
     */
     ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(h_){};
 
+    /**
+     * \brief   this function returns the coordinates of the anchorpoints in a way such that every anchorpoints has at least one point of the domain in its neighbourhood
+    */
     const cd::matrix find_anchorpoints()
     {
         std::vector<unsigned int> positions;
