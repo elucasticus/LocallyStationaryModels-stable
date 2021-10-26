@@ -45,6 +45,9 @@ private:
     }
 
 public:
+    /**
+     * \brief   constructor
+    */
     ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(h_){};
 
     const cd::matrix find_anchorpoints()
