@@ -28,9 +28,9 @@ predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
     ys <- ggplot2::ggplot(newpos, ggplot2::aes(x=X, y=Y, color=predictedvalues$ypredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
     means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
     ys<-ys+ggplot2::labs(color="f(*)") + ggplot2::theme_light()
-    title <- ggplot2::ggdraw() + ggplot2::draw_label("Predicted mean and f(*)", fontface='bold')
-    p <- ggplot2::plot_grid(means, ys)
-    print(ggplot2::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
+    title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and f(*)", fontface='bold')
+    p <- cowplot::plot_grid(means, ys)
+    print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   }
   return(predictedvalues)
 }

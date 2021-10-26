@@ -3,8 +3,6 @@ rm(list = ls())
 
 # Load the libraries
 library(LocallyStationaryModels)
-library(ggforce)
-library(cowplot)
 library(sp)           ## Data management
 
 # Load the data
