@@ -7,5 +7,5 @@ Author: Luca Crippa, Giacomo De Carlo
 Maintainer: Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
-Imports: Rcpp (>= 1.0.6), RcppEigen , ggplot2, ggforce, cowplot
+Depends: Rcpp (>= 1.0.6), RcppEigen , ggplot2, ggforce, cowplot
 LinkingTo: Rcpp  , RcppEigen , ggplot2, ggforce, cowplot
