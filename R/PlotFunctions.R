@@ -31,8 +31,8 @@ plot.lsm<-function(model, a, y, d, n_points = 4)
   #print(p)
   
   par(ask=TRUE)
-  p <- ggplot(dd, aes(x=V1, y=V2, size=y)) + geom_point() + labs(x="X", y="Y")
-  p <- p + labs(title = "Bubble plot of the initial data", fontface = 'bold') + theme_light()
+  p <- ggplot2::ggplot(dd, ggplot2::aes(x=V1, y=V2, size=y)) + ggplot2::geom_point() + ggplot2::labs(x="X", y="Y")
+  p <- p + ggplot2::labs(title = "Bubble plot of the initial data", fontface = 'bold') + ggplot2::theme_light()
   print(p)
   
   
@@ -40,30 +40,30 @@ plot.lsm<-function(model, a, y, d, n_points = 4)
   ellissi<-g
   ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/a$width)
   ellissi$lambda1 <- a$width
-  p1 <- ggplot(ellissi, aes(x=X, y=Y)) + geom_ellipse(aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = ellissi) + coord_fixed() + theme_light()
-  p2 <- ggplot(ellissi, aes(x=X, y=Y)) + geom_segment(aes(x=X, y=Y, xend=X+lambda1*cos(phi), yend=Y+lambda1*sin(phi)), arrow = arrow(length = unit(2, "mm")), data = ellissi)
-  p2 <- p2 + geom_segment(aes(x=X, y=Y, xend=X-lambda1*cos(phi), yend=Y-lambda1*sin(phi)), arrow = arrow(length = unit(2, "mm")), data = ellissi) + coord_fixed() + theme_light()
-  print(plot_grid(p1, p2))
+  p1 <- ggplot2::ggplot(ellissi, ggplot2::aes(x=X, y=Y)) + ggforce::geom_ellipse(ggplot2::aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = ellissi) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  p2 <- ggplot2::ggplot(ellissi, ggplot2::aes(x=X, y=Y)) + ggplot2::geom_segment(ggplot2::aes(x=X, y=Y, xend=X+lambda1*cos(phi), yend=Y+lambda1*sin(phi)), arrow = ggplot2::arrow(length = ggplot2::unit(2, "mm")), data = ellissi)
+  p2 <- p2 + ggplot2::geom_segment(ggplot2::aes(x=X, y=Y, xend=X-lambda1*cos(phi), yend=Y-lambda1*sin(phi)), arrow = ggplot2::arrow(length = ggplot2::unit(2, "mm")), data = ellissi) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  print(cowplot::plot_grid(p1, p2))
   
   ###PARAMETERS
-  p1 <- ggplot(allpoints, aes(x=X, y=Y, color=lambda1)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
-  p2 <- ggplot(allpoints, aes(x=X, y=Y, color=lambda2)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
-  p3 <- ggplot(allpoints, aes(x=X, y=Y, color=phi)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
-  p4 <- ggplot(allpoints, aes(x=X, y=Y, color=sigma)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light()
-  title <- ggdraw() + draw_label("Parameters", fontface='bold')
-  p <- plot_grid(p1,p2,p3,p4)
-  print(plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
+  p1 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda1)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  p2 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda2)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  p3 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=phi)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  p4 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=sigma)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  title <- cowplot::ggdraw() + cowplot::draw_label("Parameters", fontface='bold')
+  p <- cowplot::plot_grid(p1,p2,p3,p4)
+  print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
   
   ###FUNCTION VALUES
   predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2])
-  means <- ggplot(allpoints, aes(x=X, y=Y, color=predictedvalues$predictedmean)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  ys <- ggplot(allpoints, aes(x=X, y=Y, color=predictedvalues$ypredicted)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  means<-means+labs(color="mean") + theme_light()
-  ys<-ys+labs(color="f(*)") + theme_light()
-  title <- ggdraw() + draw_label("Predicted mean and f(*)", fontface='bold')
-  p <- plot_grid(means, ys)
-  print(plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
+  means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+  ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$ypredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+  means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
+  ys<-ys+ggplot2::labs(color="f(*)") + ggplot2::theme_light()
+  title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and f(*)", fontface='bold')
+  p <- cowplot::plot_grid(means, ys)
+  print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
   return(allpoints)
 }
@@ -75,7 +75,7 @@ plot.parameters<-function(allpoints)
   for (i in 3:dim(allpoints)[2])
   {
     par(ask=TRUE)
-    p <- ggplot(allpoints, aes(x=X, y=Y, color=allpoints[,i])) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed() + theme_light() + labs(color = colnames(allpoints)[i])
+    p <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=allpoints[,i])) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light() + ggplot2::labs(color = colnames(allpoints)[i])
     print(p)
   }
 }
