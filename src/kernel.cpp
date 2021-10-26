@@ -1,3 +1,7 @@
+/// Copyright (C) Luca Crippa <luca7.crippa@mail.polimi.it>
+/// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
+/// Under MIT license
+
 #include "kernel.hpp"
 
 using namespace cd;
