@@ -8,7 +8,6 @@
 #include "samplevar.hpp"
 #include "variogramfit.hpp"
 #include <iostream>
-#include "LBFGS.h"
 #include <chrono>
 #include "smooth.hpp"
 #include "kriging.hpp"
