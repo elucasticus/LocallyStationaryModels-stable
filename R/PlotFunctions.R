@@ -1,4 +1,4 @@
-plot.lsm<-function(model, a, y, d, n_points = 4)
+plot.lsm<-function(model, a, y, d, n_points = 10)
 {
   aa<-as.data.frame(a$anchorpoints)
   colnames(aa)<-c("X","Y")
@@ -12,7 +12,8 @@ plot.lsm<-function(model, a, y, d, n_points = 4)
   {
     for (j in 1:n_points)
     {
-      newpoints<-rbind(newpoints, c(g$X[i]+a$width*cos(j*2*pi/n_points), g$Y[i]+a$width*sin(j*2*pi/n_points)))
+      radius <- a$width*runif(1, min=0, max=1)
+      newpoints<-rbind(newpoints, c(g$X[i]+radius*cos(j*2*pi/n_points), g$Y[i]+radius*sin(j*2*pi/n_points)))
     }
   }
   colnames(newpoints)<-c("X","Y")
