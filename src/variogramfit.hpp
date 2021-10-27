@@ -6,7 +6,7 @@
 #define LOCALLY_STATIONARY_MODELS_GRADIENT
 
 #include "traits.hpp"
-#include "LBFGSB.h"
+#include "LBFGSpp/LBFGSB.h"
 #include <vector>
 
 /**
