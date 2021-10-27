@@ -36,7 +36,6 @@ max(previsions$ypredicted - ynew)
 
 
 
-
 # Test the performace of our model
 n <- sample(1:100, 10)
 dtrain <- dnew[-n, ]

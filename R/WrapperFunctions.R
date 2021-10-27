@@ -12,6 +12,7 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
       }
     }
   }
+  result$id <- id
   class(result) <- "lsm"
   return(result)
 }
@@ -19,7 +20,7 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
 
 predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
 {
-  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos)
+  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id)
   if (bool)
   {
     newpos <- as.data.frame(newpos)

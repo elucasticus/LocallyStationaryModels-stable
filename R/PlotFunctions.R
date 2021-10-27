@@ -57,7 +57,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10)
   
   
   ###FUNCTION VALUES
-  predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2])
+  predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id)
   means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
   ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$ypredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
   means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()

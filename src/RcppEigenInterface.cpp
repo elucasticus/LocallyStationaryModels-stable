@@ -107,7 +107,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
 
 // [[Rcpp::export]]
 Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
-    const Eigen::MatrixXd &positions) {
+    const Eigen::MatrixXd &positions, const std::string &variogram_id) {
 
     auto start = high_resolution_clock::now();
   
@@ -116,10 +116,11 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
-    crippadecarlo CD(dd, yy, anchorpointsptr, epsilon, delta, solutionsptr, "esponenziale");
+    smt smt_(solutionsptr, anchorpointsptr, delta);
+    predictor predictor_(variogram_id, yy, smt_, epsilon, dd);
     
-    vector predicted_ys(CD.predict_y<cd::matrix, cd::vector>(positions));
-    vector predicted_means(CD.predict_mean<cd::matrix, cd::vector>(positions));
+    vector predicted_ys(predictor_.predict_y<cd::matrix, cd::vector>(positions));
+    vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));
     
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);

@@ -66,8 +66,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // predikt
-Rcpp::List predikt(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions, const Eigen::MatrixXd& positions);
-RcppExport SEXP _LocallyStationaryModels_predikt(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP, SEXP positionsSEXP) {
+Rcpp::List predikt(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions, const Eigen::MatrixXd& positions, const std::string& variogram_id);
+RcppExport SEXP _LocallyStationaryModels_predikt(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP, SEXP positionsSEXP, SEXP variogram_idSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -78,7 +78,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type solutions(solutionsSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type positions(positionsSEXP);
-    rcpp_result_gen = Rcpp::wrap(predikt(y, d, anchorpoints, epsilon, delta, solutions, positions));
+    Rcpp::traits::input_parameter< const std::string& >::type variogram_id(variogram_idSEXP);
+    rcpp_result_gen = Rcpp::wrap(predikt(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -170,7 +171,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_variogramlsm", (DL_FUNC) &_LocallyStationaryModels_variogramlsm, 7},
     {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 8},
     {"_LocallyStationaryModels_fullmodel", (DL_FUNC) &_LocallyStationaryModels_fullmodel, 9},
-    {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 7},
+    {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 8},
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
     {"_LocallyStationaryModels_rawmodel", (DL_FUNC) &_LocallyStationaryModels_rawmodel, 9},
     {"_LocallyStationaryModels_fullmodelCV", (DL_FUNC) &_LocallyStationaryModels_fullmodelCV, 11},
