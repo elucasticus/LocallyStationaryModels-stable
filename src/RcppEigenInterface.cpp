@@ -1,7 +1,7 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 
 #include <RcppEigen.h>
-#include "crippadecarlo.hpp"
+#include "cvinterface.hpp"
 #include "ancora.hpp"
 using namespace cd;
 using namespace LBFGSpp;
@@ -84,7 +84,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
     vectorptr yy = std::make_shared<vector>(y);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
     
-    crippadecarlo CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals, kernel_id, variogram_id);
+    cvinterface CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals, kernel_id, variogram_id);
     double delta = CD.get_delta();
     double epsilon_ = CD.get_epsilon();
     auto stop = high_resolution_clock::now();
@@ -166,7 +166,7 @@ Rcpp::List rawmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Ei
     vectorptr yy = std::make_shared<vector>(y);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
     
-    crippadecarlo CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals, kernel_id, variogram_id);
+    cvinterface CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals, kernel_id, variogram_id);
     double delta = CD.get_delta();
     double epsilon_ = CD.get_epsilon();
     auto stop = high_resolution_clock::now();
@@ -195,7 +195,7 @@ Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const
   vectorptr yy = std::make_shared<vector>(y);
   matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
   
-  crippadecarlo CD(dd, yy, anchorpointsptr , parameters, epsilonmin, epsilonmax, nepsilons, n_angles,n_intervals, kernel_id, variogram_id);
+  cvinterface CD(dd, yy, anchorpointsptr , parameters, epsilonmin, epsilonmax, nepsilons, n_angles,n_intervals, kernel_id, variogram_id);
   double delta = CD.get_delta();
   double epsilon_ = CD.get_epsilon();
   auto stop = high_resolution_clock::now();
