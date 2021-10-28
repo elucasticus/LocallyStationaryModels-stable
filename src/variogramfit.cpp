@@ -39,7 +39,7 @@ cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scala
     double lambda2 = params[1];
     double phi = params[2];
     double sigma = params[3];
-    double nu = 0.5;
+    double nu = params[4];
 
     scalar h = compute_anisotropic_h(lambda1, lambda2, phi, x, y);
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));
