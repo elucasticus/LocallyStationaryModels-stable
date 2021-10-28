@@ -16,11 +16,21 @@ To install Rstudio (optional) install an AUR helper of your choice such as <http
     yay -S rstudio-desktop-bin
 Refer to <https://wiki.archlinux.org/title/r> for further instructions.
 #### **Ubuntu:**
-Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for `r`.
+Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for R.
 For Rstudio (optional) you can download the `.deb` file from <https://www.rstudio.com/products/rstudio/download/>.
 ### **Step 2: install devtools and LocallyStationaryModels**
-Open `r` then type
+Open R then type
 
     install.packages("devtools")
     library(devtools)
     devtools::install_github("giacomodecarlo/LocallyStationaryModels")
+
+`LocallyStaionaryModels` requires `ggplot2`, `ggforce` and `cowplot` to plot the results. If needed you can install them from CRAN via the commands
+
+    install.packages("ggplot2")
+    install.packages("ggforce")
+    install.packages("cowplot")
+
+You can access the dataset *meuse* to run the examples via the `sp` library. Just open R and type
+
+    install.packages("sp")
