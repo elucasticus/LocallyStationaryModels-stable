@@ -9,6 +9,46 @@ using namespace std::chrono;
 
 // [[Rcpp::depends(RcppEigen)]]
 
+/**
+ * \brief               finds the anchorpoints given the position of the points in the initial dataset
+ * \param d             a matrix with the coordinates of the points in the original dataset
+ * \param n_cubotti     the number of cells per row and coloumn in the grid of the anchorpoints
+*/
+// [[Rcpp::export]]
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cubotti) {
+    auto start = high_resolution_clock::now();
+    
+    
+    //d = stampante::caricamatrice("d.csv");
+   //y = stampante::caricavettore("y.csv");
+   
+
+    matrixptr dd = std::make_shared<matrix>(d);
+
+    ancora a(dd, n_cubotti);
+
+    cd::matrix anchorpos = a.find_anchorpoints();
+   
+    
+    
+    return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpos,
+                            Rcpp::Named("center_x")=a.get_center().first,
+                            Rcpp::Named("center_y")=a.get_center().second,
+                            Rcpp::Named("width")=a.get_dimensionecubotti().first,
+                            Rcpp::Named("height")=a.get_dimensionecubotti().second); 
+}
+
+
+/**
+ * \brief                   calculate the empiric variogram in each anchor points
+ * \param y                 a vector with the values of Y for each point in the dataset d
+ * \param d                 a matrix with the coordinates of the points in the original dataset
+ * \param anchorpoints      a matrix with the coordinates of each anchorpoints
+ * \param epsilon           the value of the parameter epsilon regulating the kernel
+ * \param n_angles          the number of the angles for the grid
+ * \param n_intervals       the number of intervals for the grid
+ * \param kernel_id         the type of kernel to be used
+*/
 // [[Rcpp::export]]
 Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
     const unsigned int& n_intervals, const std::string &kernel_id) {
@@ -39,6 +79,17 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
 }
 
 
+/**
+ * \brief                       for each anchorpoints solves a problem of nonlinear optimization and returns the results
+ * \param anchorpoints          a matrix with the coordinates of each anchorpoints
+ * \param empiricvariogram      the empiric variogram returned by the previour function
+ * \param squaredweights        squared weigths returned by the previous function
+ * \param x                     mean.x returned by the previous function
+ * \param y                     mean.y returned by the previous function
+ * \param variogram_id          the variogram to be used
+ * \param parameters            the starting position to be given to the optimizer
+ * \param epsilon               the value of epsilon regulating the kernel
+*/
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
     const Eigen::VectorXd &parameters, const double &epsilon) {
@@ -71,9 +122,70 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
 }
 
 
-///---------------///
-/// OLD FUNCTIONS ///
-///---------------///
+/**
+ * \brief                   predict the mean value and the punctual value of Yù
+ * \param y                 a vector with the values of Y for each point in the dataset d
+ * \param d                 a matrix with the coordinates of the points in the original dataset
+ * \param anchorpoints      a matrix with the coordinates of each anchorpoints
+ * \param epsilon           epsilon regulating the kernel
+ * \param delta             delta regulating the smoothing
+ * \param solutions         the solution of the nonlinear optimization problem returned by the previous function
+ * \param positions         the position in which to perform the kriging
+ * \param variogram_id      the variogram to be used
+*/
+// [[Rcpp::export]]
+Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
+    const Eigen::MatrixXd &positions, const std::string &variogram_id) {
+
+    auto start = high_resolution_clock::now();
+  
+    matrixptr dd = std::make_shared<matrix>(d);
+    vectorptr yy = std::make_shared<vector>(y);
+    matrixptr solutionsptr = std::make_shared<matrix>(solutions);
+    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+
+    smt smt_(solutionsptr, anchorpointsptr, delta);
+    predictor predictor_(variogram_id, yy, smt_, epsilon, dd);
+    
+    vector predicted_ys(predictor_.predict_y<cd::matrix, cd::vector>(positions));
+    vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));
+    
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    
+    Rcpp::Rcout << predicted_ys.size() << " pairs of values predicted in " << duration.count() << " ms" << std::endl;
+
+    return Rcpp::List::create(Rcpp::Named("ypredicted")=predicted_ys,
+                              Rcpp::Named("predictedmean")=predicted_means);    
+}
+
+/**
+ * \brief                find the value of the parameters regulating the variogram
+ * \param solutions      the solution of the nonlinear optimization problem returned by the previous function
+ * \param anchorpoints   the coordinates of the anchorpoints in which the optimization problem has been solved
+ * \param delta          the value of delta regulating the smoothing
+ * \param positions      where to smooth the parameters
+*/
+// [[Rcpp::export]]
+Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions)
+{
+    matrixptr solutionsptr = std::make_shared<matrix>(solutions);
+    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
+    
+    smt smt_(solutionsptr, anchorpointsptr, delta);
+    
+    Eigen::MatrixXd result(positions.rows(), solutions.cols());
+    for (size_t i=0; i<positions.rows(); ++i)
+        result.row(i)=smt_.smooth_vector(positions.row(i));
+
+    return Rcpp::List::create(Rcpp::Named("parameters")=result);
+}
+
+
+///------------------///
+/// UNUSED FUNCTIONS ///
+///------------------///
+
 
 // [[Rcpp::export]]
 Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, 
@@ -102,58 +214,6 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
                               Rcpp::Named("predictedmean")=CD.predict_mean<cd::matrix, cd::vector>(anchorpoints),
                               Rcpp::Named("delta")=delta,
                               Rcpp::Named("epsilon")=epsilon_);   
-}
-
-
-// [[Rcpp::export]]
-Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
-    const Eigen::MatrixXd &positions, const std::string &variogram_id) {
-
-    auto start = high_resolution_clock::now();
-  
-    matrixptr dd = std::make_shared<matrix>(d);
-    vectorptr yy = std::make_shared<vector>(y);
-    matrixptr solutionsptr = std::make_shared<matrix>(solutions);
-    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-
-    smt smt_(solutionsptr, anchorpointsptr, delta);
-    predictor predictor_(variogram_id, yy, smt_, epsilon, dd);
-    
-    vector predicted_ys(predictor_.predict_y<cd::matrix, cd::vector>(positions));
-    vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));
-    
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    
-    Rcpp::Rcout << predicted_ys.size() << " pairs of values predicted in " << duration.count() << " ms" << std::endl;
-
-    return Rcpp::List::create(Rcpp::Named("ypredicted")=predicted_ys,
-                              Rcpp::Named("predictedmean")=predicted_means);    
-}
-
-// [[Rcpp::export]]
-
-Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cubotti) {
-    auto start = high_resolution_clock::now();
-    
-    
-    //d = stampante::caricamatrice("d.csv");
-   //y = stampante::caricavettore("y.csv");
-   
-
-    matrixptr dd = std::make_shared<matrix>(d);
-
-    ancora a(dd, n_cubotti);
-
-    cd::matrix anchorpos = a.find_anchorpoints();
-   
-    
-    
-    return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpos,
-                            Rcpp::Named("center_x")=a.get_center().first,
-                            Rcpp::Named("center_y")=a.get_center().second,
-                            Rcpp::Named("width")=a.get_dimensionecubotti().first,
-                            Rcpp::Named("height")=a.get_dimensionecubotti().second); 
 }
 
 
@@ -214,25 +274,6 @@ Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const
                             Rcpp::Named("delta")=delta,
                             Rcpp::Named("epsilon")=epsilon_);   
 }
-
-
-// [[Rcpp::export]]
-Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions)
-{
-    matrixptr solutionsptr = std::make_shared<matrix>(solutions);
-    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-    
-    smt smt_(solutionsptr, anchorpointsptr, delta);
-    
-    Eigen::MatrixXd result(positions.rows(), solutions.cols());
-    for (size_t i=0; i<positions.rows(); ++i)
-        result.row(i)=smt_.smooth_vector(positions.row(i));
-
-    return Rcpp::List::create(Rcpp::Named("parameters")=result);
-}
-
-
-
 
 
 // [[Rcpp::export]]
