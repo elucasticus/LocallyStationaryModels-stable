@@ -48,8 +48,8 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
     {
         for (unsigned int j=0; j<n; ++j)
         {
-            const vector &posi = d->row(i);
-            const vector &posj = d->row(j);
+            const vector &posi = d->row(neighbourhood[i]);
+            const vector &posj = d->row(neighbourhood[j]);
             cd::vector s = posi - posj;
             gamma(i, j) = gammaiso(params, s[0], s[1]);
         }
