@@ -11,11 +11,12 @@ Open the terminal then type
     sudo pacman -S r
 
 to install the `r` package.
-To install Rstudio (optional) install an AUR helper of your choice such as yay <https://github.com/Jguer/yay> then on the terminal
+To install Rstudio (optional) install an AUR helper of your choice such as <https://github.com/Jguer/yay> then on the terminal
 
     yay -S rstudio-desktop-bin
+Refer to <https://wiki.archlinux.org/title/r> for further instructions.
 #### **Ubuntu:**
-Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for `r`.<br>
+Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for `r`.
 For Rstudio (optional) you can download the `.deb` file from <https://www.rstudio.com/products/rstudio/download/>.
 ### **Step 2: install devtools and LocallyStationaryModels**
 Open `r` then type
