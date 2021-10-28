@@ -10,11 +10,11 @@ Open the terminal then type
 
     sudo pacman -S r
 
-to install the `r` package.
-To install Rstudio (optional) install an AUR helper of your choice such as <https://github.com/Jguer/yay> then on the terminal
+and install the `r` package for R.
+To get Rstudio (optional), install an AUR helper of your choice such as <https://github.com/Jguer/yay> and then on the terminal
 
     yay -S rstudio-desktop-bin
-Refer to <https://wiki.archlinux.org/title/r> for further instructions.
+Refer to <https://wiki.archlinux.org/title/r> for further details.
 #### **Ubuntu:**
 Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for R.
 For Rstudio (optional) you can download the `.deb` file from <https://www.rstudio.com/products/rstudio/download/>.
