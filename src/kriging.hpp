@@ -49,11 +49,11 @@ public:
      * \brief           constructor
      * \param id        name of the variogram function associated with the problem
      * \param y_        the vector with the value of the function Y in the known points
-     * \param smt__     the one used to previously smooth the variogram
+     * \param mysmt     the one used to previously smooth the variogram
      * \param b_        the radius of the neighbourhood of the point where to perform kriging
      * \param d_        a shared pointer to the matrix with the coordinates of the original dataset
     */
-    predictor(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_);
+    predictor(const std::string &id, const cd::vectorptr &y_, const smt &mysmt, const double b_, const cd::matrixptr &d_);
     /**
      * \brief   gammaiso set by default to exponential
     */

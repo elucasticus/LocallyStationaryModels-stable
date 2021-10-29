@@ -55,9 +55,12 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
         }
     }
 
-    gamma = gamma.inverse();
-
     vector ones = vector::Ones(n);
+
+    if (std::abs(gamma.determinant()) < 1e-12)
+        return ones/n;
+
+    gamma = gamma.inverse();
 
     double denominator = ones.transpose() * gamma * ones;
 
@@ -177,7 +180,7 @@ cd::vector predictor::predict_y<cd::matrix, cd::vector>(const cd::matrix &pos) c
 }
 
 
-predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &smt__, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(smt__), b(b_), d(d_) 
+predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(mysmt), b(b_), d(d_) 
 {
     means = std::make_shared<vector>(y_->size());
     #pragma omp parallel for

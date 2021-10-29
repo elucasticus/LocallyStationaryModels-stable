@@ -1,5 +1,9 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 
+/// Copyright (C) Luca Crippa <luca7.crippa@mail.polimi.it>
+/// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
+/// Under MIT license
+
 #include <RcppEigen.h>
 #include "cvinterface.hpp"
 #include "ancora.hpp"
@@ -37,7 +41,6 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
                             Rcpp::Named("width")=a.get_dimensionecubotti().first,
                             Rcpp::Named("height")=a.get_dimensionecubotti().second); 
 }
-
 
 /**
  * \brief                   calculate the empiric variogram in each anchor points
@@ -77,7 +80,6 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
                               Rcpp::Named("epsilon")=epsilon
                               );
 }
-
 
 /**
  * \brief                       for each anchorpoints solves a problem of nonlinear optimization and returns the results
@@ -120,7 +122,6 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
                               Rcpp::Named("anchorpoints")=anchorpoints
                               );    
 }
-
 
 /**
  * \brief                   predict the mean value and the punctual value of Yù
@@ -182,9 +183,7 @@ Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anc
 }
 
 
-///------------------///
-/// UNUSED FUNCTIONS ///
-///------------------///
+/// FUNZIONI NON UTILIZZATE DA SISTEMARE DA QUI IN GIU
 
 
 // [[Rcpp::export]]
