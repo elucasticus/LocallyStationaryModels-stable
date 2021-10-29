@@ -19,7 +19,6 @@ cd::scalar gaussian(const cd::vector &x, const cd::vector &y, const cd::scalar &
 */
 cd::kernelfunction make_kernel(const std::string &id);
 
-
 /**
  * \brief   class to compute the kernel matrix
 */
@@ -65,6 +64,5 @@ public:
 
     const cd::matrixptr get_kernel() const;
 };
-
 
 #endif // LOCALLY_STATIONARY_MODELS_KERNEL

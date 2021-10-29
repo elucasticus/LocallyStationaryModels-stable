@@ -43,7 +43,6 @@ private:
     */
     cd::vector build_etakriging(const cd::vector &params,const cd::vector &pos) const;
     
-
 public:
     /**
      * \brief           constructor
@@ -71,12 +70,5 @@ public:
     template<typename Input, typename Output>
     Output predict_y(const Input &pos) const;
 };
-
-
-
-
-
-
-
 
 #endif //LOCALLY_STATIONARY_MODELS_KRIGIGN

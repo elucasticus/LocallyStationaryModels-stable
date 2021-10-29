@@ -59,6 +59,13 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 
     if (std::abs(gamma.determinant()) < 1e-12)
         return ones/n;
+/*
+    vector gammaones = gamma.colPivHouseholderQr().solve(ones); // QUESTO COMANDO FA CRASHARE R
+
+    double denominator = ones.dot(gammaones);
+
+    vector eta = (gammaones) / denominator;
+*/
 
     gamma = gamma.inverse();
 
@@ -92,7 +99,8 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
         C0(i) = sigma2-gammaiso(params, s0[0], s0[1]);
     }
     
-    etakriging = correlationmatrix.inverse()*C0;
+    etakriging =  correlationmatrix.colPivHouseholderQr().solve(C0);
+    //etakriging = correlationmatrix.inverse()*C0;
     
     //double krigingvariance = params(3) - C0.transpose()*etakriging;
     return etakriging;

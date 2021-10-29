@@ -9,7 +9,6 @@
 #include "traits.hpp"
 #include <vector>
 
-
 /**
  * \brief a class to smooth the solutions of the optimization and obtain cooler results
 */

@@ -14,12 +14,10 @@
 */
 cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y);
 
-
 /**
  * \return  sigma*sigma*(1-e^-h)
 */
 cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
-
 
 cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
 
@@ -30,7 +28,6 @@ cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::sca
  * \param id    the name of your favourite variogram
 */
 cd::variogramfunction make_variogramiso(const std::string &id);
-
 
 
 /**
@@ -66,7 +63,6 @@ struct funzionedaottimizzare
 };
 
 
-
 /**
  * \brief a class to find the real value of the parameters of the variogram in each point by optimizing the correspondent funzionedaottimizzare relying on the library LBFGSpp
 */
@@ -79,7 +75,6 @@ private:
     cd::vectorptr y;
     std::string id;
     cd::vector initialparameters;
-
     cd::matrixptr solutions = nullptr;
 
     /**
@@ -114,8 +109,5 @@ public:
 
     cd::matrixptr get_solutions() const;
 };
-
-
-
 
 #endif //LOCALLY_STATIONARY_MODELS_GRADIENT

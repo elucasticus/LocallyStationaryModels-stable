@@ -16,13 +16,11 @@
 */
 cd::matrixIptr Pizza(const cd::matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon);
 
-
 /**
  * \brief       allow to select between the preferred method to build the grid
  * \param id	name of the function of choice
 */
 cd::gridfunction make_grid(const std::string &id);
-
 
 /**
  * \brief   two-dimensional version of the grid class
@@ -69,10 +67,5 @@ public:
     const cd::vectorptr get_x() const;
     const cd::vectorptr get_y() const;
 };
-
-
-
-
-
 
 #endif // LOCALLY_STATIONARY_MODELS_GRID

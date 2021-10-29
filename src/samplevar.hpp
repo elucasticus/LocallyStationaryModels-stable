@@ -9,7 +9,6 @@
 #include "kernel.hpp"
 #include "grid.hpp"
 
-
 /**
  * \brief a class to build and store the empiric variogram build from data
 */
@@ -19,10 +18,8 @@ private:
     cd::matrixptr variogram = nullptr;
     cd::matrixptr denominators = nullptr;
     cd::matrixptr squaredweights = nullptr;
-
     kernel kernel_;
     grid grid_;
-
     unsigned int n_angles;
     unsigned int n_intervals;
 

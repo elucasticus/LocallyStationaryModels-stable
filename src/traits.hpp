@@ -22,7 +22,6 @@ namespace cd
     using vectorptr = std::shared_ptr<vector>;
     using matrixptr = std::shared_ptr<matrix>;
     using matrixIptr = std::shared_ptr<matrixI>;
-
     using vectorind = std::vector<unsigned int>;
     using vofvs = std::vector<std::vector<unsigned int>>;
     using vofvsptr = std::shared_ptr<vofvs>;
@@ -33,11 +32,5 @@ namespace cd
     using variogramfunction = std::function<scalar(const vector&, const scalar&, const scalar&)>;
      
 }; // namespace cd
-
-
-
-
-
-
 
 #endif //LOCALLY_STATIONARY_MODELS_TRAITS
