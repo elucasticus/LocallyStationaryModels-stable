@@ -33,7 +33,6 @@ vectorind predictor::build_neighbourhood(const unsigned int &pos) const
     return n;
 }
 
-
 cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) const
 {
     unsigned int n = neighbourhood.size();
@@ -55,20 +54,20 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 
     if (std::abs(gamma.determinant()) < 1e-12)
         return ones/n;
-/*
-    vector gammaones = gamma.colPivHouseholderQr().solve(ones); // QUESTO COMANDO FA CRASHARE R
+
+    vector gammaones(n);
+    gammaones = gamma.colPivHouseholderQr().solve(ones); // QUESTO COMANDO FA CRASHARE R
 
     double denominator = ones.dot(gammaones);
 
     vector eta = (gammaones) / denominator;
-*/
-
+/*
     gamma = gamma.inverse();
 
     double denominator = ones.transpose() * gamma * ones;
 
     vector eta = (gamma * ones) / denominator;
-
+*/
     return eta;
 }
 
