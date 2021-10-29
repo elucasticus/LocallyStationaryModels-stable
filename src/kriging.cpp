@@ -56,18 +56,12 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
         return ones/n;
 
     vector gammaones(n);
-    gammaones = gamma.colPivHouseholderQr().solve(ones); // QUESTO COMANDO FA CRASHARE R
+    gammaones = gamma.colPivHouseholderQr().solve(ones);
 
     double denominator = ones.dot(gammaones);
 
     vector eta = (gammaones) / denominator;
-/*
-    gamma = gamma.inverse();
 
-    double denominator = ones.transpose() * gamma * ones;
-
-    vector eta = (gamma * ones) / denominator;
-*/
     return eta;
 }
 
@@ -95,7 +89,6 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
     }
     
     etakriging =  correlationmatrix.colPivHouseholderQr().solve(C0);
-    //etakriging = correlationmatrix.inverse()*C0;
     
     //double krigingvariance = params(3) - C0.transpose()*etakriging;
     return etakriging;
