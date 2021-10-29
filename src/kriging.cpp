@@ -4,36 +4,32 @@
 
 #include "kriging.hpp"
 
-
 using namespace cd;
 
 vectorind predictor::build_neighbourhood(const cd::vector &pos) const
 {
     vectorind n;
-
     for (unsigned int i=0; i< d->rows(); ++i)
     {
         vector datapos = d->row(i);
+        /// if datapos is in a neighbourhood of radius b
         if ((pos - datapos).norm() < b)
             n.push_back(i);
     }
-
     return n;
 }
-
 
 vectorind predictor::build_neighbourhood(const unsigned int &pos) const
 {
     vectorind n;
     const vector &pospos = d->row(pos);
-
     for (unsigned int i=0; i< d->rows(); ++i)
     {
         const vector &posi =  d->row(i);
+        /// if pos is in a neighbourhood of radius b
         if ((pospos - posi).norm() < b)
             n.push_back(i);
     }
-
     return n;
 }
 
@@ -106,7 +102,6 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
     return etakriging;
 }
 
-
 template<>
 double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
 {
@@ -125,7 +120,6 @@ double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
     
     return result;
 }
-
 
 template<>
 double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) const
@@ -146,7 +140,6 @@ double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) co
     return result;
 }
 
-
 template<>
 cd::vector predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos) const
 {
@@ -156,7 +149,6 @@ cd::vector predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos
         result(i) = predict_mean<cd::vector, double>(pos.row(i));
     return result;
 }
-
 
 template<>
 double predictor::predict_y<cd::vector, double>(const cd::vector &pos) const
@@ -176,7 +168,6 @@ double predictor::predict_y<cd::vector, double>(const cd::vector &pos) const
     return result;
 }
 
-
 template<>
 cd::vector predictor::predict_y<cd::matrix, cd::vector>(const cd::matrix &pos) const
 {
@@ -186,7 +177,6 @@ cd::vector predictor::predict_y<cd::matrix, cd::vector>(const cd::matrix &pos) c
         result(i) = predict_y<cd::vector, double>(pos.row(i));
     return result;
 }
-
 
 predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(mysmt), b(b_), d(d_) 
 {
