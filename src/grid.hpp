@@ -62,9 +62,21 @@ public:
     */
     void build_grid(const cd::matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals);
 
+    /**
+     * \brief   returns a shared pointer to the grid
+    */
     const cd::matrixIptr get_grid() const;
+    /**
+     * \brief   returns a shared pointer to normh
+    */
     const cd::vectorptr get_normh() const;
+    /**
+     * \brief   returns a pointer to the vector containing the xs of the centers of the cells of the grid
+    */
     const cd::vectorptr get_x() const;
+    /**
+     * \brief   returns a pointer to the vector containing the ys of the centers of the cells of the grid
+    */
     const cd::vectorptr get_y() const;
 };
 

@@ -87,7 +87,13 @@ public:
         return anchorpos;
     }
 
+    /**
+     * \brief   return the coordinates of the origin of the grid
+    */
     std::pair<double, double> get_center() const{return std::make_pair(center_x, center_y);}
+    /**
+     * \brief   return the dimensions (height and width) of each cell of the grid
+    */
     std::pair<double, double> get_dimensionecubotti() const{return std::make_pair(larghezza_cubo, altezza_cubo);}
 };
 

@@ -107,6 +107,9 @@ public:
     */
     void findallsolutions();
 
+    /**
+     * \brief   returns the solutions found by solving the problem of nonlinear optimization
+    */
     cd::matrixptr get_solutions() const;
 };
 

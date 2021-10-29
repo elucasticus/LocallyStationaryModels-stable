@@ -62,6 +62,9 @@ public:
     void build_simple_kernel(const cd::matrixptr &coordinates);
     void build_simple_kernel(const cd::matrixptr &coordinates, const cd::scalar &epsilon_);
 
+    /**
+     * \brief   returns a shared pointer to the matrix pointed by k
+    */
     const cd::matrixptr get_kernel() const;
 };
 
