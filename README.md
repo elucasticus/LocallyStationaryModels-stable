@@ -1,6 +1,8 @@
 # **LocallyStationaryModels**
 ***authors:*** Luca Crippa, Giacomo De Carlo<br>
 ***mailto:*** <luca7.crippa@mail.polimi.it>, <giacomo.decarlo@mail.polimi.it><br>
+## **Latest updates**
+⚠️ The use of the function `variogramlsm(...)` is now deprecated. Use `variogram.lsm(...)` instead.
 ## **Installation**
 ### **Step 1: install R and Rstudio (optional)**
 #### **Windows:**
