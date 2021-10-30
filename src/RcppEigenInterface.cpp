@@ -94,7 +94,7 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
 */
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
-    const Eigen::VectorXd &parameters, const double &epsilon) {
+    const std::string &kernel_id, const Eigen::VectorXd &parameters, const double &epsilon) {
     
     auto start = high_resolution_clock::now();
   
@@ -107,7 +107,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters);
     opt_.findallsolutions();
 
-    smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon/2);
+    smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon/2, kernel_id);
 
     double delta_ottimale = smt_.get_optimal_delta();
 
@@ -133,10 +133,11 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
  * \param solutions         the solution of the nonlinear optimization problem returned by the previous function
  * \param positions         the position in which to perform the kriging
  * \param variogram_id      the variogram to be used
+ * \param kernel_id         the kernel to be used inside the smoother
 */
 // [[Rcpp::export]]
 Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
-    const Eigen::MatrixXd &positions, const std::string &variogram_id) {
+    const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id) {
 
     auto start = high_resolution_clock::now();
   
@@ -145,7 +146,7 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
-    smt smt_(solutionsptr, anchorpointsptr, delta);
+    smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
     predictor predictor_(variogram_id, yy, smt_, epsilon, dd);
     
     vector predicted_ys(predictor_.predict_y<cd::matrix, cd::vector>(positions));
@@ -166,14 +167,15 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
  * \param anchorpoints   the coordinates of the anchorpoints in which the optimization problem has been solved
  * \param delta          the value of delta regulating the smoothing
  * \param positions      where to smooth the parameters
+ * \param kernel_id      the kernel to be used inside the smoother
 */
 // [[Rcpp::export]]
-Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions)
+Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions, const std::string &kernel_id)
 {
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
     
-    smt smt_(solutionsptr, anchorpointsptr, delta);
+    smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
     
     Eigen::MatrixXd result(positions.rows(), solutions.cols());
     for (size_t i=0; i<positions.rows(); ++i)

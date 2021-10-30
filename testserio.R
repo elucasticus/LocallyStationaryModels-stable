@@ -24,7 +24,7 @@ head(ynew)
 # Find anchorpoints
 a<-find_anchorpoints.lsm(dnew,12)
 # Build the empiric variogram
-vario<-variogramlsm(ynew,dnew,a$anchorpoints,350,8,8,"gaussian")
+vario<-variogram.lsm(ynew,dnew,a$anchorpoints,350,8,8,"gaussian")
 # Find the solutions
 solu<-findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 

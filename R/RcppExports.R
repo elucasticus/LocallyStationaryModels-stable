@@ -9,16 +9,16 @@ variogramlsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, ker
     .Call('_LocallyStationaryModels_variogramlsm', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
 }
 
-findsolutionslsm <- function(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, parameters, epsilon) {
-    .Call('_LocallyStationaryModels_findsolutionslsm', PACKAGE = 'LocallyStationaryModels', anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, parameters, epsilon)
+findsolutionslsm <- function(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, epsilon) {
+    .Call('_LocallyStationaryModels_findsolutionslsm', PACKAGE = 'LocallyStationaryModels', anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, epsilon)
 }
 
-predikt <- function(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id) {
-    .Call('_LocallyStationaryModels_predikt', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id)
+predikt <- function(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id) {
+    .Call('_LocallyStationaryModels_predikt', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id)
 }
 
-smoothing <- function(solutions, anchorpoints, delta, positions) {
-    .Call('_LocallyStationaryModels_smoothing', PACKAGE = 'LocallyStationaryModels', solutions, anchorpoints, delta, positions)
+smoothing <- function(solutions, anchorpoints, delta, positions, kernel_id) {
+    .Call('_LocallyStationaryModels_smoothing', PACKAGE = 'LocallyStationaryModels', solutions, anchorpoints, delta, positions, kernel_id)
 }
 
 fullmodel <- function(y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id) {

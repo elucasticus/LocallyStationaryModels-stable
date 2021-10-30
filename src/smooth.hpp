@@ -39,7 +39,7 @@ public:
      * \param min_delta     the minimum exponent for the cross-validation of delta
      * \param max_delta     the maximum exponent for the cross-validation of delta
     */
-    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta);
+    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id);
     /**
      * \brief constructor
      * \param solutions_    a shared pointer to the solutions of the optimization
@@ -47,7 +47,7 @@ public:
      * \param d             a shared pointer to the matrix of the coordinates
      * \param delta         a user-chosen value for delta
     */
-    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const double delta);
+    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const double delta, const std::string &kernel_id);
     /**
      * \brief calls the default constructor for kernel_
     */

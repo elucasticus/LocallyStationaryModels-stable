@@ -24,7 +24,7 @@ cvinterface::cvinterface(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::m
 
     solutions = opt_.get_solutions();
 
-    smt smt_(opt_.get_solutions(), anchorpoints, epsilon/10, epsilon/2);
+    smt smt_(opt_.get_solutions(), anchorpoints, epsilon/10, epsilon/2, "gaussian");
 
     delta_ottimale = smt_.get_optimal_delta();
 
@@ -35,7 +35,7 @@ cvinterface::cvinterface(const cd::matrixptr &d_, const cd::vectorptr &y_, cd::m
     const std::string &variogram_id):
     d(d_), y(y_), anchorpoints(anchorpoints_), epsilon_ottimale(epsilon), delta_ottimale(delta)
 {
-    smt smt_(solutions_, anchorpoints, delta_ottimale);
+    smt smt_(solutions_, anchorpoints, delta_ottimale, "gaussian");
     predictor_ = predictor(variogram_id, y, smt_, epsilon, d);
 }
 
@@ -95,7 +95,7 @@ const unsigned int n_angles, const unsigned int n_intervals, const std::string &
     
     solutions = opt_.get_solutions();
     
-    smt smt_(opt_.get_solutions(), anchorpoints, epsilon_ottimale/10, 10*epsilon_ottimale);
+    smt smt_(opt_.get_solutions(), anchorpoints, epsilon_ottimale/10, 10*epsilon_ottimale, "gaussian");
     
     delta_ottimale = smt_.get_optimal_delta();
     

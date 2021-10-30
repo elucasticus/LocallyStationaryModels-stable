@@ -40,7 +40,8 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
 
 
 
-smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta): anchorpos(anchorpos_), solutions(solutions_), kernel_()
+smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id): 
+    anchorpos(anchorpos_), solutions(solutions_), kernel_(kernel_id, min_delta)
 {
     double min_error;
     const unsigned int n_deltas = 1000;
@@ -79,8 +80,8 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
 
 
 
-smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const double delta): anchorpos(anchorpos_),  solutions(solutions_),
-    kernel_("gaussian", delta), optimal_delta(delta)
+smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const double delta, const std::string &kernel_id): anchorpos(anchorpos_),  solutions(solutions_),
+    kernel_(kernel_id, delta), optimal_delta(delta)
 {
     kernel_.build_simple_kernel(anchorpos);
 }

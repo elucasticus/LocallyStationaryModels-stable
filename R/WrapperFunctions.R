@@ -1,6 +1,6 @@
 findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
 {
-  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, initial.position,vario$epsilon)
+  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position,vario$epsilon)
   if (bool)
   {
     for (i in 1:dim(result$solutions)[1])
@@ -13,6 +13,7 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
     }
   }
   result$id <- id
+  result$kernel_id <- vario$kernel_id
   class(result) <- "lsm"
   return(result)
 }
@@ -20,7 +21,7 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
 
 predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
 {
-  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id)
+  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id)
   if (bool)
   {
     newpos <- as.data.frame(newpos)
@@ -50,6 +51,14 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
     print(p)
   }
   return(result)
+}
+
+
+variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
+{
+  vario <- variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
+  vario$kernel_id <- kernel_id
+  return(vario)
 }
 
 

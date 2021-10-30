@@ -19,7 +19,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69)
   }
   colnames(newpoints)<-c("X","Y")
   
-  parameters<-smoothing(model$solutions,a$anchorpoints,model$delta,as.matrix(newpoints))
+  parameters<-smoothing(model$solutions,a$anchorpoints,model$delta,as.matrix(newpoints),model$kernel_id)
   parameters<-as.data.frame(parameters)
   colnames(parameters)<-c("lambda1", "lambda2", "phi", "sigma")
   
@@ -58,7 +58,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69)
   
   
   ###FUNCTION VALUES
-  predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id)
+  predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id,model$kernel_id)
   means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
   ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$ypredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
   means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
