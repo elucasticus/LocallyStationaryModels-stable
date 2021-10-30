@@ -1,5 +1,6 @@
-plot.lsm<-function(model, a, y, d, n_points = 10)
+plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69)
 {
+  set.seed(seed = seed)
   aa<-as.data.frame(a$anchorpoints)
   colnames(aa)<-c("X","Y")
   s<-model$solutions
