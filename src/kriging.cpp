@@ -56,7 +56,9 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
         return ones/n;
 
     vector gammaones(n);
-    gammaones = gamma.colPivHouseholderQr().solve(ones);
+    //gammaones = gamma.colPivHouseholderQr().solve(ones); DA CONTROLLARE PERCHE QUESTO NON FUNZIONA
+    //gammaones = gamma.householderQr().solve(ones);
+    gammaones = gamma.fullPivHouseholderQr().solve(ones);
 
     double denominator = ones.dot(gammaones);
 
