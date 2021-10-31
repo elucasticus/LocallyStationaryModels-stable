@@ -13,7 +13,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   aa <- as.data.frame(a$anchorpoints)
   colnames(aa) <- c("X","Y")
   s <- model$solutions
-  s <- as.data.frame(s[1:4])
+  s <- as.data.frame(s)
   colnames(s) <- c("lambda1", "lambda2", "phi", "sigma")
   g <- cbind(aa,s)
   
