@@ -15,12 +15,16 @@
 cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y);
 
 /**
- * \return  sigma*sigma*(1-e^-h)
+ * \brief   returns sigma*sigma*(1-e^-h)
 */
 cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
-
+/**
+ * \brief   returns sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+*/
 cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
-
+/**
+ * \brief   returns sigma * sigma * (1 - exp(-h*h))
+*/
 cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
 
 /**
@@ -108,7 +112,7 @@ public:
     void findallsolutions();
 
     /**
-     * \brief   returns the solutions found by solving the problem of nonlinear optimization
+     * \brief   return the solutions found by solving the problem of nonlinear optimization
     */
     cd::matrixptr get_solutions() const;
 };

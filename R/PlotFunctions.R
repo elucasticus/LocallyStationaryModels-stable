@@ -1,13 +1,25 @@
+#' @param model                an object returned by findsolutions.lsm
+#' @param a                    the object returned by findanchorpoints.lsm used to generate the model
+#' @param y                    the vector with the values of f(*) used to generate the model
+#' @param d                    a matrix with the coordinates of the points in the original dataset used to build the model
+#' @param n_points             a parameter proportional to the number of points generated to visualize the model
+#' @param seed                 if points_arrangement is set to 'random', the seed used to generate the random points around each anchorpoints
+#' @param points_arrangement   the arrangement of the points around each anchorpoints
 plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement = "random")
 {
+  # set the seed
   set.seed(seed = seed)
+  # associate each anchorpoints with the value of the parameters lambda1, lambda2, phi and sigma in its position
   aa <- as.data.frame(a$anchorpoints)
   colnames(aa) <- c("X","Y")
   s <- model$solutions
-  s <- as.data.frame(s)
+  s <- as.data.frame(s[1:4])
   colnames(s) <- c("lambda1", "lambda2", "phi", "sigma")
   g <- cbind(aa,s)
   
+  # create a new dataframe to better visualize the model in the space
+  # if points_arrangement = "random", generate n_points equally spaced in the angular domain at random distance (< a$width) from each anchorpoint
+  # if points_arrangement = "straight", generate n_points*n_points equally spaced on straight lines around each anchorpoint
   newpoints <- data.frame(X = double(), Y = double())
   if (points_arrangement == "random")
   {
@@ -44,13 +56,9 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   colnames(parameters)<-c("lambda1", "lambda2", "phi", "sigma")
   
   allpoints<-cbind(newpoints, parameters)
-  #allpoints<-rbind(g, newpos)
   
-  ###DATI INIZIALI
+  # bubble plot of the initial data
   dd <- as.data.frame(d)
-  #windows()
-  #p <- ggplot(dd, aes(x=V1, y=V2, color=y)) + geom_point() + scale_color_gradientn(colours = rainbow(5)) + coord_fixed()
-  #print(p)
   
   par(ask=TRUE)
   p <- ggplot2::ggplot(dd, ggplot2::aes(x=V1, y=V2, size=y)) + ggplot2::geom_point() + ggplot2::labs(x="X", y="Y")
@@ -58,7 +66,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   print(p)
   
   
-  ###ELLISSI
+  # ellipses and phi
   ellissi<-g
   ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/a$width)
   ellissi$lambda1 <- a$width
@@ -67,7 +75,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   p2 <- p2 + ggplot2::geom_segment(ggplot2::aes(x=X, y=Y, xend=X-lambda1*cos(phi), yend=Y-lambda1*sin(phi)), arrow = ggplot2::arrow(length = ggplot2::unit(2, "mm")), data = ellissi) + ggplot2::coord_fixed() + ggplot2::theme_light()
   print(cowplot::plot_grid(p1, p2))
   
-  ###PARAMETERS
+  # parameters
   p1 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda1)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
   p2 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda2)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
   p3 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=phi)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
@@ -77,7 +85,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
   
-  ###FUNCTION VALUES
+  # predict and plot the mean and punctual value of f(*) for each newpoint
   predictedvalues<-predikt(y,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id,model$kernel_id)
   means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
   ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$ypredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()

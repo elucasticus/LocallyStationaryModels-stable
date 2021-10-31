@@ -69,15 +69,15 @@ public:
     };
 
     /**
-     * \brief   returns a shared pointer to the solutions found by the optimizer
+     * \brief   return a shared pointer to the solutions found by the optimizer
     */
     const cd::matrixptr get_solutions() const;
     /**
-     * \brief   returns the delta found by cross-validation
+     * \brief   return the delta found by cross-validation
     */
     double get_optimal_delta() const;
     /**
-     * \brief   returns a shared pointer the coordinates of the anchorpoints
+     * \brief   return a shared pointer the coordinates of the anchorpoints
     */
     const cd::matrixptr get_anchorpos() const;
 };

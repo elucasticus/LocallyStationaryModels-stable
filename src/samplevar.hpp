@@ -52,35 +52,35 @@ public:
     void build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &yptr);
 
     /**
-     * \brief   returns a shared pointer to the sample variogram
+     * \brief   return a shared pointer to the sample variogram
     */
     const cd::matrixptr get_variogram() const;
     /**
-     * \brief   returns a shared pointer to the matrix of the denominators
+     * \brief   return a shared pointer to the matrix of the denominators
     */
     const cd::matrixptr get_denominators() const;
     /**
-     * \brief   returns a shared pointers to the squaredweigths required to evaluate the function to be optimized
+     * \brief   return a shared pointers to the squaredweigths required to evaluate the function to be optimized
     */
     const cd::matrixptr get_squaredweights() const;
     /**
-     * \brief   returns grid_.x
+     * \brief   return grid_.x
     */
     const cd::vectorptr get_x() const;
     /**
-     * \brief   returns grid_.y
+     * \brief   return grid_.y
     */
     const cd::vectorptr get_y() const;
     /**
-     * \brief   returns kernel_.k
+     * \brief   return kernel_.k
     */
     const cd::matrixptr get_kernel() const;
     /**
-     * \brief   returns grid_.g
+     * \brief   return grid_.g
     */
     const cd::matrixIptr get_grid() const;
     /**
-     * \brief   returns grid_.normh
+     * \brief   return grid_.normh
     */
     const cd::vectorptr get_normh() const;
 };
