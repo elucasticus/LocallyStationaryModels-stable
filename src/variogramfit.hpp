@@ -28,7 +28,7 @@ cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scala
 cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::scalar &y);
 
 /**
- * \brief       allows to select between different functions for the variogram
+ * \brief       allow to select between different functions for the variogram
  * \param id    the name of your favourite variogram
 */
 cd::variogramfunction make_variogramiso(const std::string &id);
