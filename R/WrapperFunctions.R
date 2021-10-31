@@ -1,3 +1,8 @@
+#' @brief                     for each anchorpoints solves a problem of nonlinear optimization and returns the results
+#' @param vario               a variogram obtained using variogram.lsm()
+#' @param id                  the type of variogram to be used
+#' @param initial.position    the starting position to be given to the optimizer
+#' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
 findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
 {
   result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position,vario$epsilon)
