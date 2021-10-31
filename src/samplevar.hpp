@@ -44,7 +44,7 @@ public:
     samplevar();
 
     /**
-     * \brief                   builds the matrix of the empiric variogram
+     * \brief                   build the matrix of the empiric variogram
      * \param dptr              a shared pointer to the matrix of the coordinates of the original dataset
      * \param anchorpointsptr   a shared pointer to the matrix of the coordinates of the anchorpoitns 
      * \param yptr              a shared pointer to the vector of the value of Y

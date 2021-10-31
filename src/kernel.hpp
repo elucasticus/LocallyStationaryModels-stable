@@ -14,7 +14,7 @@
 cd::scalar gaussian(const cd::vector &x, const cd::vector &y, const cd::scalar &epsilon);
 
 /**
- * \brief       allows to select between pre-built kernel functions
+ * \brief       allow to select between pre-built kernel functions
  * \param id	name of the function of choice
 */
 cd::kernelfunction make_kernel(const std::string &id);
@@ -48,7 +48,7 @@ public:
     cd::scalar operator()(const cd::vector &x, const cd::vector &y) const;
 
     /**
-     * \brief                   builds the "star" version of the kernel needed for the empiric variogram
+     * \brief                   build the "star" version of the kernel needed for the empiric variogram
      * \param coordinates       a shared pointer to the matrix with the coordinates of the original dataset
      * \param anchorpoints      a shared pointer to the matrix with the coordinates of the anchorpoints
     */

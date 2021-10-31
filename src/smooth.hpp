@@ -49,7 +49,7 @@ public:
     */
     smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const double delta, const std::string &kernel_id);
     /**
-     * \brief calls the default constructor for kernel_
+     * \brief call the default constructor for kernel_
     */
     smt();
 
