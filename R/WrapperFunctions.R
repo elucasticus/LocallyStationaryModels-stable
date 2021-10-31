@@ -23,7 +23,12 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
   return(result)
 }
 
-
+#' @brief         for each couple of coordinates in newpos predict the mean and punctual value of f(*)
+#' @param sol     an object of type lsm obtained by calling findsolutions.lsm
+#' @param newpos  a matrix with the coordinates of the points where to evaluate f(*)
+#' @param y       the vector y used to generate the solutions
+#' @param d       the matrix d used to generate the solutions
+#' @param bool    if set to TRUE plot the solutions
 predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
 {
   predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id)
@@ -42,7 +47,10 @@ predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
   return(predictedvalues)
 }
 
-
+#' @brief          given a dataset find the corresponding equally spaced anchorpoints
+#' @param dataset  a dataset full of coordinates
+#' @param n        a parameter proportional to the number of anchorpoints
+#' @param bool     if set to true plot the original dataset and the anchorpoints
 find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 {
   result <- find_anchorpoints(dataset, n)
@@ -58,7 +66,14 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
   return(result)
 }
 
-
+#' @brief               compute the sample variogram in the anchorpoints
+#' @param y             the vector contatining f(d)
+#' @param d             the matrix contatining the coordinates in which we know the value of f(*)
+#' @param anchorpoints  a matrix with the coordinates of the anchorpoints which can be obtained calling find_anchorpoints.lsm
+#' @param epsilon       the value of epsilon regulating the kernel
+#' @param n_angles      the number of angles for the grid
+#' @param n_intervals   the number of intervals for the grid
+#' @param kernel_id     the type of kernel to be used
 variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
 {
   vario <- variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
