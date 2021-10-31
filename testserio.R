@@ -30,7 +30,7 @@ solu<-findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 
 # Plot of the solutions
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
-mypoints<-plot.lsm(solu,a,ynew,dnew)
+mypoints<-plot.lsm(model = solu, a = a, y = ynew,d = dnew, n_points = 10, points_arrangement = "random")
 
 # Kriging on the original data
 x11(height = 600, width = 800, ypos = -100, xpos = -100)

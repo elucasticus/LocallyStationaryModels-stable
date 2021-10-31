@@ -1,22 +1,42 @@
-plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69)
+plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement = "random")
 {
   set.seed(seed = seed)
-  aa<-as.data.frame(a$anchorpoints)
-  colnames(aa)<-c("X","Y")
-  s<-model$solutions
-  s<-as.data.frame(s)
-  colnames(s)<-c("lambda1", "lambda2", "phi", "sigma")
-  g<-cbind(aa,s)
+  aa <- as.data.frame(a$anchorpoints)
+  colnames(aa) <- c("X","Y")
+  s <- model$solutions
+  s <- as.data.frame(s)
+  colnames(s) <- c("lambda1", "lambda2", "phi", "sigma")
+  g <- cbind(aa,s)
   
   newpoints <- data.frame(X = double(), Y = double())
-  for (i in 1:dim(g)[1])
+  if (points_arrangement == "random")
   {
-    for (j in 1:n_points)
+    for (i in 1:dim(g)[1])
     {
-      radius <- a$width*runif(1, min=0, max=1)
-      newpoints<-rbind(newpoints, c(g$X[i]+radius*cos(j*2*pi/n_points), g$Y[i]+radius*sin(j*2*pi/n_points)))
+      for (j in 1:n_points)
+      {
+        radius <- a$width*runif(1, min=0, max=1)
+        newpoints <- rbind(newpoints, c(g$X[i]+radius*cos(j*2*pi/n_points), g$Y[i]+radius*sin(j*2*pi/n_points)))
+      }
     }
   }
+  else if (points_arrangement == "straight")
+  {
+    for (i in 1:n_points)
+    {
+      vstep <- a$height/(n_points + 1)
+      for (j in 1:n_points)
+      {
+        hstep <- a$width/(n_points+1)
+        newpoints <- rbind(newpoints, cbind(g$X-a$width+hstep*j, g$Y+a$height-vstep*i))
+      }
+    }
+  }
+  else
+  {
+    stop("points_arrangement is not a valid arrangement of points")
+  }
+  
   colnames(newpoints)<-c("X","Y")
   
   parameters<-smoothing(model$solutions,a$anchorpoints,model$delta,as.matrix(newpoints),model$kernel_id)
