@@ -1,3 +1,4 @@
+#' @brief                      generate various plots in order to better visualize the model built 
 #' @param model                an object returned by findsolutions.lsm
 #' @param a                    the object returned by findanchorpoints.lsm used to generate the model
 #' @param y                    the vector with the values of f(*) used to generate the model
@@ -98,10 +99,10 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   return(allpoints)
 }
 
-
+#' @brief               sequential plot of all the paramters obtained by smoothing
+#' @param allpoints     a dataframe containing the coordinates and the value of the parameters
 plot.parameters<-function(allpoints)
 {
-  ###PARAMETERS
   for (i in 3:dim(allpoints)[2])
   {
     par(ask=TRUE)
