@@ -6,10 +6,6 @@
 
 using namespace cd;
 
-///-------------------------------------------------
-/// KERNEL FUNCTIONS
-///-------------------------------------------------
-
 scalar gaussian(const vector &x, const vector &y, const scalar &epsilon)
 {
 	return std::exp(-(x - y).squaredNorm()/(2*epsilon*epsilon));
@@ -19,12 +15,6 @@ kernelfunction make_kernel(const std::string &id)
 {
  	return gaussian;
 }
-
-///--------------------------------------------------------------------------
-
-///-------------------------------------------------
-/// KERNEL CLASS
-///-------------------------------------------------
 
 kernel::kernel(const std::string &id, const scalar &epsilon_): epsilon(epsilon_), f(make_kernel(id)) {};
 
@@ -37,7 +27,6 @@ scalar kernel::operator()(const vector &x, const vector &y) const
 	else
 		return f(x, y, epsilon);
 }
-
 
 void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 {
@@ -91,7 +80,6 @@ void kernel::build_simple_kernel(const matrixptr &d)
 		}
 	}
 }
-
 
 void kernel::build_simple_kernel(const matrixptr &d, const scalar &epsilon_)
 {

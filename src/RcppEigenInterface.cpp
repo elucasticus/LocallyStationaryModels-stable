@@ -184,10 +184,7 @@ Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anc
     return Rcpp::List::create(Rcpp::Named("parameters")=result);
 }
 
-
-/// FUNZIONI NON UTILIZZATE DA SISTEMARE DA QUI IN GIU
-
-
+// DA SISTEMARE E/O ELIMINARE
 // [[Rcpp::export]]
 Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, 
     const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
@@ -217,7 +214,7 @@ Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
                               Rcpp::Named("epsilon")=epsilon_);   
 }
 
-
+// DA SISTEMARE E/O ELIMINARE
 // [[Rcpp::export]]
 Rcpp::List rawmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, 
     const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
@@ -244,7 +241,7 @@ Rcpp::List rawmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Ei
                               Rcpp::Named("epsilon")=epsilon_);   
 }
 
-
+// DA SISTEMARE E/O COMMENTARE
 // [[Rcpp::export]]
 Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilonmin, const double& epsilonmax, const unsigned int& nepsilons
                       , const unsigned int& n_angles, 
@@ -276,7 +273,7 @@ Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const
                             Rcpp::Named("epsilon")=epsilon_);   
 }
 
-
+// DA SISTEMARE E/O COMMENTARE
 // [[Rcpp::export]]
 Rcpp::List buildgrid(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
                      const unsigned int& n_intervals, const std::string &kernel_id) {
@@ -288,8 +285,6 @@ Rcpp::List buildgrid(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const E
   samplevar_.build_samplevar(dd, anchorpointsptr, yy);
   matrixptr empvarioptr = samplevar_.get_variogram();
   matrixIptr  gridptr = samplevar_.get_grid();
-  
-  
   
   return Rcpp::List::create(Rcpp::Named("empiricvariogram")=*(empvarioptr),
                             Rcpp::Named("grid")=*(gridptr)

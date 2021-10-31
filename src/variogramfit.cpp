@@ -21,7 +21,6 @@ cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &la
                      + lambda1 * lambda1 * xy * sin(2 * phi) - lambda2 * lambda2 * xy * sin(2 * phi)) / (lambda1 * lambda1 * lambda2 * lambda2));
 }
 
-
 cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
@@ -59,7 +58,6 @@ cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::sca
     return sigma * sigma * (1 - exp(-h*h));
 }
 
-
 cd::variogramfunction make_variogramiso(const std::string &id)
 {
     if(id == "exponential" || id == "esponenziale")
@@ -70,12 +68,6 @@ cd::variogramfunction make_variogramiso(const std::string &id)
         return gaussian;
     return exponential;
 }
-
-
-
-/**
- * DECLARAION OF FUNZIONEDAOTTIMIZZARE FUNCTIONS
-*/
 
 cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
 {
@@ -89,7 +81,6 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
     vector empiricgamma = empiricvariogram->col(x0);
     return w.transpose() * (truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma);
 }
-
 
 cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &grad)
 {
@@ -118,23 +109,14 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
     return w.transpose() * (truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma);
 }
 
-
 funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, unsigned int x0_, 
     const std::string &id): empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), x0(x0_), gammaiso(make_variogramiso(id)) {};
-
-
-
-
-/**
- * DECLARATIONS OF OPT FUNCTIONS
-*/
 
 opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_, const cd::vector &initialparameters_): 
     empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_), initialparameters(initialparameters_) 
 {
     solutions = std::make_shared<matrix>(matrix::Zero(empiricvariogram->cols(),initialparameters.size()));
 };
-
 
 vector opt::findonesolution(const unsigned int pos) const
 {
@@ -161,8 +143,6 @@ vector opt::findonesolution(const unsigned int pos) const
         ub(e)=inf;
     ub(2) = M_PI_2;
     
-
-    
     cd::vector x(initialparameters);
     // x will be overwritten to be the best point found
     double fx;
@@ -179,23 +159,6 @@ vector opt::findonesolution(const unsigned int pos) const
     return x;
 }
 
-
-/*
-void opt::findsomesolutions(const vectorind &pos)
-{    
-    #pragma omp parallel for  //RIMUOVERE IL COMMENTO FA CRASHARE R
-    for (unsigned int i = 0; i < pos.size(); ++i)
-    {
-        vector sol = findonesolution(pos[i]);
-        for (unsigned int j = 0; j < initialparameters.size(); ++j)
-        {
-            solutions->operator()(pos[i], j) = sol[j];
-        }
-    }
-}
-*/
-
-
 void opt::findallsolutions()
 {
     #pragma omp parallel for //RIMUOVERE IL COMMENTO FA CRASHARE R
@@ -208,6 +171,5 @@ void opt::findallsolutions()
         }
     }
 }
-
 
 cd::matrixptr opt::get_solutions() const {return solutions;}

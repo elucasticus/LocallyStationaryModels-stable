@@ -8,10 +8,6 @@
 
 using namespace cd;
 
-///-------------------------------------------------
-/// GRID FUNCTIONS
-///-------------------------------------------------
-
 matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
 {
     if (n_angles == 0 || n_intervals == 0)
@@ -53,17 +49,10 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigne
     }
 }
 
-
 gridfunction make_grid(const std::string &id)
 {
     return Pizza;
 }
-
-///--------------------------------------------------------------------------
-
-///-------------------------------------------------
-/// GRID CLASS
-///-------------------------------------------------
 
 void grid::build_grid(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals)
 {

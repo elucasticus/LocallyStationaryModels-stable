@@ -111,7 +111,7 @@ plot.parameters<-function(allpoints)
   }
 }
 
-
+# DA COMMENTARE
 plotgrid<-function(d,grid,index){
   
   plot(d,xlab="Latitude",ylab="Longitude")
@@ -129,7 +129,7 @@ plotgrid<-function(d,grid,index){
   }
 }
 
-
+# DA COMMENTARE
 plotvario<-function(n_angles,n_intervals,empvariogram,pos,epsilon){
   b=2*epsilon
   diminterval = b/n_intervals

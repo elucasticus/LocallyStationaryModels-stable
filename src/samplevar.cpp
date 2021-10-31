@@ -32,7 +32,6 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
         variogram = std::make_shared<matrix>(matrix::Zero(hh+1, N));
         denominators = std::make_shared<matrix>(matrix::Zero(hh+1, N));
 
-
         matrix Y(n, n);
 
         #pragma omp for
@@ -79,7 +78,6 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
         build_squaredweights();
     }
 }
-
 
 void samplevar::build_squaredweights()
 {

@@ -38,8 +38,6 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
     return numerator/denominator;
 }
 
-
-
 smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id): 
     anchorpos(anchorpos_), solutions(solutions_), kernel_(kernel_id, min_delta)
 {
@@ -78,27 +76,11 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
     kernel_.build_simple_kernel(anchorpos, optimal_delta);
 }
 
-
-
 smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const double delta, const std::string &kernel_id): anchorpos(anchorpos_),  solutions(solutions_),
     kernel_(kernel_id, delta), optimal_delta(delta)
 {
     kernel_.build_simple_kernel(anchorpos);
 }
-
-/*
-template<class Input>
-cd::vector smt::smooth_vector(const Input &pos) const
-{
-    vector result(solutions->cols());
-    #pragma omp parallel for
-    for (unsigned int i=0; i<solutions->cols(); ++i)
-        result(i) = smooth_value(pos, i);
-
-    return result;
-}
-*/
-
 
 const cd::matrixptr smt::get_solutions() const
 {
