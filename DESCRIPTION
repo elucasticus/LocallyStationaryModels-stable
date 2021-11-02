@@ -3,8 +3,12 @@ Type: Package
 Title: What the package does (short line)
 Version: 1.0
 Date: 2021-09-09
-Authors@R: c(person("Luca", "Crippa", role = "aut", email = "luca7.crippa@mail.polimi.it"), person("Giacomo", "De Carlo", role = c("aut", "cre"), email = "giacomo.decarlo@mail.polimi.it"))
+Authors@R: c(person("Luca", "Crippa", role = "aut", 
+                    email = "luca7.crippa@mail.polimi.it"), 
+             person("Giacomo", "De Carlo", role = c("aut", "cre"), 
+                    email = "giacomo.decarlo@mail.polimi.it"))
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Imports: Rcpp , RcppEigen , ggplot2, ggforce, cowplot
 LinkingTo: Rcpp  , RcppEigen , ggplot2, ggforce, cowplot
+NeedCompilation: yes
