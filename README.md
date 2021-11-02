@@ -2,7 +2,8 @@
 ***authors:*** Luca Crippa, Giacomo De Carlo<br>
 ***mailto:*** <luca7.crippa@mail.polimi.it>, <giacomo.decarlo@mail.polimi.it><br>
 ## **Latest updates**
-⚠️ The use of the function `variogramlsm(...)` is now deprecated. Use `variogram.lsm(...)` instead.
+*01/11* Added the function `cv.lsm(...)` to calculate the mean squared error via cross-validation.
+*30/10* ⚠️ The use of the function `variogramlsm(...)` is now deprecated. Use `variogram.lsm(...)` instead.
 ## **Installation**
 ### **Step 1: install R and Rstudio (optional)**
 #### **Windows:**
