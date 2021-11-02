@@ -8,7 +8,7 @@ library(sp)           ## Data management
 # Load the data
 data(meuse)
 d <- cbind(meuse$x, meuse$y)
-y <- meuse$cadmium
+y <- meuse$elev
 
 # Find anchorpoints
 a <- find_anchorpoints.lsm(d,12)
@@ -23,8 +23,8 @@ mypoints<-plot.lsm(model = solu, a = a, y = y, d = d, n_points = 10, points_arra
 
 # Kriging on the original data
 x11()
-previsions <- predict.lsm(solu, dnew, ynew, dnew)
-max(previsions$ypredicted - ynew)
+previsions <- predict.lsm(solu, d, y, d)
+max(previsions$ypredicted - y)
 
 # Test the performace of our model via cross-validation
 cv.lsm(y,d,a$anchorpoints,350,8,8,"gaussian","exponential", c(200,200,0.01,100))
