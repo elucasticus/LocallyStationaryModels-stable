@@ -26,19 +26,12 @@ using namespace std::chrono;
 Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cubotti) {
     auto start = high_resolution_clock::now();
     
-    
-    //d = stampante::caricamatrice("d.csv");
-   //y = stampante::caricavettore("y.csv");
-   
-
     matrixptr dd = std::make_shared<matrix>(d);
 
     ancora a(dd, n_cubotti);
 
     cd::matrix anchorpos = a.find_anchorpoints();
    
-    
-    
     return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpos,
                             Rcpp::Named("center_x")=a.get_center().first,
                             Rcpp::Named("center_y")=a.get_center().second,
@@ -153,7 +146,7 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
     predictor predictor_(variogram_id, yy, smt_, epsilon, dd);
     
-    vector predicted_ys(predictor_.predict_y<cd::matrix, cd::vector>(positions));
+    matrix predicted_ys(predictor_.predict_y<cd::matrix, cd::matrix>(positions));
     vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));
     
     auto stop = high_resolution_clock::now();
@@ -161,8 +154,9 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     
     Rcpp::Rcout << predicted_ys.size() << " pairs of values predicted in " << duration.count() << " ms" << std::endl;
 
-    return Rcpp::List::create(Rcpp::Named("ypredicted")=predicted_ys,
-                              Rcpp::Named("predictedmean")=predicted_means);    
+    return Rcpp::List::create(Rcpp::Named("ypredicted")=predicted_ys.col(0),
+                              Rcpp::Named("predictedmean")=predicted_means,
+                              Rcpp::Named("krigingvariance")=predicted_ys.col(1));    
 }
 
 /**

@@ -41,7 +41,7 @@ private:
      * \param params            the params obtained by smoothing in the center of the neighbourhood
      * \param neighbourhood     a "neighbourhood" vector build with the previous functions
     */
-    cd::vector build_etakriging(const cd::vector &params,const cd::vector &pos) const;
+    std::pair<cd::vector, double> build_etakriging(const cd::vector &params,const cd::vector &pos) const;
     
 public:
     /**

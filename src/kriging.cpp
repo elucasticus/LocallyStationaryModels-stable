@@ -66,7 +66,7 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
     return eta;
 }
 
-cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
+std::pair<cd::vector, double> predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
 {
     unsigned int n = d->rows();
     
@@ -91,8 +91,8 @@ cd::vector predictor::build_etakriging(const cd::vector &params,const cd::vector
     
     etakriging =  correlationmatrix.colPivHouseholderQr().solve(C0);
     
-    //double krigingvariance = params(3) - C0.transpose()*etakriging;
-    return etakriging;
+    double krigingvariance = params(3)*params(3) - C0.transpose()*etakriging;
+    return std::make_pair(etakriging, krigingvariance);
 }
 
 template<>
@@ -144,7 +144,7 @@ cd::vector predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos
 }
 
 template<>
-double predictor::predict_y<cd::vector, double>(const cd::vector &pos) const
+std::pair<double,double> predictor::predict_y<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
 {
     unsigned int n=d->rows();
     double m0 = predict_mean<cd::vector, double>(pos);
@@ -152,22 +152,27 @@ double predictor::predict_y<cd::vector, double>(const cd::vector &pos) const
 
     cd::vector params = smt_.smooth_vector(pos);
 
-    vector etakriging(build_etakriging(params, pos));
+    std::pair<vector, double> fulletakriging(build_etakriging(params, pos));
+    vector &etakriging = fulletakriging.first;
 
     #pragma omp parallel for reduction(+:result)
     for (unsigned int i=0; i<n; ++i)
         result += etakriging(i)*(y->operator()(i)-means->operator()(i)); //sistemare predict mean 
     
-    return result;
+    return std::make_pair(result, fulletakriging.second);
 }
 
 template<>
-cd::vector predictor::predict_y<cd::matrix, cd::vector>(const cd::matrix &pos) const
+cd::matrix predictor::predict_y<cd::matrix, cd::matrix>(const cd::matrix &pos) const
 {
-    vector result(pos.rows());
+    matrix result(pos.rows(), 2);
     #pragma omp parallel for
     for (size_t i=0; i<pos.rows(); ++i)
-        result(i) = predict_y<cd::vector, double>(pos.row(i));
+    {
+        std::pair<double, double> prediction = predict_y<cd::vector, std::pair<double,double>>(pos.row(i));
+        result(i, 0) = prediction.first;
+        result(i, 1) = prediction.second;
+    }
     return result;
 }
 
