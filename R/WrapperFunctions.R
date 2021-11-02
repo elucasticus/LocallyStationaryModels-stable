@@ -3,9 +3,9 @@
 #' @param id                  the type of variogram to be used
 #' @param initial.position    the starting position to be given to the optimizer
 #' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
-findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
+findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE, print = TRUE)
 {
-  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position,vario$epsilon)
+  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position,vario$epsilon,print)
   if (bool)
   {
     for (i in 1:dim(result$solutions)[1])
@@ -29,9 +29,9 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE)
 #' @param y       the vector y used to generate the solutions
 #' @param d       the matrix d used to generate the solutions
 #' @param bool    if set to TRUE plot the solutions
-predict.lsm<-function(sol, newpos, y, d, bool = TRUE)
+predict.lsm<-function(sol, newpos, y, d, bool = TRUE, print = TRUE)
 {
-  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id)
+  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id,print)
   if (bool)
   {
     newpos <- as.data.frame(newpos)
@@ -74,9 +74,9 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 #' @param n_angles      the number of angles for the grid
 #' @param n_intervals   the number of intervals for the grid
 #' @param kernel_id     the type of kernel to be used
-variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
+variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print=TRUE)
 {
-  vario <- variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
+  vario <- variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id,print)
   vario$kernel_id <- kernel_id
   return(vario)
 }

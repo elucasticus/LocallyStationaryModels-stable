@@ -51,7 +51,7 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
 */
 // [[Rcpp::export]]
 Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
-    const unsigned int& n_intervals, const std::string &kernel_id) {
+    const unsigned int& n_intervals, const std::string &kernel_id,const bool print) {
     
     auto start = high_resolution_clock::now();
   
@@ -65,7 +65,8 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
     
-    Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
+    if(print)
+      Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
 
     return Rcpp::List::create(Rcpp::Named("kernel")=*(samplevar_.get_kernel()),
                               Rcpp::Named("grid")=*(samplevar_.get_grid()),
@@ -91,7 +92,7 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
 */
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
-    const std::string &kernel_id, const Eigen::VectorXd &parameters, const double &epsilon) {
+    const std::string &kernel_id, const Eigen::VectorXd &parameters, const double &epsilon,const bool print) {
     
     auto start = high_resolution_clock::now();
   
@@ -111,7 +112,8 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
     
-    Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
+    if(print)
+      Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
 
     return Rcpp::List::create(Rcpp::Named("solutions")=*(opt_.get_solutions()),
                               Rcpp::Named("delta")=delta_ottimale,
@@ -134,7 +136,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
 */
 // [[Rcpp::export]]
 Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
-    const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id) {
+    const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id, const bool print) {
 
     auto start = high_resolution_clock::now();
   
@@ -152,7 +154,8 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
     
-    Rcpp::Rcout << predicted_ys.size() << " pairs of values predicted in " << duration.count() << " ms" << std::endl;
+    if(print)
+      Rcpp::Rcout << predicted_ys.rows() << " pairs of values predicted in " << duration.count() << " ms" << std::endl;
 
     return Rcpp::List::create(Rcpp::Named("ypredicted")=predicted_ys.col(0),
                               Rcpp::Named("predictedmean")=predicted_means,

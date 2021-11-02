@@ -1,34 +1,57 @@
+# Clean the environment
+rm(list = ls())
+
+# Install and compile the package
+install.packages("devtools")
+library(devtools)
+devtools::install_github("giacomodecarlo/LocallyStationaryModels")
+
+
+# Load the libraries
 library(LocallyStationaryModels)
-library(ggforce)
-library(cowplot)
-library(sp)           ## Data management
+
+install.packages("sp")
+library(sp)           ## Only for meuse dataset
+
+# Load the data
 data(meuse)
+d<- cbind(meuse$x, meuse$y)
 y<-meuse$cadmium
 
+head(d)
+head(y)
+
+# Find anchorpoints
+a<-find_anchorpoints.lsm(dataset = d,n = 12)
+# Build the empiric variogram
+vario<-variogramlsm(y = y,d = d,anchorpoints = a$anchorpoints,epsilon = 380,n_angles = 8,n_intervals = 8,kernel_id = "gaussian")
 
 
+# Plot the segments of pairs of coordinates belonging to grid cell of given index
+plotgrid(d = d,grid = vario$grid,index = 3)
 
-dnew=(d[!(d[,1]>180000&d[,2]<330500),])
-ynew=y[!(d[,1]>180000&d[,2]<330500)]
-a<-find_anchorpoints(dnew,30)
+#Plot the anisotropic empiric variogram
+plotvario(n_angles = 8,n_intervals = 8,vario$empiricvariogram,pos=22,epsilon = vario$epsilon)
+#This function plots the empiric variogram for the anchor points n. "pos", along all the n_angles directions of anisotropy
 
-r<-rawmodel(ynew,dnew,a$anchorpoints,c(200,200,0.01,100),350,8,8,"gaussian","esponenziale")
+
+# Find the parameters that minimize the nonlinear wls problem (anisotropy, variance and others)
+solu<-findsolutions.lsm(vario = vario, id = "esponenziale", initial.position = c(200,200,0.01,100))
+solugaussian<-findsolutions.lsm(vario = vario, id = "gaussian", initial.position = c(200,200,0.01,100,10)) #lambda1,lambda2,phi,sigma,nu
+solumatern<-findsolutions.lsm(vario = vario, id = "matern", initial.position = c(200,200,0.01,100,10)) #lambda1,lambda2,phi,sigma,nu
+
+#Variograms implemented: "exponential" "matern" "gaussian"
+
+# Plot of the solutions
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
-mypoints <- plot.lsm(r,a,ynew,dnew)
-
-griglia2<-buildgrid(y,d,a$anchorpoints,500,8,8,"gaussian")
-plotgrid(d,griglia2$grid ,9)
-
-plotvario(8,8,griglia2$empiricvariogram,5,350)
+mypoints<-plot.lsm(model = solu,a = a,y = y,d = d)
+mypoints<-plot.lsm(model = solugaussian,a = a,y = y,d = d)
+mypoints<-plot.lsm(model = solumatern,a = a,y = y,d = d)
 
 
-###IN ALTERNATIVA
-vario<-variogramlsm(y,d,a$anchorpoints,350,8,8,"gaussian")
-solu<-findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, "esponenziale", c(200,200,0.01,100),vario$epsilon)
-mypoints<-plot.lsm(solu,a,ynew,dnew)
+# Kriging on the original data
+x11(height = 600, width = 800, ypos = -100, xpos = -100)
+previsions <- predict.lsm(sol = solu,newpos =  d, y = y,d =  d)#solugaussian #solumatern
+max(abs(previsions$ypredicted - y))
+#This function can be used to perform kriging in any new set of coordinates "newpos"
 
-
-###IN ALTERNATIVA (DA SISTEMARE)
-vario<-variogramlsm(ynew,dnew,a$anchorpoints,300,8,8,"gaussian")
-solu<-findsolutions.lsm(vario, "esponenziale", c(200,200,0.01,100))
-previsions <- predict.lsm(solu, dnew, ynew, dnew)

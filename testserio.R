@@ -8,18 +8,14 @@ library(sp)           ## Data management
 # Load the data
 data(meuse)
 d <- cbind(meuse$x, meuse$y)
-y<-meuse$elev
+y<-meuse$cadmium
 
-# Delete problematic data points
-dnew=(d[!(d[,1]>180000&d[,2]<330500),])
-ynew=y[!(d[,1]>180000&d[,2]<330500)]
-
-# dnew <- d
-# ynew <- y
 
 
 head(dnew)
 head(ynew)
+
+cv.lsm(y,d,a$anchorpoints,350,8,8,"gaussian","exponential", c(200,200,0.01,100))
 
 # Find anchorpoints
 a<-find_anchorpoints.lsm(dnew,12)
@@ -82,3 +78,5 @@ s1<-findsolutions.lsm(v1, "esponenziale", c(200,200,0.01,100))
 v2<-variogramlsm(ynew,dnew,a$anchorpoints,3000,8,8,"gaussian")
 # Find the solutions
 s2<-findsolutions.lsm(v2, "esponenziale", c(200,200,0.01,100))
+
+
