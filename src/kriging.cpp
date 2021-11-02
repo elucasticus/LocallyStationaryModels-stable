@@ -37,6 +37,7 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 {
     unsigned int n = neighbourhood.size();
     matrix gamma(n,n);
+    variogramfunction &gammaiso = *(gammaisoptr);
 
     #pragma omp parallel for
     for (unsigned int i=0; i<n; ++i)
@@ -74,6 +75,7 @@ std::pair<cd::vector, double> predictor::build_etakriging(const cd::vector &para
     vector C0(n);
     matrix correlationmatrix(n,n);
     double sigma2 = params[3]*params[3];
+    variogramfunction &gammaiso = *(gammaisoptr);
     
     #pragma omp parallel for
     for (unsigned int i=0; i<n; ++i)
@@ -176,7 +178,7 @@ cd::matrix predictor::predict_y<cd::matrix, cd::matrix>(const cd::matrix &pos) c
     return result;
 }
 
-predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaiso(make_variogramiso(id)), y(y_), smt_(mysmt), b(b_), d(d_) 
+predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaisoptr(make_variogramiso(id)), y(y_), smt_(mysmt), b(b_), d(d_) 
 {
     means = std::make_shared<vector>(y_->size());
     #pragma omp parallel for
@@ -184,4 +186,4 @@ predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &
         means->operator()(i) = predict_mean<unsigned int, double>(i);
 };
 
-predictor::predictor(): gammaiso(make_variogramiso("esponenziale")) {}
+predictor::predictor(): gammaisoptr(make_variogramiso("esponenziale")) {}

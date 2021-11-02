@@ -20,7 +20,7 @@ struct funzionedaottimizzare
     const cd::vectorptr x;
     const cd::vectorptr y;
     unsigned int x0;
-    cd::variogramfunction gammaiso;
+    std::unique_ptr<variogramfunction> gammaisoptr;
 
     /**
      * \brief                       constructor

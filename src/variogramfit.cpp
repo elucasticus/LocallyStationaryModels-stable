@@ -12,6 +12,7 @@ using namespace LBFGSpp;
 
 cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
 {
+    variogramfunction &gammaiso = *(gammaisoptr);
     vector w = squaredweights->row(x0);
     vector truegamma(empiricvariogram->rows());
 
@@ -25,6 +26,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
 
 cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &grad)
 {
+    variogramfunction &gammaiso = *(gammaisoptr);
     vector w = squaredweights->row(x0);
     vector truegamma(empiricvariogram->rows());
 
@@ -51,7 +53,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
 }
 
 funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, unsigned int x0_, 
-    const std::string &id): empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), x0(x0_), gammaiso(make_variogramiso(id)) {};
+    const std::string &id): empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), x0(x0_), gammaisoptr(make_variogramiso(id)) {};
 
 opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_, const cd::vector &initialparameters_): 
     empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_), initialparameters(initialparameters_) 

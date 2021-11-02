@@ -6,7 +6,7 @@
 
 using namespace cd;
 
-cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y)
+cd::scalar variogramfunction::compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y)
 {
     scalar xx = x * x;
     scalar yy = y * y;
@@ -17,7 +17,7 @@ cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &la
                      + lambda1 * lambda1 * xy * sin(2 * phi) - lambda2 * lambda2 * xy * sin(2 * phi)) / (lambda1 * lambda1 * lambda2 * lambda2));
 }
 
-cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+cd::scalar exponential::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
     double lambda2 = params[1];
@@ -28,7 +28,7 @@ cd::scalar exponential(const cd::vector &params, const cd::scalar &x, const cd::
     return sigma * sigma * (1 - exp(-h));
 }
 
-cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+cd::scalar matern::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
     double lambda2 = params[1];
@@ -43,7 +43,7 @@ cd::scalar matern(const cd::vector &params, const cd::scalar &x, const cd::scala
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));
 }
 
-cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+cd::scalar gaussian::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
     double lambda2 = params[1];
@@ -54,13 +54,13 @@ cd::scalar gaussian(const cd::vector &params, const cd::scalar &x, const cd::sca
     return sigma * sigma * (1 - exp(-h*h));
 }
 
-cd::variogramfunction make_variogramiso(const std::string &id)
+std::unique_ptr<variogramfunction> make_variogramiso(const std::string &id)
 {
     if(id == "exponential" || id == "esponenziale")
-        return exponential;
+        return std::make_unique<exponential>();
     if(id == "matern" || id == "Matern")
-        return matern;
+        return std::make_unique<matern>();
     if(id == "gaussian" || id == "Gaussian")
-        return gaussian;
-    return exponential;
+        return std::make_unique<gaussian>();
+    return std::make_unique<exponential>();
 }

@@ -15,7 +15,7 @@
 class predictor
 {
 private:
-    cd::variogramfunction gammaiso;
+    std::unique_ptr<variogramfunction> gammaisoptr;
     cd::vectorptr y = nullptr;
     smt smt_;
     double b;
