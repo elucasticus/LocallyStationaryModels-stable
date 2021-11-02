@@ -43,6 +43,18 @@ public:
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
 };
 
+class maternNuFixed: public variogramfunction
+{
+private:
+    double NU = 0.5;
+public:
+    maternNuFixed(const double &NU_): NU(NU_) {};
+    /**
+     * \brief   return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+    */
+    cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
+};
+
 class gaussian: public variogramfunction
 {
 public:
