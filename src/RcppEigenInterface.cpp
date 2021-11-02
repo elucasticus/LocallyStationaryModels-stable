@@ -184,63 +184,6 @@ Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anc
     return Rcpp::List::create(Rcpp::Named("parameters")=result);
 }
 
-// DA SISTEMARE E/O ELIMINARE
-// [[Rcpp::export]]
-Rcpp::List fullmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, 
-    const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
-    auto start = high_resolution_clock::now(); 
-
-    matrixptr dd = std::make_shared<matrix>(d);
-    vectorptr yy = std::make_shared<vector>(y);
-    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-    
-    cvinterface CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals, kernel_id, variogram_id);
-    double delta = CD.get_delta();
-    double epsilon_ = CD.get_epsilon();
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    
-    Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
-  
-    return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
-                              Rcpp::Named("values")=y,
-                              Rcpp::Named("kernel")=*(CD.get_kernel()),
-                              Rcpp::Named("grid")=*(CD.get_grid()),
-                              Rcpp::Named("empiricvariogram")=*(CD.get_empiricvariogram()),
-                              Rcpp::Named("solutions")=*(CD.get_solutions()),
-                              Rcpp::Named("ypredicted")=CD.predict_y<cd::matrix, cd::vector>(anchorpoints),
-                              Rcpp::Named("predictedmean")=CD.predict_mean<cd::matrix, cd::vector>(anchorpoints),
-                              Rcpp::Named("delta")=delta,
-                              Rcpp::Named("epsilon")=epsilon_);   
-}
-
-// DA SISTEMARE E/O ELIMINARE
-// [[Rcpp::export]]
-Rcpp::List rawmodel(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilon, const unsigned int& n_angles, 
-    const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
-    auto start = high_resolution_clock::now(); 
-
-    matrixptr dd = std::make_shared<matrix>(d);
-    vectorptr yy = std::make_shared<vector>(y);
-    matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-    
-    cvinterface CD(dd, yy, anchorpointsptr , parameters,epsilon, n_angles,n_intervals, kernel_id, variogram_id);
-    double delta = CD.get_delta();
-    double epsilon_ = CD.get_epsilon();
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    
-    Rcpp::Rcout << "task successfully completed in " << duration.count() << " ms" << std::endl;
-  
-    return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
-                              Rcpp::Named("kernel")=*(CD.get_kernel()),
-                              Rcpp::Named("grid")=*(CD.get_grid()),
-                              Rcpp::Named("empiricvariogram")=*(CD.get_empiricvariogram()),
-                              Rcpp::Named("solutions")=*(CD.get_solutions()),
-                              Rcpp::Named("delta")=delta,
-                              Rcpp::Named("epsilon")=epsilon_);   
-}
-
 // DA SISTEMARE E/O COMMENTARE
 // [[Rcpp::export]]
 Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilonmin, const double& epsilonmax, const unsigned int& nepsilons
@@ -271,22 +214,4 @@ Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const
                             Rcpp::Named("predictedmean")=CD.predict_mean<cd::matrix, cd::vector>(anchorpoints),
                             Rcpp::Named("delta")=delta,
                             Rcpp::Named("epsilon")=epsilon_);   
-}
-
-// DA SISTEMARE E/O COMMENTARE
-// [[Rcpp::export]]
-Rcpp::List buildgrid(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
-                     const unsigned int& n_intervals, const std::string &kernel_id) {
-
-  samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon);
-  matrixptr dd = std::make_shared<matrix>(d);
-  vectorptr yy = std::make_shared<vector>(y);
-  matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-  samplevar_.build_samplevar(dd, anchorpointsptr, yy);
-  matrixptr empvarioptr = samplevar_.get_variogram();
-  matrixIptr  gridptr = samplevar_.get_grid();
-  
-  return Rcpp::List::create(Rcpp::Named("empiricvariogram")=*(empvarioptr),
-                            Rcpp::Named("grid")=*(gridptr)
-  );   
 }
