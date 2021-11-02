@@ -21,19 +21,3 @@ smoothing <- function(solutions, anchorpoints, delta, positions, kernel_id) {
     .Call('_LocallyStationaryModels_smoothing', PACKAGE = 'LocallyStationaryModels', solutions, anchorpoints, delta, positions, kernel_id)
 }
 
-fullmodel <- function(y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id) {
-    .Call('_LocallyStationaryModels_fullmodel', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id)
-}
-
-rawmodel <- function(y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id) {
-    .Call('_LocallyStationaryModels_rawmodel', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id)
-}
-
-fullmodelCV <- function(y, d, anchorpoints, parameters, epsilonmin, epsilonmax, nepsilons, n_angles, n_intervals, kernel_id, variogram_id) {
-    .Call('_LocallyStationaryModels_fullmodelCV', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, parameters, epsilonmin, epsilonmax, nepsilons, n_angles, n_intervals, kernel_id, variogram_id)
-}
-
-buildgrid <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id) {
-    .Call('_LocallyStationaryModels_buildgrid', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id)
-}
-

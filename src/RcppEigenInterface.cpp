@@ -5,8 +5,12 @@
 /// Under MIT license
 
 #include <RcppEigen.h>
-#include "cvinterface.hpp"
+#include "samplevar.hpp"
+#include "variogramfit.hpp"
+#include "smooth.hpp"
+#include "kriging.hpp"
 #include "ancora.hpp"
+#include <chrono>
 using namespace cd;
 using namespace LBFGSpp;
 using namespace std::chrono;
@@ -182,36 +186,4 @@ Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anc
         result.row(i)=smt_.smooth_vector(positions.row(i));
 
     return Rcpp::List::create(Rcpp::Named("parameters")=result);
-}
-
-// DA SISTEMARE E/O COMMENTARE
-// [[Rcpp::export]]
-Rcpp::List fullmodelCV(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const Eigen::VectorXd &parameters, const double& epsilonmin, const double& epsilonmax, const unsigned int& nepsilons
-                      , const unsigned int& n_angles, 
-                     const unsigned int& n_intervals, const std::string &kernel_id, const std::string &variogram_id) {
-  Rcpp::Rcout << "WARNING: the execution of this function may require a lot of time, proceed only at your own risk" << std::endl;
-  auto start = high_resolution_clock::now(); 
-  
-  matrixptr dd = std::make_shared<matrix>(d);
-  vectorptr yy = std::make_shared<vector>(y);
-  matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-  
-  cvinterface CD(dd, yy, anchorpointsptr , parameters, epsilonmin, epsilonmax, nepsilons, n_angles,n_intervals, kernel_id, variogram_id);
-  double delta = CD.get_delta();
-  double epsilon_ = CD.get_epsilon();
-  auto stop = high_resolution_clock::now();
-  auto duration = duration_cast<milliseconds>(stop - start);
-  
-  Rcpp::Rcout << "task successfully completed in " << duration.count() << "ms" << std::endl;
-  
-  return Rcpp::List::create(Rcpp::Named("anchorpoints")=anchorpoints,
-                            Rcpp::Named("values")=y,
-                            Rcpp::Named("kernel")=*(CD.get_kernel()),
-                            Rcpp::Named("grid")=*(CD.get_grid()),
-                            Rcpp::Named("empiricvariogram")=*(CD.get_empiricvariogram()),
-                            Rcpp::Named("solutions")=*(CD.get_solutions()),
-                            Rcpp::Named("ypredicted")=CD.predict_y<cd::matrix, cd::vector>(anchorpoints),
-                            Rcpp::Named("predictedmean")=CD.predict_mean<cd::matrix, cd::vector>(anchorpoints),
-                            Rcpp::Named("delta")=delta,
-                            Rcpp::Named("epsilon")=epsilon_);   
 }

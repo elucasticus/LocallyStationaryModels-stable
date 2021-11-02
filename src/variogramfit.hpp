@@ -10,7 +10,8 @@
 #include <vector>
 
 /**
- * \brief   a very simple "helper" function to calculate the value of the parameter "h" needed in different functions
+ * \brief   convert the isotropic variogram in the equivalent anisotropic one calculating the norm of the spatial lag rotated and
+ *          expanded according to the eigenvalues and eigenvector of the anisotropy matrix
 */
 cd::scalar compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y);
 

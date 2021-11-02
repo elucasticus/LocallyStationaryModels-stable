@@ -93,82 +93,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// fullmodel
-Rcpp::List fullmodel(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const Eigen::VectorXd& parameters, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const std::string& variogram_id);
-RcppExport SEXP _LocallyStationaryModels_fullmodel(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP parametersSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP variogram_idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type parameters(parametersSEXP);
-    Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_angles(n_anglesSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_intervals(n_intervalsSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type variogram_id(variogram_idSEXP);
-    rcpp_result_gen = Rcpp::wrap(fullmodel(y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rawmodel
-Rcpp::List rawmodel(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const Eigen::VectorXd& parameters, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const std::string& variogram_id);
-RcppExport SEXP _LocallyStationaryModels_rawmodel(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP parametersSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP variogram_idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type parameters(parametersSEXP);
-    Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_angles(n_anglesSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_intervals(n_intervalsSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type variogram_id(variogram_idSEXP);
-    rcpp_result_gen = Rcpp::wrap(rawmodel(y, d, anchorpoints, parameters, epsilon, n_angles, n_intervals, kernel_id, variogram_id));
-    return rcpp_result_gen;
-END_RCPP
-}
-// fullmodelCV
-Rcpp::List fullmodelCV(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const Eigen::VectorXd& parameters, const double& epsilonmin, const double& epsilonmax, const unsigned int& nepsilons, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const std::string& variogram_id);
-RcppExport SEXP _LocallyStationaryModels_fullmodelCV(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP parametersSEXP, SEXP epsilonminSEXP, SEXP epsilonmaxSEXP, SEXP nepsilonsSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP variogram_idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type parameters(parametersSEXP);
-    Rcpp::traits::input_parameter< const double& >::type epsilonmin(epsilonminSEXP);
-    Rcpp::traits::input_parameter< const double& >::type epsilonmax(epsilonmaxSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type nepsilons(nepsilonsSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_angles(n_anglesSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_intervals(n_intervalsSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type variogram_id(variogram_idSEXP);
-    rcpp_result_gen = Rcpp::wrap(fullmodelCV(y, d, anchorpoints, parameters, epsilonmin, epsilonmax, nepsilons, n_angles, n_intervals, kernel_id, variogram_id));
-    return rcpp_result_gen;
-END_RCPP
-}
-// buildgrid
-Rcpp::List buildgrid(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id);
-RcppExport SEXP _LocallyStationaryModels_buildgrid(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
-    Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_angles(n_anglesSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_intervals(n_intervalsSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
-    rcpp_result_gen = Rcpp::wrap(buildgrid(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
@@ -176,10 +100,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 9},
     {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 9},
     {"_LocallyStationaryModels_smoothing", (DL_FUNC) &_LocallyStationaryModels_smoothing, 5},
-    {"_LocallyStationaryModels_fullmodel", (DL_FUNC) &_LocallyStationaryModels_fullmodel, 9},
-    {"_LocallyStationaryModels_rawmodel", (DL_FUNC) &_LocallyStationaryModels_rawmodel, 9},
-    {"_LocallyStationaryModels_fullmodelCV", (DL_FUNC) &_LocallyStationaryModels_fullmodelCV, 11},
-    {"_LocallyStationaryModels_buildgrid", (DL_FUNC) &_LocallyStationaryModels_buildgrid, 7},
     {NULL, NULL, 0}
 };
 
