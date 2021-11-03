@@ -38,7 +38,7 @@ public:
 	kernel(const std::string &id, const cd::scalar &epsilon_);
 
     /** 
-     * \brief   default constuctor with f gaussian and epsilon equal to -4.162009e-07
+     * \brief   default constuctor with f gaussian and epsilon equal to 1.
     */
     kernel();
 
