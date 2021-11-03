@@ -36,7 +36,7 @@ private:
     double epsilon;
 
     /**
-     * \brief           a "helper" function to build the vector containing the position of the centers of the cells of the grid
+     * \brief           a "helper" function to build the vector containing the position of the centers of the cells of the grid. Each pair of coordinates is assigned to a position of the grid.
      * \param data      a shared pointer to the matrix of the coordinates
     */
     void build_normh(const cd::matrixptr &data);
