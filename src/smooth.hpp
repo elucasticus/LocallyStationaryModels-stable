@@ -10,7 +10,7 @@
 #include <vector>
 
 /**
- * \brief a class to smooth the solutions of the optimization and obtain cooler results
+ * \brief a class to perform kernel smoothing of the paramters estimated in the anchor points to get the non stationary value of the parameters in any position of the domain
 */
 class smt
 {
@@ -36,8 +36,8 @@ public:
      * \param solutions_    a shared pointer to the solutions of the optimization
      * \param anchorpos_    a vector containing the indeces of the anchor position obtained by clustering
      * \param d             a shared pointer to the matrix of the coordinates
-     * \param min_delta     the minimum exponent for the cross-validation of delta
-     * \param max_delta     the maximum exponent for the cross-validation of delta
+     * \param min_delta     the minimum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
+     * \param max_delta     the maximum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
     */
     smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id);
     /**
@@ -73,7 +73,7 @@ public:
     */
     const cd::matrixptr get_solutions() const;
     /**
-     * \brief   return the delta found by cross-validation
+     * \brief   return the delta found by cross-validation evaluated on sigma, the same delta is used for all the parameters
     */
     double get_optimal_delta() const;
     /**
