@@ -71,4 +71,4 @@ public:
     Output predict_y(const Input &pos) const;
 };
 
-#endif //LOCALLY_STATIONARY_MODELS_KRIGIGN
+#endif //LOCALLY_STATIONARY_MODELS_KRIGING
