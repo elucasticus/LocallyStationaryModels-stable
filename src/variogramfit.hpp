@@ -11,7 +11,7 @@
 #include <vector>
 
 /**
- * \brief functor to pass to the optimizer
+ * \brief functor to pass to the optimizer that contains the wls to be minimized
 */
 struct funzionedaottimizzare
 {
@@ -44,7 +44,7 @@ struct funzionedaottimizzare
 
 
 /**
- * \brief a class to find the real value of the parameters of the variogram in each point by optimizing the correspondent funzionedaottimizzare relying on the library LBFGSpp
+ * \brief a class to estimate the value of the parameters of the variogram in each point by optimizing the correspondent funzionedaottimizzare relying on the library LBFGSpp
 */
 class opt
 {
