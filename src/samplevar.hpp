@@ -10,7 +10,7 @@
 #include "grid.hpp"
 
 /**
- * \brief a class to build and store the empiric variogram build from data
+ * \brief a class to build and store the empiric variogram in all the anchor points
 */
 class samplevar
 {
@@ -24,7 +24,7 @@ private:
     unsigned int n_intervals;
 
     /**
-     * \brief a "helper" function which built the squared weights needed by the optimizer
+     * \brief a "helper" function which built the squared weights for the wls problem needed by the optimizer
     */
     void build_squaredweights();
     
@@ -34,7 +34,7 @@ public:
 	 * \param kernel_id     the name of the function you want to use for the kernel
      * \param n_angles      the number of angles to be passed to the grid
      * \param n_intervals   the number of inervals to be passed to the grid
-     * \param epsilon       the parameter regulating the kernel
+     * \param epsilon       the bandwidth parameter regulating the kernel
 	*/
     samplevar(const std::string &kernel_id, const unsigned int &n_angles_, const unsigned int &n_intervals_, const cd::scalar &epsilon);
     
