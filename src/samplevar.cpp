@@ -19,64 +19,59 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
     const matrixIptr g = grid_.get_grid();
     const matrix &K = *(kernel_.get_kernel());
 
-    if (d.rows() != y.size())
-        throw std::length_error("void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::vectorptr &yptr): d and y must have the same number of rows");
-    else
+    size_t n = g->rows();
+
+    size_t hh = g->maxCoeff();
+
+    size_t N = a.rows();
+
+    variogram = std::make_shared<matrix>(matrix::Zero(hh+1, N));
+    denominators = std::make_shared<matrix>(matrix::Zero(hh+1, N));
+
+    matrix Y(n, n);
+
+    #pragma omp for
+    for (size_t i = 0; i < n; ++i)
     {
-        size_t n = g->rows();
-
-        size_t hh = g->maxCoeff();
-
-        size_t N = a.rows();
-
-        variogram = std::make_shared<matrix>(matrix::Zero(hh+1, N));
-        denominators = std::make_shared<matrix>(matrix::Zero(hh+1, N));
-
-        matrix Y(n, n);
-
-        #pragma omp for
-        for (size_t i = 0; i < n; ++i)
+        for (size_t j = 1; j < n; ++j)
         {
-            for (size_t j = 1; j < n; ++j)
-            {
-                Y(i, j) = (y(i) - y(j)) * (y(i) - y(j)); // DA GENERALIZZARE AL CASO FUNZIONALE!!!!!!!!!!
-                Y(j, i) = Y(i, j);
-            }
+            Y(i, j) = (y(i) - y(j)) * (y(i) - y(j));
+            Y(j, i) = Y(i, j);
         }
-
-        #pragma omp parallel
-        {
-            int k = 0;
-            /// for every location in d
-            #pragma omp for
-            for (size_t l=0; l < N; ++l)
-            {
-                Eigen::VectorXi counters = Eigen::VectorXi::Zero(hh+1);
-                /// for every couple of locations in d
-                for (size_t i = 0; i < n-1; ++i)
-                {
-                    for (size_t j = i+1; j < n; ++j)
-                    {
-                        /// if the vector between i and j belongs to the cell k
-                        k = g->operator()(i, j);
-                        if (k >= 0)
-                        {
-                            scalar prodotto = K(l, i) * K(l, j);
-                            variogram->operator()(k, l) += prodotto * Y(i, j);
-                            denominators->operator()(k, l) += prodotto;
-                            counters[k]++;
-                        }   
-                    }
-                }
-                for (size_t u = 0; u < hh+1; ++u)
-                {
-                    if (counters[u] != 0)
-                        variogram->operator()(u, l) /= (2*denominators->operator()(u, l));
-                }
-            }
-        }
-        build_squaredweights();
     }
+
+    #pragma omp parallel
+    {
+        int k = 0;
+        /// for every location in d
+        #pragma omp for
+        for (size_t l=0; l < N; ++l)
+        {
+            Eigen::VectorXi counters = Eigen::VectorXi::Zero(hh+1);
+            /// for every couple of locations in d
+            for (size_t i = 0; i < n-1; ++i)
+            {
+                for (size_t j = i+1; j < n; ++j)
+                {
+                    /// if the vector between i and j belongs to the cell k
+                    k = g->operator()(i, j);
+                    if (k >= 0)
+                    {
+                        scalar prodotto = K(l, i) * K(l, j);
+                        variogram->operator()(k, l) += prodotto * Y(i, j);
+                        denominators->operator()(k, l) += prodotto;
+                        counters[k]++;
+                    }   
+                }
+            }
+            for (size_t u = 0; u < hh+1; ++u)
+            {
+                if (counters[u] != 0)
+                    variogram->operator()(u, l) /= (2*denominators->operator()(u, l));
+            }
+        }
+    }
+    build_squaredweights();
 }
 
 void samplevar::build_squaredweights()

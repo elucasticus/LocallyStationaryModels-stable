@@ -15,7 +15,7 @@ a <- find_anchorpoints.lsm(d,12)
 # Build the empiric variogram
 vario <- variogram.lsm(y,d,a$anchorpoints,350,8,8,"gaussian")
 # Find the solutions
-solu <- findsolutions.lsm(vario, "maternNuFixed 18", c(200,200,0.01,100))
+solu <- findsolutions.lsm(vario, "matern", c(200,200,0.01,100))
 
 # Plot of the solutions
 x11()

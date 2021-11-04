@@ -10,43 +10,33 @@ using namespace cd;
 
 matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
 {
-    if (n_angles == 0 || n_intervals == 0)
-        throw std::length_error("n_intervals and n_angles cannot be 0");
-    else if (d->cols() != 2)
-        throw std::domain_error("the number of columns of d must be equal to 2");
-    else if (d->rows() <= 0)
-        throw std::length_error("the number of rows of d must be greater than 0");
-    else
+    double pi = 4*std::atan(1.);
+    
+    matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
+    double b = 2*epsilon;
+    double cell_length = b / n_intervals;
+    double cell_angle = pi / (n_angles);
+    
+
+    #pragma omp parallel for
+    for (unsigned int i = 0; i < d->rows() - 1; ++i)
     {
-        double pi = 4*std::atan(1.);
-      
-        matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
-        double b = 2*epsilon;
-        double cell_length = b / n_intervals;
-        double cell_angle = pi / (n_angles);
-        
-
-        #pragma omp parallel for
-        for (unsigned int i = 0; i < d->rows() - 1; ++i)
+        for (unsigned int j = i+1; j < d->rows(); ++j)
         {
-            for (unsigned int j = i+1; j < d->rows(); ++j)
-            {
-                scalar deltax =  d->operator()(j, 0) - d->operator()(i, 0);
-                scalar deltay =  d->operator()(j, 1) - d->operator()(i, 1);
-                scalar radius =  std::sqrt( deltax*deltax + deltay*deltay );
-                //scalar angle  =  std::atan( deltay / deltax );
+            scalar deltax =  d->operator()(j, 0) - d->operator()(i, 0);
+            scalar deltay =  d->operator()(j, 1) - d->operator()(i, 1);
+            scalar radius =  std::sqrt( deltax*deltax + deltay*deltay );
+            //scalar angle  =  std::atan( deltay / deltax );
 
-                if (radius >= b)
-                    grid->operator()(i, j) = -1;
-                else if (deltax!=0)
-                    grid->operator()(i, j) = floor( radius / cell_length ) + n_intervals *  floor( (pi/2 + std::atan( deltay / deltax )) / cell_angle );
-                else 
-                  grid->operator()(i, j) = floor( radius / cell_length );
-                
-            }
+            if (radius >= b)
+                grid->operator()(i, j) = -1;
+            else if (deltax!=0)
+                grid->operator()(i, j) = floor( radius / cell_length ) + n_intervals *  floor( (pi/2 + std::atan( deltay / deltax )) / cell_angle );
+            else 
+                grid->operator()(i, j) = floor( radius / cell_length );
         }
-        return grid;
     }
+    return grid;
 }
 
 gridfunction make_grid(const std::string &id)
