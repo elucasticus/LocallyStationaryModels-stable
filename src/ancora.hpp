@@ -55,7 +55,7 @@ public:
     /**
      * \brief           constructor
      * \param data_     shared pointer to the matrix with the coordinates of the dataset points
-     * \param h_        the number of squares per row and coloumn of the grid
+     * \param h_        the number of squares per row and column of the grid
     */
     ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(h_){};
 

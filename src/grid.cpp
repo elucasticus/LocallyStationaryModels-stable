@@ -11,11 +11,11 @@ using namespace cd;
 matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
 {
     if (n_angles == 0 || n_intervals == 0)
-        throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): h cannot be 0");
+        throw std::length_error("n_intervals and n_angles cannot be 0");
     else if (d->cols() != 2)
-        throw std::domain_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.cols() must be equal to 2");
+        throw std::domain_error("the number of columns of d must be equal to 2");
     else if (d->rows() <= 0)
-        throw std::length_error("matrixptr squares(const matrixptr &d, const unsigned int &h): d.rows() must be greater than 0");
+        throw std::length_error("the number of rows of d must be greater than 0");
     else
     {
         double pi = 4*std::atan(1.);
@@ -62,7 +62,7 @@ void grid::build_grid(const matrixptr &d, const unsigned int &n_angles, const un
 
 grid::grid(const std::string &id, const double epsilon_): f(make_grid(id)), epsilon(epsilon_){};
 
-grid::grid(): grid("Pizza",-1.162009e-07) {};
+grid::grid(): grid("Pizza", 1.) {};
 
 const matrixIptr grid::get_grid() const {return g;}
 

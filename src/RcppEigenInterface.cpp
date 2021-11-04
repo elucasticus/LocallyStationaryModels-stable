@@ -20,7 +20,7 @@ using namespace std::chrono;
 /**
  * \brief               finds the anchorpoints given the position of the points in the initial dataset
  * \param d             a matrix with the coordinates of the points in the original dataset
- * \param n_cubotti     the number of cells per row and coloumn in the grid of the anchorpoints
+ * \param n_cubotti     the number of cells per row and column in the grid of the anchorpoints
 */
 // [[Rcpp::export]]
 Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cubotti) {
