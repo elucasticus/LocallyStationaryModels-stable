@@ -19,8 +19,6 @@ cd::scalar variogramfunction::compute_anisotropic_h(const cd::scalar &lambda1, c
 
 cd::scalar exponential::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
-    if(params.size() < 4)
-        throw std::length_error("Required at least 4 parameters");
     double lambda1 = params[0];
     double lambda2 = params[1];
     double phi = params[2];
