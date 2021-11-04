@@ -23,7 +23,7 @@ kernel::kernel(): kernel("Gaussian", 1.) {};
 scalar kernel::operator()(const vector &x, const vector &y) const
 {
 	if (x.size() != y.size())
-		throw std::out_of_range("scalar kernel::operator()(const vector &x, const vector &y) const: vectors dimensions do not coincide");
+		throw std::out_of_range("vectors dimensions do not coincide");
 	else
 		return f(x, y, epsilon);
 }

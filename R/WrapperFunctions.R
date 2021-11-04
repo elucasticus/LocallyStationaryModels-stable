@@ -80,8 +80,3 @@ variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, ke
   vario$kernel_id <- kernel_id
   return(vario)
 }
-
-
-.onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Package LocallyStationaryModels version 1.0\nThis package uses OpenMP to speed up computations\nWritten by Luca Crippa and Giacomo de Carlo")
-}

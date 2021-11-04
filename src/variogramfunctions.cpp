@@ -19,6 +19,8 @@ cd::scalar variogramfunction::compute_anisotropic_h(const cd::scalar &lambda1, c
 
 cd::scalar exponential::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
+    if(params.size() < 4)
+        throw std::length_error("Required at least 4 parameters");
     double lambda1 = params[0];
     double lambda2 = params[1];
     double phi = params[2];
@@ -30,6 +32,8 @@ cd::scalar exponential::operator()(const cd::vector &params, const cd::scalar &x
 
 cd::scalar matern::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
+    if(params.size() < 5)
+        throw std::length_error("Required at least 4 parameters");
     double lambda1 = params[0];
     double lambda2 = params[1];
     double phi = params[2];
@@ -45,6 +49,8 @@ cd::scalar matern::operator()(const cd::vector &params, const cd::scalar &x, con
 
 cd::scalar maternNuFixed::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
+    if(params.size() < 4)
+        throw std::length_error("Required at least 4 parameters");
     double lambda1 = params[0];
     double lambda2 = params[1];
     double phi = params[2];
@@ -60,6 +66,8 @@ cd::scalar maternNuFixed::operator()(const cd::vector &params, const cd::scalar 
 
 cd::scalar gaussian::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
+    if(params.size() < 4)
+        throw std::length_error("Required at least 4 parameters");
     double lambda1 = params[0];
     double lambda2 = params[1];
     double phi = params[2];
