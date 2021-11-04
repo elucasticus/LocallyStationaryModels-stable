@@ -35,7 +35,7 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE, print = T
 #' @param bool    if set to TRUE plot the solutions
 predict.lsm<-function(sol, newpos, y, d, bool = TRUE, print = TRUE)
 {
-  if(lenght(y) != dim(d)[1])
+  if(length(y) != dim(d)[1])
   {
     print("The length of y and the number or rows of d do not coincide")
   }
@@ -84,7 +84,7 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 #' @param kernel_id     the type of kernel to be used
 variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print=TRUE)
 {
-  if(lenght(y) != dim(d)[1])
+  if(length(y) != dim(d)[1])
   {
     print("The length of y and the number or rows of d do not coincide")
   }
