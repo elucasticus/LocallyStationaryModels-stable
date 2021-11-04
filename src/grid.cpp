@@ -11,11 +11,11 @@ using namespace cd;
 matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
 {
     if (n_angles == 0 || n_intervals == 0)
-        throw std::length_error("n_intervals and n_angles cannot be 0");
+        throw std::length_error("matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon): n_intervals and n_angles cannot be 0");
     else if (d->cols() != 2)
-        throw std::domain_error("the number of columns of d must be equal to 2");
+        throw std::domain_error("matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon): the number of columns of d must be equal to 2");
     else if (d->rows() <= 0)
-        throw std::length_error("the number of rows of d must be greater than 0");
+        throw std::length_error("matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon): the number of rows of d must be greater than 0");
     else
     {
         double pi = 4*std::atan(1.);
