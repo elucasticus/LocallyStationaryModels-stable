@@ -28,7 +28,8 @@ class exponential: public variogramfunction
 public:
     exponential() = default;
     /**
-     * \brief   return sigma * sigma * (1 - exp(-h))
+     * \brief           return sigma * sigma * (1 - exp(-h))
+     * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
 };
@@ -38,7 +39,8 @@ class matern: public variogramfunction
 public:
     matern() = default;
     /**
-     * \brief   return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+     * \brief           return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+     * \param params    a vector with lambda1, lambda2, phi, sigma and nu in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
 };
@@ -50,7 +52,8 @@ private:
 public:
     maternNuFixed(const double &NU_): NU(NU_) {};
     /**
-     * \brief   return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+     * \brief           return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+     * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
 };
@@ -60,7 +63,8 @@ class gaussian: public variogramfunction
 public:
     gaussian() = default;
     /**
-     * \brief   return sigma * sigma * (1 - exp(-h*h))
+     * \brief           return sigma * sigma * (1 - exp(-h*h))
+     * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
 };
