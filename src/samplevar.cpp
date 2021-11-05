@@ -30,7 +30,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
 
     matrix Y(n, n);
 
-    #pragma omp for
+    #pragma omp parallel for
     for (size_t i = 0; i < n; ++i)
     {
         for (size_t j = 1; j < n; ++j)

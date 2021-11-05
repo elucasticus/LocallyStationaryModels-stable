@@ -39,7 +39,6 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
     matrix gamma(n,n);
     variogramfunction &gammaiso = *(gammaisoptr);
 
-    #pragma omp parallel for
     for (unsigned int i=0; i<n; ++i)
     {
         for (unsigned int j=0; j<n; ++j)
@@ -77,7 +76,6 @@ std::pair<cd::vector, double> predictor::build_etakriging(const cd::vector &para
     double sigma2 = params[3]*params[3];
     variogramfunction &gammaiso = *(gammaisoptr);
     
-    #pragma omp parallel for
     for (unsigned int i=0; i<n; ++i)
     {
         const vector &posi = d->row(i);
@@ -109,7 +107,6 @@ double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
 
     double result = 0;
 
-    #pragma omp parallel for reduction(+:result)
     for (unsigned int i=0; i<n; ++i)
         result += eta(i) * y->operator()(neighbourhood[i]);
     
@@ -128,7 +125,6 @@ double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) co
 
     double result = 0;
 
-    #pragma omp parallel for reduction(+:result)
     for (unsigned int i=0; i<n; ++i)
         result += eta(i) * y->operator()(neighbourhood[i]);
     
@@ -157,7 +153,6 @@ std::pair<double,double> predictor::predict_y<cd::vector, std::pair<double,doubl
     std::pair<vector, double> fulletakriging(build_etakriging(params, pos));
     vector &etakriging = fulletakriging.first;
 
-    #pragma omp parallel for reduction(+:result)
     for (unsigned int i=0; i<n; ++i)
         result += etakriging(i)*(y->operator()(i)-means->operator()(i)); //sistemare predict mean 
     

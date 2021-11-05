@@ -61,7 +61,6 @@ public:
     cd::vector smooth_vector(const Input &pos) const
     {
         cd::vector result(solutions->cols());
-        #pragma omp parallel for
         for (unsigned int i=0; i<solutions->cols(); ++i)
             result(i) = smooth_value(pos, i);
 

@@ -15,7 +15,6 @@ double smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
     double numerator = 0;
     double denominator = 0;
 
-    #pragma omp parallel for reduction(+:numerator,denominator)
     for(size_t i=0; i<anchorpos->rows(); ++i)
     {
         numerator += K(pos, i) * solutions->operator()(i, n);
@@ -29,7 +28,6 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
     double numerator = 0;
     double denominator = 0;
 
-    #pragma omp parallel for reduction(+:numerator,denominator)
     for(size_t i=0; i<anchorpos->rows(); ++i)
     {
         numerator += kernel_(pos, anchorpos->row(i)) * solutions->operator()(i, n);
@@ -44,7 +42,6 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
     double min_error;
     const unsigned int n_deltas = 1000;
 
-    #pragma omp parallel for ordered
     for (int i=0; i<=n_deltas; i++)
     {
         double delta = min_delta + i*(max_delta-min_delta)/n_deltas;
@@ -55,6 +52,7 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
 
         double error = 0;
 
+        #pragma omp parallel for reduction(+:error)
         for(size_t j=0; j<anchorpos->rows(); ++j)
         {
             double predicted_value = smooth_value(j, 3);
@@ -63,13 +61,11 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
 
             error += (real_value - predicted_value)*(real_value - predicted_value)/weightk2;
         }
-        #pragma omp ordered
+
+        if (i==0 || error < min_error)
         {
-            if (i==0 || error < min_error)
-            {
-                optimal_delta = delta;
-                min_error = error;
-            }
+            optimal_delta = delta;
+            min_error = error;
         }
     }
 
