@@ -13,7 +13,7 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE, print = T
   {
     id_check <- id
   }
-  load("variogramfunctions.Rdata")
+  load("data/variogramfunctions.Rdata")
   if(length(initial.position) != variogramfunctions$n_parameters[which(variogramfunctions$name == id_check)])
   {
     stop("wrong number of initial parameters")
