@@ -12,3 +12,5 @@ License: What license is it under?
 Imports: Rcpp , RcppEigen , ggplot2, ggforce, cowplot
 LinkingTo: Rcpp  , RcppEigen , ggplot2, ggforce, cowplot
 NeedCompilation: yes
+Depends: 
+    R (>= 2.10)
