@@ -5,9 +5,10 @@
 #' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
 findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE, print = TRUE)
 {
-  if(length(initial.position) < 4)
+  load("variogramfunctions.Rdata")
+  if(length(initial.position) != variogramfunctions$n_parameters[which(variogramfunctions$name == id)])
   {
-    stop("initial.position requires at least the initial value for lambda1, lambda2, phi and sigma")
+    stop("wrong number of initial parameters")
   }
   result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position,vario$epsilon,print)
   if (bool)
