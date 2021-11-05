@@ -5,8 +5,16 @@
 #' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
 findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE, print = TRUE)
 {
+  if(grepl("maternNuFixed", id, fixed = TRUE))
+  {
+    id_check <- "maternNuFixed"
+  }
+  else
+  {
+    id_check <- id
+  }
   load("variogramfunctions.Rdata")
-  if(length(initial.position) != variogramfunctions$n_parameters[which(variogramfunctions$name == id)])
+  if(length(initial.position) != variogramfunctions$n_parameters[which(variogramfunctions$name == id_check)])
   {
     stop("wrong number of initial parameters")
   }
