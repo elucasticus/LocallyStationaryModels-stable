@@ -60,9 +60,10 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   
   # bubble plot of the initial data
   dd <- as.data.frame(d)
+  colnames(dd) <- c("X", "Y")
   
   par(ask=TRUE)
-  p <- ggplot2::ggplot(dd, ggplot2::aes(x=V1, y=V2, size=y)) + ggplot2::geom_point() + ggplot2::labs(x="X", y="Y")
+  p <- ggplot2::ggplot(dd, ggplot2::aes(x=X, y=Y, size=y)) + ggplot2::geom_point() + ggplot2::labs(x="X", y="Y")
   p <- p + ggplot2::labs(title = "Bubble plot of the initial data", fontface = 'bold') + ggplot2::theme_light()
   print(p)
   
