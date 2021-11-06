@@ -3,7 +3,7 @@
 #' @param id                  the type of variogram to be used
 #' @param initial.position    the starting position to be given to the optimizer
 #' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
-findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE, print = TRUE)
+findsolutions.lsm<-function(vario, id, initial.position, lower.bound, upper.bound, bool = FALSE, print = TRUE)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
   {
@@ -17,7 +17,7 @@ findsolutions.lsm<-function(vario, id, initial.position, bool = FALSE, print = T
   {
     stop("wrong number of initial parameters")
   }
-  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position,vario$epsilon,print)
+  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position, lower.bound, upper.bound, vario$epsilon,print)
   if (bool)
   {
     for (i in 1:dim(result$solutions)[1])

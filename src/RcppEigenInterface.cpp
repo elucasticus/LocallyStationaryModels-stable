@@ -92,7 +92,7 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
 */
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
-    const std::string &kernel_id, const Eigen::VectorXd &parameters, const double &epsilon,const bool print) {
+    const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon,const bool print) {
     
     auto start = high_resolution_clock::now();
   
@@ -102,7 +102,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     vectorptr yptr = std::make_shared<vector>(y);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
     
-    opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters);
+    opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters, lowerbound, upperbound);
     opt_.findallsolutions();
 
     smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon/2, kernel_id);

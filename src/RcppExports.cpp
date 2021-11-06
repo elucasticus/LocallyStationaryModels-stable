@@ -42,8 +42,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // findsolutionslsm
-Rcpp::List findsolutionslsm(const Eigen::MatrixXd& anchorpoints, const Eigen::MatrixXd& empiricvariogram, const Eigen::MatrixXd& squaredweights, const Eigen::VectorXd& x, const Eigen::VectorXd& y, std::string& variogram_id, const std::string& kernel_id, const Eigen::VectorXd& parameters, const double& epsilon, const bool print);
-RcppExport SEXP _LocallyStationaryModels_findsolutionslsm(SEXP anchorpointsSEXP, SEXP empiricvariogramSEXP, SEXP squaredweightsSEXP, SEXP xSEXP, SEXP ySEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP parametersSEXP, SEXP epsilonSEXP, SEXP printSEXP) {
+Rcpp::List findsolutionslsm(const Eigen::MatrixXd& anchorpoints, const Eigen::MatrixXd& empiricvariogram, const Eigen::MatrixXd& squaredweights, const Eigen::VectorXd& x, const Eigen::VectorXd& y, std::string& variogram_id, const std::string& kernel_id, const Eigen::VectorXd& parameters, const Eigen::VectorXd& lowerbound, const Eigen::VectorXd& upperbound, const double& epsilon, const bool print);
+RcppExport SEXP _LocallyStationaryModels_findsolutionslsm(SEXP anchorpointsSEXP, SEXP empiricvariogramSEXP, SEXP squaredweightsSEXP, SEXP xSEXP, SEXP ySEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP parametersSEXP, SEXP lowerboundSEXP, SEXP upperboundSEXP, SEXP epsilonSEXP, SEXP printSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,9 +55,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string& >::type variogram_id(variogram_idSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type parameters(parametersSEXP);
+    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type lowerbound(lowerboundSEXP);
+    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type upperbound(upperboundSEXP);
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
-    rcpp_result_gen = Rcpp::wrap(findsolutionslsm(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, epsilon, print));
+    rcpp_result_gen = Rcpp::wrap(findsolutionslsm(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -100,7 +102,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
     {"_LocallyStationaryModels_variogramlsm", (DL_FUNC) &_LocallyStationaryModels_variogramlsm, 8},
-    {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 10},
+    {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 12},
     {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 10},
     {"_LocallyStationaryModels_smoothing", (DL_FUNC) &_LocallyStationaryModels_smoothing, 5},
     {NULL, NULL, 0}

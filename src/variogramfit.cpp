@@ -55,8 +55,10 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
 funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, unsigned int x0_, 
     const std::string &id): empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), x0(x0_), gammaisoptr(make_variogramiso(id)) {};
 
-opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_, const cd::vector &initialparameters_): 
-    empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_), initialparameters(initialparameters_) 
+opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_, 
+    const cd::vector &initialparameters_, const cd::vector &lowerbound_, const cd::vector &upperbound_): 
+    empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_), initialparameters(initialparameters_), lowerbound(lowerbound_),
+    upperbound(upperbound_)
 {
     solutions = std::make_shared<matrix>(matrix::Zero(empiricvariogram->cols(),initialparameters.size()));
 };
@@ -74,17 +76,8 @@ vector opt::findonesolution(const unsigned int pos) const
     LBFGSBSolver<double> solver(param);
 
     // Bounds
-    Eigen::VectorXd lb(cd::vector::Zero(initialparameters.size()));
-    
-    for(size_t e=0; e<lb.size(); e++)
-        lb(e)=1e-08;
-   
-   
-    auto inf = std::numeric_limits<double>::infinity();
-    Eigen::VectorXd ub(cd::vector::Zero(initialparameters.size()));
-    for(size_t e=0; e<ub.size(); e++)
-        ub(e)=inf;
-    ub(2) = M_PI_2;
+    Eigen::VectorXd lb(lowerbound);
+    Eigen::VectorXd ub(upperbound);
     
     cd::vector x(initialparameters);
     // x will be overwritten to be the best point found

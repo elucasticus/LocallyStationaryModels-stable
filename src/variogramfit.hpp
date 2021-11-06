@@ -55,6 +55,8 @@ private:
     cd::vectorptr y;
     std::string id;
     cd::vector initialparameters;
+    cd::vector lowerbound;
+    cd::vector upperbound;
     cd::matrixptr solutions = nullptr;
 
     /**
@@ -74,7 +76,7 @@ public:
      * \param initialparameters_    the initial value of the parameters required from the optimizer to start the search for a minimum
     */
     opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_,
-    const std::string &id_, const cd::vector &initialparameters_);
+    const std::string &id_, const cd::vector &initialparameters_, const cd::vector &lowerbound_, const cd::vector &upperbound_);
 
     /**
      * \brief find the optimal solution in different positions
