@@ -74,15 +74,11 @@ public:
      * \param y_                    a shared pointer to the vector of the ordinates of the centers
      * \param id                    the name of the variogram of your choice
      * \param initialparameters_    the initial value of the parameters required from the optimizer to start the search for a minimum
+     * \param lowerbound_           the lower bounds for the parameters in the nonlinear optimization problem
+     * \param upperbound_           the upper bounds for the parameters in the nonlinear optimization problem
     */
     opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_,
     const std::string &id_, const cd::vector &initialparameters_, const cd::vector &lowerbound_, const cd::vector &upperbound_);
-
-    /**
-     * \brief find the optimal solution in different positions
-     * \param pos   a vector containing the indeces of all the positions
-    */
-    //void findsomesolutions(const cd::vectorind &pos);
 
     /**
      * \brief   find the optimal solution in all the position
