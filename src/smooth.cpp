@@ -42,17 +42,16 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
     double min_error= std::numeric_limits<double>::infinity();
     optimal_delta = (max_delta-min_delta)/2;
     const unsigned int n_deltas = 1000;
-
+    // find the optimal value of delta via cross-validation
     for (size_t i=0; i<=n_deltas; i++)
     {
         double delta = min_delta + i*(max_delta-min_delta)/n_deltas;
-
+        // build a new kernel with bandwidth parameter equal to delta
         kernel_.build_simple_kernel(anchorpos_, delta);
         const matrix &Kk = *(kernel_.get_kernel());
         
-
         double error = 0;
-
+        // find the value of the error function for the current value of delta
         #pragma omp parallel for reduction(+:error)
         for(size_t j=0; j<anchorpos->rows(); ++j)
         {
@@ -63,13 +62,13 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
 
             error += (real_value - predicted_value)*(real_value - predicted_value)/weightk2;
         }
-
-        if (error < min_error )
+        if (error < min_error)
         {
             optimal_delta = delta;
             min_error = error;
         }
     }
+    // build the final kernel with the optimal value of delta
     kernel_.build_simple_kernel(anchorpos, optimal_delta);
 }
 

@@ -31,17 +31,17 @@ private:
     {
         unsigned int n = data->rows();
 
-        /// find the origin of the grid
+        // find the origin of the grid
         center_x = (data->col(0)).minCoeff()*0.999999;
         center_y = (data->col(1)).minCoeff()*0.999999;
 
-        /// find the dimensions of each cell
+        // find the dimensions of each cell
         larghezza = (data->col(0)).maxCoeff()*1.000001 - center_x;
         altezza = (data->col(1)).maxCoeff()*1.000001 - center_y;
         larghezza_cubo = larghezza/n_cubotti;
         altezza_cubo = altezza/n_cubotti;
 
-        /// fill a vector with the position of each point
+        // fill a vector with the position of each point
         cd::vector result(n);
         for (unsigned int i=0; i<n; ++i)
         {
@@ -67,7 +67,7 @@ public:
         unsigned int n = data->rows();
         cd::vector results = cubotti();
 
-        /// build a new vector without duplicates
+        // build a new vector without duplicates
         std::vector<unsigned int> positions;
         for (unsigned int i=0; i<n; ++i)
         {
@@ -76,7 +76,7 @@ public:
                 positions.push_back(pos);
         }
 
-        /// fill a new matrix with the coordinates of each anchorpoins
+        // fill a new matrix with the coordinates of each anchorpoins
         cd::matrix anchorpos(positions.size(), data->cols());
         for (unsigned int i=0; i<anchorpos.rows(); ++i)
         {
