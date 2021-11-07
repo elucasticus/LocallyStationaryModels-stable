@@ -39,10 +39,11 @@ double smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
 smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id): 
     anchorpos(anchorpos_), solutions(solutions_), kernel_(kernel_id, min_delta)
 {
-    double min_error;
+    double min_error= std::numeric_limits<double>::infinity();
+    optimal_delta = (max_delta-min_delta)/2;
     const unsigned int n_deltas = 1000;
 
-    for (int i=0; i<=n_deltas; i++)
+    for (size_t i=0; i<=n_deltas; i++)
     {
         double delta = min_delta + i*(max_delta-min_delta)/n_deltas;
 
@@ -55,20 +56,21 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
         #pragma omp parallel for reduction(+:error)
         for(size_t j=0; j<anchorpos->rows(); ++j)
         {
+            cd::vector Kkrow = Kk.row(j);
             double predicted_value = smooth_value(j, 3);
             double real_value = solutions->operator()(j, 3);
-            double weightk2= (Kk.row(j).sum()-Kk(j,j))*(Kk.row(j).sum()-Kk(j,j));
+            double weightk2= (1-Kk(j,j)/Kkrow.sum())*(1-Kk(j,j)/Kkrow.sum());
 
             error += (real_value - predicted_value)*(real_value - predicted_value)/weightk2;
         }
 
-        if (i==0 || error < min_error)
+        if (error < min_error )
         {
             optimal_delta = delta;
             min_error = error;
         }
     }
-
+    std::cout<< min_error << std::endl;
     kernel_.build_simple_kernel(anchorpos, optimal_delta);
 }
 

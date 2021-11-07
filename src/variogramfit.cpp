@@ -21,7 +21,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
         truegamma[h] = gammaiso(params, x->operator[](h), y->operator[](h));
     }
     vector empiricgamma = empiricvariogram->col(x0);
-    return w.transpose() * (truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma);
+    return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
 cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &grad)
@@ -40,7 +40,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
         vector paramsdeltaplus(params);
         vector paramsdeltaminus(params);
 
-        double increment = 10e-6*params[i];
+        double increment = 10e-8*params[i];
 
         paramsdeltaplus[i] += increment;
         paramsdeltaminus[i] -= increment;
@@ -91,6 +91,8 @@ vector opt::findonesolution(const unsigned int pos) const
         std::cerr << e.what() << std::endl;
         x = initialparameters;
     }
+    
+    std::cout << fx << std::endl;
 
     return x;
 }
