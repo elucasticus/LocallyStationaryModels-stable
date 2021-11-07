@@ -52,7 +52,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   
   colnames(newpoints)<-c("X","Y")
   
-  parameters<-smoothing(model$solutions,a$anchorpoints,model$delta,as.matrix(newpoints),model$kernel_id)
+  parameters<-smoothing(model$solutions,a$anchorpoints,model$delta,as.matrix(newpoints),model$kernel_id,n_threads)
   parameters<-as.data.frame(parameters)
   colnames(parameters)<-c("lambda1", "lambda2", "phi", "sigma")
   

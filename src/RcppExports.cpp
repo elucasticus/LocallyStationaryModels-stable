@@ -24,8 +24,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // variogramlsm
-Rcpp::List variogramlsm(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const bool print);
-RcppExport SEXP _LocallyStationaryModels_variogramlsm(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP printSEXP) {
+Rcpp::List variogramlsm(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const bool print, const int& n_threads);
+RcppExport SEXP _LocallyStationaryModels_variogramlsm(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,13 +37,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const unsigned int& >::type n_intervals(n_intervalsSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
-    rcpp_result_gen = Rcpp::wrap(variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print));
+    Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // findsolutionslsm
-Rcpp::List findsolutionslsm(const Eigen::MatrixXd& anchorpoints, const Eigen::MatrixXd& empiricvariogram, const Eigen::MatrixXd& squaredweights, const Eigen::VectorXd& x, const Eigen::VectorXd& y, std::string& variogram_id, const std::string& kernel_id, const Eigen::VectorXd& parameters, const Eigen::VectorXd& lowerbound, const Eigen::VectorXd& upperbound, const double& epsilon, const bool print);
-RcppExport SEXP _LocallyStationaryModels_findsolutionslsm(SEXP anchorpointsSEXP, SEXP empiricvariogramSEXP, SEXP squaredweightsSEXP, SEXP xSEXP, SEXP ySEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP parametersSEXP, SEXP lowerboundSEXP, SEXP upperboundSEXP, SEXP epsilonSEXP, SEXP printSEXP) {
+Rcpp::List findsolutionslsm(const Eigen::MatrixXd& anchorpoints, const Eigen::MatrixXd& empiricvariogram, const Eigen::MatrixXd& squaredweights, const Eigen::VectorXd& x, const Eigen::VectorXd& y, std::string& variogram_id, const std::string& kernel_id, const Eigen::VectorXd& parameters, const Eigen::VectorXd& lowerbound, const Eigen::VectorXd& upperbound, const double& epsilon, const bool print, const int& n_threads);
+RcppExport SEXP _LocallyStationaryModels_findsolutionslsm(SEXP anchorpointsSEXP, SEXP empiricvariogramSEXP, SEXP squaredweightsSEXP, SEXP xSEXP, SEXP ySEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP parametersSEXP, SEXP lowerboundSEXP, SEXP upperboundSEXP, SEXP epsilonSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -59,7 +60,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type upperbound(upperboundSEXP);
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
-    rcpp_result_gen = Rcpp::wrap(findsolutionslsm(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print));
+    Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(findsolutionslsm(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -85,8 +87,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // smoothing
-Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd& anchorpoints, const double& delta, const Eigen::MatrixXd& positions, const std::string& kernel_id);
-RcppExport SEXP _LocallyStationaryModels_smoothing(SEXP solutionsSEXP, SEXP anchorpointsSEXP, SEXP deltaSEXP, SEXP positionsSEXP, SEXP kernel_idSEXP) {
+Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd& anchorpoints, const double& delta, const Eigen::MatrixXd& positions, const std::string& kernel_id, const int& n_threads);
+RcppExport SEXP _LocallyStationaryModels_smoothing(SEXP solutionsSEXP, SEXP anchorpointsSEXP, SEXP deltaSEXP, SEXP positionsSEXP, SEXP kernel_idSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -95,17 +97,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type positions(positionsSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
-    rcpp_result_gen = Rcpp::wrap(smoothing(solutions, anchorpoints, delta, positions, kernel_id));
+    Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(smoothing(solutions, anchorpoints, delta, positions, kernel_id, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
-    {"_LocallyStationaryModels_variogramlsm", (DL_FUNC) &_LocallyStationaryModels_variogramlsm, 8},
-    {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 12},
+    {"_LocallyStationaryModels_variogramlsm", (DL_FUNC) &_LocallyStationaryModels_variogramlsm, 9},
+    {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 13},
     {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 11},
-    {"_LocallyStationaryModels_smoothing", (DL_FUNC) &_LocallyStationaryModels_smoothing, 5},
+    {"_LocallyStationaryModels_smoothing", (DL_FUNC) &_LocallyStationaryModels_smoothing, 6},
     {NULL, NULL, 0}
 };
 

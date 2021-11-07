@@ -5,19 +5,19 @@ find_anchorpoints <- function(d, n_cubotti) {
     .Call('_LocallyStationaryModels_find_anchorpoints', PACKAGE = 'LocallyStationaryModels', d, n_cubotti)
 }
 
-variogramlsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print) {
-    .Call('_LocallyStationaryModels_variogramlsm', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print)
+variogramlsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads) {
+    .Call('_LocallyStationaryModels_variogramlsm', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads)
 }
 
-findsolutionslsm <- function(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print) {
-    .Call('_LocallyStationaryModels_findsolutionslsm', PACKAGE = 'LocallyStationaryModels', anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print)
+findsolutionslsm <- function(anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print, n_threads) {
+    .Call('_LocallyStationaryModels_findsolutionslsm', PACKAGE = 'LocallyStationaryModels', anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print, n_threads)
 }
 
 predikt <- function(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads) {
     .Call('_LocallyStationaryModels_predikt', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads)
 }
 
-smoothing <- function(solutions, anchorpoints, delta, positions, kernel_id) {
-    .Call('_LocallyStationaryModels_smoothing', PACKAGE = 'LocallyStationaryModels', solutions, anchorpoints, delta, positions, kernel_id)
+smoothing <- function(solutions, anchorpoints, delta, positions, kernel_id, n_threads) {
+    .Call('_LocallyStationaryModels_smoothing', PACKAGE = 'LocallyStationaryModels', solutions, anchorpoints, delta, positions, kernel_id, n_threads)
 }
 

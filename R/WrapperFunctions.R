@@ -3,7 +3,7 @@
 #' @param id                  the type of variogram to be used
 #' @param initial.position    the starting position to be given to the optimizer
 #' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
-findsolutions.lsm<-function(vario, id, initial.position, lower.bound = c(1e-8,1e-8,1e-8,1e-8), upper.bound = c(Inf,Inf,pi/2,Inf), bool = FALSE, print = TRUE)
+findsolutions.lsm<-function(vario, id, initial.position, lower.bound = c(1e-8,1e-8,1e-8,1e-8), upper.bound = c(Inf,Inf,pi/2,Inf), bool = FALSE, print = TRUE, n_threads = -1)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
   {
@@ -17,7 +17,7 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = c(1e-8,1e
   {
     stop("wrong number of initial parameters")
   }
-  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position, lower.bound, upper.bound, vario$epsilon,print)
+  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position, lower.bound, upper.bound, vario$epsilon, print, n_threads)
   if (bool)
   {
     for (i in 1:dim(result$solutions)[1])
@@ -90,13 +90,13 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 #' @param n_angles      the number of angles for the grid
 #' @param n_intervals   the number of intervals for the grid
 #' @param kernel_id     the type of kernel to be used
-variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print=TRUE)
+variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print=TRUE, n_threads = -1)
 {
   if(length(y) != dim(d)[1])
   {
     print("The length of y and the number or rows of d do not coincide")
   }
-  vario <- variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id,print)
+  vario <- variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads)
   vario$kernel_id <- kernel_id
   return(vario)
 }

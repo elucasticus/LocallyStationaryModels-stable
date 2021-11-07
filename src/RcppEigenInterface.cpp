@@ -51,9 +51,19 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
 */
 // [[Rcpp::export]]
 Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
-    const unsigned int& n_intervals, const std::string &kernel_id,const bool print) {
+    const unsigned int& n_intervals, const std::string &kernel_id,const bool print, const int &n_threads) {
     
     auto start = high_resolution_clock::now();
+
+    if (n_threads > 0)
+    {
+        int max_threads = omp_get_max_threads();
+        int used_threads = std::min(max_threads, n_threads);
+        Rcpp::Rcout << "desired: " << n_threads << std::endl;
+        Rcpp::Rcout << "max: " << max_threads << std::endl;
+        Rcpp::Rcout << "used: " << used_threads << std::endl;
+        omp_set_num_threads(used_threads);
+    }
   
     matrixptr dd = std::make_shared<matrix>(d);
     vectorptr yy = std::make_shared<vector>(y);
@@ -92,9 +102,20 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
 */
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
-    const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon,const bool print) {
-    
+    const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon,const bool print,
+    const int &n_threads) {
+
     auto start = high_resolution_clock::now();
+    
+    if (n_threads > 0)
+    {
+        int max_threads = omp_get_max_threads();
+        int used_threads = std::min(max_threads, n_threads);
+        Rcpp::Rcout << "desired: " << n_threads << std::endl;
+        Rcpp::Rcout << "max: " << max_threads << std::endl;
+        Rcpp::Rcout << "used: " << used_threads << std::endl;
+        omp_set_num_threads(used_threads);
+    }
   
     matrixptr empiricvariogramptr = std::make_shared<matrix>(empiricvariogram);
     matrixptr squaredweightsptr = std::make_shared<matrix>(squaredweights);
@@ -139,7 +160,7 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id, const bool print, const int &n_threads) {
 
     auto start = high_resolution_clock::now();
-    
+
     if (n_threads > 0)
     {
         int max_threads = omp_get_max_threads();
@@ -181,8 +202,19 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
  * \param kernel_id      the kernel to be used inside the smoother
 */
 // [[Rcpp::export]]
-Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions, const std::string &kernel_id)
+Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions, const std::string &kernel_id,
+    const int &n_threads)
 {
+    if (n_threads > 0)
+    {
+        int max_threads = omp_get_max_threads();
+        int used_threads = std::min(max_threads, n_threads);
+        Rcpp::Rcout << "desired: " << n_threads << std::endl;
+        Rcpp::Rcout << "max: " << max_threads << std::endl;
+        Rcpp::Rcout << "used: " << used_threads << std::endl;
+        omp_set_num_threads(used_threads);
+    }
+
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
     
