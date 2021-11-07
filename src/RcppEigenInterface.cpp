@@ -48,13 +48,17 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
  * \param n_angles          the number of the angles for the grid
  * \param n_intervals       the number of intervals for the grid
  * \param kernel_id         the type of kernel to be used
+ * \param print             if set to true print on console the time required to process the output
+ * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads open
 */
 // [[Rcpp::export]]
 Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
     const unsigned int& n_intervals, const std::string &kernel_id,const bool print, const int &n_threads) {
-    
+    // start the clock
     auto start = high_resolution_clock::now();
-
+    // if n_threads is positive open open n_threads threads to process the data
+    // otherwise let openmp decide autonomously how many threads use
+    // if n_threads is greater than the maximum number of threads available open all the threads accessible
     if (n_threads > 0)
     {
         int max_threads = omp_get_max_threads();
@@ -70,8 +74,9 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
     samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon);
+    // build the sample variogram
     samplevar_.build_samplevar(dd, anchorpointsptr, yy);
-
+    // stop the clock and calculate the processing time
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
     
@@ -99,14 +104,18 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
  * \param variogram_id          the variogram to be used
  * \param parameters            the starting position to be given to the optimizer
  * \param epsilon               the value of epsilon regulating the kernel
+ * \param print                 if set to true print on console the time required to process the output
+ * \param n_threads             the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads open
 */
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
-    const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon,const bool print,
+    const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon, const bool print,
     const int &n_threads) {
-
+    // start the clock
     auto start = high_resolution_clock::now();
-    
+    // if n_threads is positive open open n_threads threads to process the data
+    // otherwise let openmp decide autonomously how many threads use
+    // if n_threads is greater than the maximum number of threads available open all the threads accessible
     if (n_threads > 0)
     {
         int max_threads = omp_get_max_threads();
@@ -122,14 +131,15 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     vectorptr xptr = std::make_shared<vector>(x);
     vectorptr yptr = std::make_shared<vector>(y);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
-    
-    opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters, lowerbound, upperbound);
-    opt_.findallsolutions();
 
+    opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters, lowerbound, upperbound);
+    // solve the nonlinaear optimization problems and store the solutions inside opt_
+    opt_.findallsolutions();
+    // build the smoother and find delta by cross-validation
     smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon/2, kernel_id);
 
     double delta_ottimale = smt_.get_optimal_delta();
-
+    // stop the clock and calculate the processing time
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
     
@@ -154,13 +164,17 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
  * \param positions         the position in which to perform the kriging
  * \param variogram_id      the variogram to be used
  * \param kernel_id         the kernel to be used inside the smoother
+ * \param print             if set to true print on console the time required to process the output
+ * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads open
 */
 // [[Rcpp::export]]
 Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
     const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id, const bool print, const int &n_threads) {
-
+    // start the clock
     auto start = high_resolution_clock::now();
-
+    // if n_threads is positive open open n_threads threads to process the data
+    // otherwise let openmp decide autonomously how many threads use
+    // if n_threads is greater than the maximum number of threads available open all the threads accessible
     if (n_threads > 0)
     {
         int max_threads = omp_get_max_threads();
@@ -178,10 +192,10 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
 
     smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
     predictor predictor_(variogram_id, yy, smt_, epsilon, dd);
-    
+    // predict the mean, the variance and the pointwise prediction of f(*) in positions
     matrix predicted_ys(predictor_.predict_y<cd::matrix, cd::matrix>(positions));
     vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));
-    
+    // stop the clock and calculate the processing time
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
     
@@ -200,11 +214,15 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
  * \param delta          the value of delta regulating the smoothing
  * \param positions      where to smooth the parameters
  * \param kernel_id      the kernel to be used inside the smoother
+ * \param n_threads      the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads open
 */
 // [[Rcpp::export]]
 Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions, const std::string &kernel_id,
     const int &n_threads)
 {
+    // if n_threads is positive open open n_threads threads to process the data
+    // otherwise let openmp decide autonomously how many threads use
+    // if n_threads is greater than the maximum number of threads available open all the threads accessible
     if (n_threads > 0)
     {
         int max_threads = omp_get_max_threads();
