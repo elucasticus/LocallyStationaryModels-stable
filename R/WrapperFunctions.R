@@ -3,7 +3,7 @@
 #' @param id                  the type of variogram to be used
 #' @param initial.position    the starting position to be given to the optimizer
 #' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
-findsolutions.lsm<-function(vario, id, initial.position, lower.bound, upper.bound, bool = FALSE, print = TRUE)
+findsolutions.lsm<-function(vario, id, initial.position, lower.bound = c(1e-8,1e-8,1e-8,1e-8), upper.bound = c(Inf,Inf,pi/2,Inf), bool = FALSE, print = TRUE)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
   {
@@ -41,13 +41,13 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound, upper.boun
 #' @param y       the vector y used to generate the solutions
 #' @param d       the matrix d used to generate the solutions
 #' @param bool    if set to TRUE plot the solutions
-predict.lsm<-function(sol, newpos, y, d, bool = TRUE, print = TRUE)
+predict.lsm<-function(sol, newpos, y, d, bool = TRUE, print = TRUE, n_threads = -1)
 {
   if(length(y) != dim(d)[1])
   {
     print("The length of y and the number or rows of d do not coincide")
   }
-  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id,print)
+  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id,print,n_threads)
   if (bool)
   {
     newpos <- as.data.frame(newpos)

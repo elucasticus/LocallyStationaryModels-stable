@@ -64,8 +64,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // predikt
-Rcpp::List predikt(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions, const Eigen::MatrixXd& positions, const std::string& variogram_id, const std::string& kernel_id, const bool print);
-RcppExport SEXP _LocallyStationaryModels_predikt(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP, SEXP positionsSEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP printSEXP) {
+Rcpp::List predikt(const Eigen::VectorXd& y, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions, const Eigen::MatrixXd& positions, const std::string& variogram_id, const std::string& kernel_id, const bool print, const int& n_threads);
+RcppExport SEXP _LocallyStationaryModels_predikt(SEXP ySEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP, SEXP positionsSEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -79,7 +79,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string& >::type variogram_id(variogram_idSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
-    rcpp_result_gen = Rcpp::wrap(predikt(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print));
+    Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(predikt(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -103,7 +104,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
     {"_LocallyStationaryModels_variogramlsm", (DL_FUNC) &_LocallyStationaryModels_variogramlsm, 8},
     {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 12},
-    {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 10},
+    {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 11},
     {"_LocallyStationaryModels_smoothing", (DL_FUNC) &_LocallyStationaryModels_smoothing, 5},
     {NULL, NULL, 0}
 };

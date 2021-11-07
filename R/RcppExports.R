@@ -13,8 +13,8 @@ findsolutionslsm <- function(anchorpoints, empiricvariogram, squaredweights, x, 
     .Call('_LocallyStationaryModels_findsolutionslsm', PACKAGE = 'LocallyStationaryModels', anchorpoints, empiricvariogram, squaredweights, x, y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print)
 }
 
-predikt <- function(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print) {
-    .Call('_LocallyStationaryModels_predikt', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print)
+predikt <- function(y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads) {
+    .Call('_LocallyStationaryModels_predikt', PACKAGE = 'LocallyStationaryModels', y, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads)
 }
 
 smoothing <- function(solutions, anchorpoints, delta, positions, kernel_id) {

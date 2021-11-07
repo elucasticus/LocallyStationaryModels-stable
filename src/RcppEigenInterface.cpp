@@ -136,10 +136,20 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
 */
 // [[Rcpp::export]]
 Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
-    const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id, const bool print) {
+    const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id, const bool print, const int &n_threads) {
 
     auto start = high_resolution_clock::now();
-  
+    
+    if (n_threads > 0)
+    {
+        int max_threads = omp_get_max_threads();
+        int used_threads = std::min(max_threads, n_threads);
+        Rcpp::Rcout << "desired: " << n_threads << std::endl;
+        Rcpp::Rcout << "max: " << max_threads << std::endl;
+        Rcpp::Rcout << "used: " << used_threads << std::endl;
+        omp_set_num_threads(used_threads);
+    }
+
     matrixptr dd = std::make_shared<matrix>(d);
     vectorptr yy = std::make_shared<vector>(y);
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
