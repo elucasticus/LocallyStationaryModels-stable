@@ -3,7 +3,7 @@
 #' @param id                  the type of variogram to be used
 #' @param initial.position    the starting position to be given to the optimizer
 #' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
-findsolutions.lsm<-function(vario, id, initial.position, lower.bound = c(1e-8,1e-8,1e-8,1e-8), upper.bound = c(Inf,Inf,pi/2,Inf), bool = FALSE, print = TRUE, n_threads = -1)
+findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), bool = FALSE, print = TRUE, n_threads = -1)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
   {
