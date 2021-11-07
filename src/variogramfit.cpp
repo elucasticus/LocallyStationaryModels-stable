@@ -49,7 +49,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
     }
     
     vector empiricgamma = empiricvariogram->col(x0);
-    return w.transpose() * (truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma);
+    return w.dot((truegamma - empiricgamma)).cwiseProduct(truegamma - empiricgamma);
 }
 
 funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, unsigned int x0_, 
@@ -91,9 +91,6 @@ vector opt::findonesolution(const unsigned int pos) const
         std::cerr << e.what() << std::endl;
         x = initialparameters;
     }
-    
-    std::cout << fx << std::endl;
-
     return x;
 }
 

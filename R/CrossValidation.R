@@ -8,7 +8,7 @@
 #' @param kernel_id           the type of kernel to be used
 #' @param id                  the type of variogram to be used
 #' @param initial.position    the starting position to be given to the optimizer
-cv.lsm <- function(y,d,anchorpoints,epsilon,n_angles,n_intervals,kernel_id, id, initial.position){
+cv.lsm <- function(y,d,anchorpoints,epsilon,n_angles,n_intervals,kernel_id, id, initial.position,n_threads = -1){
   # set the MSE to 0
   MSE=0
   
@@ -25,9 +25,9 @@ cv.lsm <- function(y,d,anchorpoints,epsilon,n_angles,n_intervals,kernel_id, id, 
     dnew <- d[-i,]
     
     # predict the value of f(d[i, ]) and update the MSE
-    vario <- variogram.lsm(ynew,dnew,anchorpoints,epsilon,n_angles,n_intervals,kernel_id,FALSE)
-    solu <- findsolutions.lsm(vario, id, initial.position,print=FALSE)
-    previsions <- predict.lsm(solu, rbind(d[i,]), ynew, dnew,FALSE,FALSE)
+    vario <- variogram.lsm(ynew,dnew,anchorpoints,epsilon,n_angles,n_intervals,kernel_id,FALSE, n_threads = n_threads)
+    solu <- findsolutions.lsm(vario, id, initial.position,print=FALSE, n_threads = n_threads)
+    previsions <- predict.lsm(solu, rbind(d[i,]), ynew, dnew,FALSE,FALSE, n_threads = n_threads)
     MSE <- MSE + (previsions$ypredicted - y[i])^2
     
     # update the progress bar

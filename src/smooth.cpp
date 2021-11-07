@@ -70,7 +70,6 @@ smt::smt(const cd::matrixptr solutions_, const matrixptr &anchorpos_, const cd::
             min_error = error;
         }
     }
-    std::cout<< min_error << std::endl;
     kernel_.build_simple_kernel(anchorpos, optimal_delta);
 }
 
