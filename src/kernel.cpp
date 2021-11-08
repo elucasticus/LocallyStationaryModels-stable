@@ -33,6 +33,7 @@ void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 
 	k->resize(N, n);
 
+	// fill each component of k with the value of the kernel function evaluated between the i-th anchor point and the j-th initial point
 	#pragma omp parallel for
 	for (size_t i = 0; i < N; ++i)
 	{
@@ -42,16 +43,15 @@ void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 		}
 	}
 
-	/// create a vector with the sum on each row of k
+	// create a vector with the sum on each row of k
 	vector sums(N);
-
 	#pragma omp parallel for
 	for (size_t i=0; i < N; ++i)
 	{
 		sums(i) = (k->row(i)).sum();
 	}
 
-	/// fill k with the new values
+	// divide each row of k by the sum of the elements of that row
 	#pragma omp parallel for
 	for (size_t i = 0; i < N; ++i)
 	{
@@ -66,7 +66,7 @@ void kernel::build_simple_kernel(const matrixptr &d)
 {
 	size_t n = d->rows();
 	k->resize(n, n);
-
+	// fill each component of k with the kernel function evaluated between the i-th and the j-th point of d
 	#pragma omp parallel for
 	for (size_t i = 0; i < n; ++i)
 	{
@@ -81,18 +81,7 @@ void kernel::build_simple_kernel(const matrixptr &d)
 void kernel::build_simple_kernel(const matrixptr &d, const scalar &epsilon_)
 {
 	epsilon = epsilon_;
-	size_t n = d->rows();
-	k->resize(n, n);
-
-	#pragma omp parallel for
-	for (size_t i = 0; i < n; ++i)
-	{
-		for (size_t j = i; j < n; ++j)
-		{
-			k->operator()(i, j) = this->operator()(d->row(i), d->row(j));
-			k->operator()(j, i) = k->operator()(i, j);
-		}
-	}
+	build_simple_kernel(d);
 }
 
 const matrixptr kernel::get_kernel() const {return k;}
