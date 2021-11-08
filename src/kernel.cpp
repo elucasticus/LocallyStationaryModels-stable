@@ -70,7 +70,7 @@ void kernel::build_simple_kernel(const matrixptr &d)
 	#pragma omp parallel for
 	for (size_t i = 0; i < n; ++i)
 	{
-		for (size_t j = i+1; j < n; ++j)
+		for (size_t j = i; j < n; ++j)
 		{
 			k->operator()(i, j) = this->operator()(d->row(i), d->row(j));
 			k->operator()(j, i) = k->operator()(i, j);

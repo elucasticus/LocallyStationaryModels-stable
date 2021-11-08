@@ -15,7 +15,7 @@ cd::scalar gaussian(const cd::vector &x, const cd::vector &y, const cd::scalar &
 
 /**
  * \brief       allow to select between pre-built kernel functions
- * \param id	name of the function of choice
+ * \param id	a string with the name of the kernel function you want to use
 */
 cd::kernelfunction make_kernel(const std::string &id);
 
@@ -33,12 +33,12 @@ public:
     /**
 	 * \brief               constructor
 	 * \param id 	        name of the kernel function
-     * \param epsilon_      value of epsilon
+     * \param epsilon_      value of the bandwidth parameter epsilon
 	*/
 	kernel(const std::string &id, const cd::scalar &epsilon_);
 
     /** 
-     * \brief   default constuctor with f gaussian and epsilon equal to 1.
+     * \brief   default constuctor with a gaussian kernel and epsilon equal to 1.
     */
     kernel();
 
