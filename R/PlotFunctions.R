@@ -70,8 +70,16 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   
   # ellipses and phi
   ellissi<-g
-  ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/a$width)
-  ellissi$lambda1 <- a$width
+  if (a$width > a$height)
+  {
+    ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/a$width)
+    ellissi$lambda1 <- a$width
+  }
+  else
+  {
+    ellissi$lambda1 <- ellissi$lambda1/(ellissi$lambda2/a$height)
+    ellissi$lambda2 <- a$height
+  }
   p1 <- ggplot2::ggplot(ellissi, ggplot2::aes(x=X, y=Y)) + ggforce::geom_ellipse(ggplot2::aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = ellissi) + ggplot2::coord_fixed() + ggplot2::theme_light()
   p2 <- ggplot2::ggplot(ellissi, ggplot2::aes(x=X, y=Y)) + ggplot2::geom_segment(ggplot2::aes(x=X, y=Y, xend=X+lambda1*cos(phi), yend=Y+lambda1*sin(phi)), arrow = ggplot2::arrow(length = ggplot2::unit(2, "mm")), data = ellissi)
   p2 <- p2 + ggplot2::geom_segment(ggplot2::aes(x=X, y=Y, xend=X-lambda1*cos(phi), yend=Y-lambda1*sin(phi)), arrow = ggplot2::arrow(length = ggplot2::unit(2, "mm")), data = ellissi) + ggplot2::coord_fixed() + ggplot2::theme_light()
