@@ -70,7 +70,7 @@ plot.lsm<-function(model, a, y, d, n_points = 10, seed = 69, points_arrangement 
   
   # ellipses and phi
   ellissi<-g
-  if (a$width > a$height)
+  if (max(ellissi$lambda1) > max(ellissi$lambda2))
   {
     ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/a$width)
     ellissi$lambda1 <- a$width
