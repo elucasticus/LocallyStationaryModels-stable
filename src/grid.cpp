@@ -11,13 +11,14 @@ using namespace cd;
 matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
 {
     double pi = 4*std::atan(1.);
-    
+    // create a square matrix of dimension d->rows()^2 and fill it with -1
     matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
     double b = 2*epsilon;
     double cell_length = b / n_intervals;
     double cell_angle = pi / (n_angles);
     
-
+    // for every couple of points i and j in d compute the position of the vector (j - i) in the grid and fill grid(i, j) accordingly
+    // since grid is symmetric we only need to fill the upper triangular part of the matrix 
     #pragma omp parallel for
     for (unsigned int i = 0; i < d->rows() - 1; ++i)
     {
@@ -26,7 +27,6 @@ matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigne
             scalar deltax =  d->operator()(j, 0) - d->operator()(i, 0);
             scalar deltay =  d->operator()(j, 1) - d->operator()(i, 1);
             scalar radius =  std::sqrt( deltax*deltax + deltay*deltay );
-            //scalar angle  =  std::atan( deltay / deltax );
 
             if (radius >= b)
                 grid->operator()(i, j) = -1;
@@ -71,10 +71,12 @@ void grid::build_normh(const matrixptr &data)
     x = std::make_shared<vector>(vector::Zero(hh));
     y = std::make_shared<vector>(vector::Zero(hh));
     normh = std::make_shared<vector>(vector::Zero(hh));
-  
+    // nn[k] will count how many times we will update the k-th element of x, y and normh
+    // which corresponds to the number of vectors which felt in the k-th cell  of the grid
     Eigen::VectorXi nn = Eigen::VectorXi::Zero(hh);
     int k = 0;
 
+    // for every couple of index i and j update x, y and normh in poistion k if g->operator(i, j) == k
     for (size_t i = 0; i < n-1 ; ++i)
     {
         for (size_t j = i+1 ; j < n; ++j)
@@ -93,6 +95,7 @@ void grid::build_normh(const matrixptr &data)
             }
         }
     }
+    // now divide element by element normh, x and y by nn to get the sample mean
     for (size_t u = 0; u < hh; ++u) 
     {
         if (nn[u] != 0)

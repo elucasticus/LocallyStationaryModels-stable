@@ -43,17 +43,17 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
     #pragma omp parallel
     {
         int k = 0;
-        /// for every location in d
+        // for every location in d
         #pragma omp for
         for (size_t l=0; l < N; ++l)
         {
             Eigen::VectorXi counters = Eigen::VectorXi::Zero(hh+1);
-            /// for every couple of locations in d
+            // for every couple of locations in d
             for (size_t i = 0; i < n-1; ++i)
             {
                 for (size_t j = i+1; j < n; ++j)
                 {
-                    /// if the vector between i and j belongs to the cell k
+                    // if the vector between i and j belongs to the cell k
                     k = g->operator()(i, j);
                     if (k >= 0)
                     {
