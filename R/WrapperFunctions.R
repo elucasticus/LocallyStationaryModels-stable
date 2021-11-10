@@ -100,3 +100,9 @@ variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, ke
   vario$kernel_id <- kernel_id
   return(vario)
 }
+
+smooth.lsm <- function(model, newpoints, n_threads = -1)
+{
+  result <- smoothing(model$solutions,model$anchorpoints,model$delta,newpoints,model$kernel_id,n_threads)
+  return(result)
+}
