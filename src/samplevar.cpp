@@ -28,15 +28,15 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
     variogram = std::make_shared<matrix>(matrix::Zero(hh+1, N));
     denominators = std::make_shared<matrix>(matrix::Zero(hh+1, N));
 
-    matrix Y(n, n);
+    matrix Z(n, n);
 
     #pragma omp parallel for
     for (size_t i = 0; i < n; ++i)
     {
         for (size_t j = 1; j < n; ++j)
         {
-            Y(i, j) = (z(i) - z(j)) * (z(i) - z(j));
-            Y(j, i) = Y(i, j);
+            Z(i, j) = (z(i) - z(j)) * (z(i) - z(j));
+            Z(j, i) = Z(i, j);
         }
     }
 
@@ -58,7 +58,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
                     if (k >= 0)
                     {
                         scalar prodotto = K(l, i) * K(l, j);
-                        variogram->operator()(k, l) += prodotto * Y(i, j);
+                        variogram->operator()(k, l) += prodotto * Z(i, j);
                         denominators->operator()(k, l) += prodotto;
                         counters[k]++;
                     }   

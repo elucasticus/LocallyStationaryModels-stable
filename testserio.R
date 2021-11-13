@@ -47,7 +47,7 @@ solu
 plotvario(6,15,vario$empiricvariogram,34,46*2)
 # Plot of the solutions
 x11()
-mypoints<-plot.lsm(model = solu, a = a, y = y, d = d, n_points = 10, points_arrangement = "random")
+mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 10, points_arrangement = "random")
 
 # Kriging on the original data
 x11()
