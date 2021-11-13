@@ -58,9 +58,9 @@ const matrixIptr grid::get_grid() const {return g;}
 
 const vectorptr grid::get_normh() const {return normh;}
 
-const vectorptr grid::get_x() const {return x;}
+const vectorptr grid::get_x() const {return mean_x;}
 
-const vectorptr grid::get_y() const {return y;}
+const vectorptr grid::get_y() const {return mean_y;}
 
 void grid::build_normh(const matrixptr &data)
 {
@@ -68,15 +68,15 @@ void grid::build_normh(const matrixptr &data)
     size_t n = g->rows();
     size_t hh = g->maxCoeff()+1;
 
-    x = std::make_shared<vector>(vector::Zero(hh));
-    y = std::make_shared<vector>(vector::Zero(hh));
+    mean_x = std::make_shared<vector>(vector::Zero(hh));
+    mean_y = std::make_shared<vector>(vector::Zero(hh));
     normh = std::make_shared<vector>(vector::Zero(hh));
-    // nn[k] will count how many times we will update the k-th element of x, y and normh
+    // nn[k] will count how many times we will update the k-th element of mean_x, mean_y and normh
     // which corresponds to the number of vectors which felt in the k-th cell  of the grid
     Eigen::VectorXi nn = Eigen::VectorXi::Zero(hh);
     int k = 0;
 
-    // for every couple of index i and j update x, y and normh in poistion k if g->operator(i, j) == k
+    // for every couple of index i and j update mean_x, mean_y and normh in poistion k if g->operator(i, j) == k
     for (size_t i = 0; i < n-1 ; ++i)
     {
         for (size_t j = i+1 ; j < n; ++j)
@@ -87,22 +87,22 @@ void grid::build_normh(const matrixptr &data)
             {
                 normh->operator()(k) += sqrt((d(j, 0) - d(i, 0))*(d(j, 0) - d(i, 0)) + (d(j,1)-d(i,1))*(d(j,1)-d(i,1)) );
                 if ((d(j, 0) - d(i, 0))*(d(j,1) - d(i,1)) < 0)
-                    x->operator()(k) -= std::abs(d(j, 0) - d(i, 0));
+                    mean_x->operator()(k) -= std::abs(d(j, 0) - d(i, 0));
                 else
-                    x->operator()(k) += std::abs(d(j, 0) - d(i, 0));  
-                y->operator()(k) += std::abs(d(j,1) - d(i,1));
+                    mean_x->operator()(k) += std::abs(d(j, 0) - d(i, 0));  
+                mean_y->operator()(k) += std::abs(d(j,1) - d(i,1));
                 nn[k]++;
             }
         }
     }
-    // now divide element by element normh, x and y by nn to get the sample mean
+    // now divide element by element normh, mean_x and mean_y by nn to get the sample mean
     for (size_t u = 0; u < hh; ++u) 
     {
         if (nn[u] != 0)
         {
             normh->operator[](u) /= nn[u];
-            x->operator[](u) /= nn[u];
-            y->operator[](u) /= nn[u];
+            mean_x->operator[](u) /= nn[u];
+            mean_y->operator[](u) /= nn[u];
         }
     }
 }

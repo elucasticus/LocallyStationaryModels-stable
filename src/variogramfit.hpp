@@ -17,8 +17,8 @@ struct funzionedaottimizzare
 {
     const cd::matrixptr empiricvariogram;
     const cd::matrixptr squaredweights;
-    const cd::vectorptr x;
-    const cd::vectorptr y;
+    const cd::vectorptr mean_x;
+    const cd::vectorptr mean_y;
     unsigned int x0;
     std::unique_ptr<variogramfunction> gammaisoptr;
 
@@ -26,12 +26,12 @@ struct funzionedaottimizzare
      * \brief                       constructor
      * \param empiricvariogram_     a shared pointer to the empiric variogram
      * \param squaredweights_       a shared pointer to the squared weights
-     * \param x_                    a shared pointer to the vector of the abscissas of the centers
-     * \param y_                    a shared pointer to the vector of the ordinates of the centers
+     * \param mean_x_                    a shared pointer to the vector of the abscissas of the centers
+     * \param mean_y_                    a shared pointer to the vector of the ordinates of the centers
      * \param x0_                   the index of the position x0
      * \param id                    the name of the variogram of your choice
     */
-    funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, unsigned int x0_, 
+    funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_, unsigned int x0_, 
     const std::string &id);
 
     /**
@@ -51,8 +51,8 @@ class opt
 private:
     cd::matrixptr empiricvariogram;
     cd::matrixptr squaredweights;
-    cd::vectorptr x;
-    cd::vectorptr y;
+    cd::vectorptr mean_x;
+    cd::vectorptr mean_y;
     std::string id;
     cd::vector initialparameters;
     cd::vector lowerbound;
@@ -70,14 +70,14 @@ public:
      * \brief                       constructor
      * \param empiricvariogram_     a shared pointer to the empiric variogram
      * \param squaredweights_       a shared pointer to the squared weights
-     * \param x_                    a shared pointer to the vector of the abscissas of the centers
-     * \param y_                    a shared pointer to the vector of the ordinates of the centers
+     * \param mean_x_                    a shared pointer to the vector of the abscissas of the centers
+     * \param mean_y_                    a shared pointer to the vector of the ordinates of the centers
      * \param id                    the name of the variogram of your choice
      * \param initialparameters_    the initial value of the parameters required from the optimizer to start the search for a minimum
      * \param lowerbound_           the lower bounds for the parameters in the nonlinear optimization problem
      * \param upperbound_           the upper bounds for the parameters in the nonlinear optimization problem
     */
-    opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_,
+    opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_,
     const std::string &id_, const cd::vector &initialparameters_, const cd::vector &lowerbound_, const cd::vector &upperbound_);
 
     /**

@@ -7,14 +7,14 @@
 
 using namespace cd;
 
-void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &yptr)
+void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr)
 {
     grid_.build_grid(dptr, n_angles, n_intervals);
 
     kernel_.build_kernel(dptr, anchorpointsptr);
 
     const matrix &d = *(dptr);
-    const vector &y = *(yptr);
+    const vector &z = *(zptr);
     const matrix &a = *(anchorpointsptr);
     const matrixIptr g = grid_.get_grid();
     const matrix &K = *(kernel_.get_kernel());
@@ -35,7 +35,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
     {
         for (size_t j = 1; j < n; ++j)
         {
-            Y(i, j) = (y(i) - y(j)) * (y(i) - y(j));
+            Y(i, j) = (z(i) - z(j)) * (z(i) - z(j));
             Y(j, i) = Y(i, j);
         }
     }

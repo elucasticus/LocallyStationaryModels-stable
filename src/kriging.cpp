@@ -106,7 +106,7 @@ double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
     double result = 0;
     // compute the mean of f(*) in pos
     for (unsigned int i=0; i<n; ++i)
-        result += eta(i) * y->operator()(neighbourhood[i]);
+        result += eta(i) * z->operator()(neighbourhood[i]);
     
     return result;
 }
@@ -125,7 +125,7 @@ double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) co
     double result = 0;
     // compute the mean of f(*) in position pos
     for (unsigned int i=0; i<n; ++i)
-        result += eta(i) * y->operator()(neighbourhood[i]);
+        result += eta(i) * z->operator()(neighbourhood[i]);
     
     return result;
 }
@@ -154,7 +154,7 @@ std::pair<double,double> predictor::predict_y<cd::vector, std::pair<double,doubl
     vector &etakriging = fulletakriging.first;
     // predict the value of f(pos)
     for (unsigned int i=0; i<n; ++i)
-        result += etakriging(i)*(y->operator()(i)-means->operator()(i)); //sistemare predict mean 
+        result += etakriging(i)*(z->operator()(i)-means->operator()(i)); //sistemare predict mean 
     // return f(pos) and the kriging variance
     return std::make_pair(result, fulletakriging.second);
 }
@@ -173,9 +173,9 @@ cd::matrix predictor::predict_y<cd::matrix, cd::matrix>(const cd::matrix &pos) c
     return result;
 }
 
-predictor::predictor(const std::string &id, const cd::vectorptr &y_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaisoptr(make_variogramiso(id)), y(y_), smt_(mysmt), b(b_), d(d_) 
+predictor::predictor(const std::string &id, const cd::vectorptr &z_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaisoptr(make_variogramiso(id)), z(z_), smt_(mysmt), b(b_), d(d_) 
 {
-    means = std::make_shared<vector>(y_->size());
+    means = std::make_shared<vector>(z_->size());
     // build a vector with the prediction of the mean of f in every anchorpoint to speed up the next computations
     #pragma omp parallel for
     for (unsigned int i=0; i<means->size(); ++i)

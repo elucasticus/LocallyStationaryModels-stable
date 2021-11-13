@@ -47,9 +47,9 @@ public:
      * \brief                   build the matrix of the empiric variogram
      * \param dptr              a shared pointer to the matrix of the coordinates of the original dataset
      * \param anchorpointsptr   a shared pointer to the matrix of the coordinates of the anchorpoitns 
-     * \param yptr              a shared pointer to the vector of the value of Y
+     * \param zptr              a shared pointer to the vector of the value of Y
     */
-    void build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &yptr);
+    void build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr);
 
     /**
      * \brief   return a shared pointer to the sample variogram
@@ -64,11 +64,11 @@ public:
     */
     const cd::matrixptr get_squaredweights() const;
     /**
-     * \brief   return grid_.x
+     * \brief   return grid_.mean_x
     */
     const cd::vectorptr get_x() const;
     /**
-     * \brief   return grid_.y
+     * \brief   return grid_.mean_y
     */
     const cd::vectorptr get_y() const;
     /**

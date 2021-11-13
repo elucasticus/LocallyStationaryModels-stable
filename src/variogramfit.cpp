@@ -18,7 +18,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
 
     for (unsigned int h = 0; h < truegamma.size(); ++h)
     {
-        truegamma[h] = gammaiso(params, x->operator[](h), y->operator[](h));
+        truegamma[h] = gammaiso(params, mean_x->operator[](h), mean_y->operator[](h));
     }
     vector empiricgamma = empiricvariogram->col(x0);
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
@@ -32,7 +32,7 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
 
     for (unsigned int h = 0; h < truegamma.size(); ++h)
     {
-        truegamma[h] = gammaiso(params, x->operator[](h), y->operator[](h));
+        truegamma[h] = gammaiso(params, mean_x->operator[](h), mean_y->operator[](h));
     }
     
     for (unsigned int i=0; i<params.size(); ++i)
@@ -52,12 +52,12 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, unsigned int x0_, 
-    const std::string &id): empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), x0(x0_), gammaisoptr(make_variogramiso(id)) {};
+funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_, unsigned int x0_, 
+    const std::string &id): empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), mean_x(mean_x_), mean_y(mean_y_), x0(x0_), gammaisoptr(make_variogramiso(id)) {};
 
-opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr x_, const cd::vectorptr y_, const std::string &id_, 
+opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_, const std::string &id_, 
     const cd::vector &initialparameters_, const cd::vector &lowerbound_, const cd::vector &upperbound_): 
-    empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), x(x_), y(y_), id(id_), initialparameters(initialparameters_), lowerbound(lowerbound_),
+    empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), mean_x(mean_x_), mean_y(mean_y_), id(id_), initialparameters(initialparameters_), lowerbound(lowerbound_),
     upperbound(upperbound_)
 {
     solutions = std::make_shared<matrix>(matrix::Zero(empiricvariogram->cols(),initialparameters.size()));
@@ -65,7 +65,7 @@ opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweigh
 
 vector opt::findonesolution(const unsigned int pos) const
 {
-    funzionedaottimizzare fun(empiricvariogram, squaredweights, x,  y, pos, id);
+    funzionedaottimizzare fun(empiricvariogram, squaredweights, mean_x,  mean_y, pos, id);
 
     // Set up parameters
     LBFGSBParam<double> param;

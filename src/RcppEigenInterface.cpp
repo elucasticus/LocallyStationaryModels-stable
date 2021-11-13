@@ -41,7 +41,7 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
 
 /**
  * \brief                   calculate the empiric variogram in each anchor points
- * \param y                 a vector with the values of Y for each point in the dataset d
+ * \param z                 a vector with the values of Z for each point in the dataset d
  * \param d                 a matrix with the coordinates of the points in the original dataset
  * \param anchorpoints      a matrix with the coordinates of each anchorpoints
  * \param epsilon           the value of the parameter epsilon regulating the kernel
@@ -52,7 +52,7 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
  * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads open
 */
 // [[Rcpp::export]]
-Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
+Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
     const unsigned int& n_intervals, const std::string &kernel_id,const bool print, const int &n_threads) {
     // start the clock
     auto start = high_resolution_clock::now();
@@ -70,12 +70,12 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
     }
   
     matrixptr dd = std::make_shared<matrix>(d);
-    vectorptr yy = std::make_shared<vector>(y);
+    vectorptr zz = std::make_shared<vector>(z);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
     samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon);
     // build the sample variogram
-    samplevar_.build_samplevar(dd, anchorpointsptr, yy);
+    samplevar_.build_samplevar(dd, anchorpointsptr, zz);
     // stop the clock and calculate the processing time
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(stop - start);
@@ -99,8 +99,8 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
  * \param anchorpoints          a matrix with the coordinates of each anchorpoints
  * \param empiricvariogram      the empiric variogram returned by the previour function
  * \param squaredweights        squared weigths returned by the previous function
- * \param x                     mean.x returned by the previous function
- * \param y                     mean.y returned by the previous function
+ * \param mean_x                mean.x returned by the previous function
+ * \param mean_y                mean.y returned by the previous function
  * \param variogram_id          the variogram to be used
  * \param parameters            the starting position to be given to the optimizer
  * \param epsilon               the value of epsilon regulating the kernel
@@ -108,7 +108,7 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, cons
  * \param n_threads             the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads open
 */
 //[[Rcpp::export]]
-Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &x, const Eigen::VectorXd &y, std::string &variogram_id,
+Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &mean_x, const Eigen::VectorXd &mean_y, std::string &variogram_id,
     const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon, const bool print,
     const int &n_threads) {
     // start the clock
@@ -128,8 +128,8 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
   
     matrixptr empiricvariogramptr = std::make_shared<matrix>(empiricvariogram);
     matrixptr squaredweightsptr = std::make_shared<matrix>(squaredweights);
-    vectorptr xptr = std::make_shared<vector>(x);
-    vectorptr yptr = std::make_shared<vector>(y);
+    vectorptr xptr = std::make_shared<vector>(mean_x);
+    vectorptr yptr = std::make_shared<vector>(mean_y);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
     opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters, lowerbound, upperbound);
@@ -155,7 +155,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
 
 /**
  * \brief                   predict the mean value and the punctual value of Yù
- * \param y                 a vector with the values of Y for each point in the dataset d
+ * \param z                 a vector with the values of Z for each point in the dataset d
  * \param d                 a matrix with the coordinates of the points in the original dataset
  * \param anchorpoints      a matrix with the coordinates of each anchorpoints
  * \param epsilon           epsilon regulating the kernel
@@ -168,7 +168,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
  * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads open
 */
 // [[Rcpp::export]]
-Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
+Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
     const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id, const bool print, const int &n_threads) {
     // start the clock
     auto start = high_resolution_clock::now();
@@ -186,12 +186,12 @@ Rcpp::List predikt(const Eigen::VectorXd &y, const Eigen::MatrixXd &d, const Eig
     }
 
     matrixptr dd = std::make_shared<matrix>(d);
-    vectorptr yy = std::make_shared<vector>(y);
+    vectorptr zz = std::make_shared<vector>(z);
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
     smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
-    predictor predictor_(variogram_id, yy, smt_, epsilon, dd);
+    predictor predictor_(variogram_id, zz, smt_, epsilon, dd);
     // predict the mean, the variance and the pointwise prediction of f(*) in positions
     matrix predicted_ys(predictor_.predict_y<cd::matrix, cd::matrix>(positions));
     vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));

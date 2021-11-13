@@ -31,8 +31,8 @@ private:
     cd::gridfunction f;
     cd::matrixIptr g = std::make_shared<cd::matrixI>(0,0);
     cd::vectorptr normh = nullptr;
-    cd::vectorptr x = nullptr;
-    cd::vectorptr y = nullptr;
+    cd::vectorptr mean_x = nullptr;
+    cd::vectorptr mean_y = nullptr;
     double epsilon;
 
     /**
