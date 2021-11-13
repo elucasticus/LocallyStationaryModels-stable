@@ -35,28 +35,28 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,
   return(result)
 }
 
-#' @brief         for each couple of coordinates in newpos predict the mean and punctual value of f(*)
+#' @brief         for each couple of coordinates in newpos predict the mean and punctual value of z
 #' @param sol     an object of type lsm obtained by calling findsolutions.lsm
-#' @param newpos  a matrix with the coordinates of the points where to evaluate f(*)
-#' @param y       the vector y used to generate the solutions
+#' @param newpos  a matrix with the coordinates of the points where to evaluate z
+#' @param z       the vector z used to generate the solutions
 #' @param d       the matrix d used to generate the solutions
 #' @param bool    if set to TRUE plot the solutions
-predict.lsm<-function(sol, newpos, y, d, bool = TRUE, print = TRUE, n_threads = -1)
+predict.lsm<-function(sol, newpos, z, d, bool = TRUE, print = TRUE, n_threads = -1)
 {
-  if(length(y) != dim(d)[1])
+  if(length(z) != dim(d)[1])
   {
-    print("The length of y and the number or rows of d do not coincide")
+    print("The length of z and the number or rows of d do not coincide")
   }
-  predictedvalues <- predikt(y,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id,print,n_threads)
+  predictedvalues <- predikt(z,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id,print,n_threads)
   if (bool)
   {
     newpos <- as.data.frame(newpos)
     colnames(newpos) <- c("X", "Y")
     means <- ggplot2::ggplot(newpos, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
-    ys <- ggplot2::ggplot(newpos, ggplot2::aes(x=X, y=Y, color=predictedvalues$ypredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+    ys <- ggplot2::ggplot(newpos, ggplot2::aes(x=X, y=Y, color=predictedvalues$zpredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
     means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
-    ys<-ys+ggplot2::labs(color="f(*)") + ggplot2::theme_light()
-    title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and f(*)", fontface='bold')
+    ys<-ys+ggplot2::labs(color="z") + ggplot2::theme_light()
+    title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and z", fontface='bold')
     p <- cowplot::plot_grid(means, ys)
     print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   }
@@ -83,20 +83,20 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 }
 
 #' @brief               compute the sample variogram in the anchorpoints
-#' @param y             the vector contatining f(d)
-#' @param d             the matrix contatining the coordinates in which we know the value of f(*)
+#' @param z             the vector contatining f(d)
+#' @param d             the matrix contatining the coordinates in which we know the value of z
 #' @param anchorpoints  a matrix with the coordinates of the anchorpoints which can be obtained calling find_anchorpoints.lsm
 #' @param epsilon       the value of epsilon regulating the kernel
 #' @param n_angles      the number of angles for the grid
 #' @param n_intervals   the number of intervals for the grid
 #' @param kernel_id     the type of kernel to be used
-variogram.lsm <- function(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print=TRUE, n_threads = -1)
+variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print=TRUE, n_threads = -1)
 {
-  if(length(y) != dim(d)[1])
+  if(length(z) != dim(d)[1])
   {
-    print("The length of y and the number or rows of d do not coincide")
+    print("The length of z and the number or rows of d do not coincide")
   }
-  vario <- variogramlsm(y, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads)
+  vario <- variogramlsm(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads)
   vario$kernel_id <- kernel_id
   return(vario)
 }

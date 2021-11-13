@@ -104,7 +104,7 @@ double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
     vector eta(build_eta(params, neighbourhood));
 
     double result = 0;
-    // compute the mean of f(*) in pos
+    // compute the mean of z in pos
     for (unsigned int i=0; i<n; ++i)
         result += eta(i) * z->operator()(neighbourhood[i]);
     
@@ -123,7 +123,7 @@ double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) co
     vector eta(build_eta(params, neighbourhood));
 
     double result = 0;
-    // compute the mean of f(*) in position pos
+    // compute the mean of z in position pos
     for (unsigned int i=0; i<n; ++i)
         result += eta(i) * z->operator()(neighbourhood[i]);
     
@@ -144,7 +144,7 @@ template<>
 std::pair<double,double> predictor::predict_y<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
 {
     unsigned int n=d->rows();
-    // predict the mean of f(*) in pos
+    // predict the mean of z in pos
     double m0 = predict_mean<cd::vector, double>(pos);
     double result = m0;
     // find the value of the parameters in pos

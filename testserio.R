@@ -24,7 +24,7 @@ mypoints<-plot.lsm(model = solu, a = a, y = y, d = d, n_points = 10, points_arra
 # Kriging on the original data
 x11()
 previsions <- predict.lsm(solu, d, y, d)
-max(previsions$ypredicted - y)
+max(previsions$zpredicted - y)
 
 # Test the performace of our model via cross-validation
 cv.lsm(y,d,a$anchorpoints,350,8,8,"gaussian","exponential", c(200,200,0.01,100))
@@ -52,7 +52,7 @@ mypoints<-plot.lsm(model = solu, a = a, y = y, d = d, n_points = 10, points_arra
 # Kriging on the original data
 x11()
 previsions <- predict.lsm(solu, d, y, d)
-max(previsions$ypredicted - y)
+max(previsions$zpredicted - y)
 
 
 

@@ -52,6 +52,6 @@ mypoints<-plot.lsm(model = solumatern,a = a,y = y,d = d)
 # Kriging on the original data
 x11(height = 600, width = 800, ypos = -100, xpos = -100)
 previsions <- predict.lsm(sol = solu,newpos =  d, y = y,d =  d)#solugaussian #solumatern
-max(abs(previsions$ypredicted - y))
+max(abs(previsions$zpredicted - y))
 #This function can be used to perform kriging in any new set of coordinates "newpos"
 
