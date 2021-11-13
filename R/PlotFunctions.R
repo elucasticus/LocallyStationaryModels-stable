@@ -1,7 +1,7 @@
 #' @brief                      generate various plots in order to better visualize the model built 
 #' @param model                an object returned by findsolutions.lsm
 #' @param a                    the object returned by findanchorpoints.lsm used to generate the model
-#' @param z                    the vector with the values of f(*) used to generate the model
+#' @param z                    the vector with the values of z used to generate the model
 #' @param d                    a matrix with the coordinates of the points in the original dataset used to build the model
 #' @param n_points             a parameter proportional to the number of points generated to visualize the model
 #' @param seed                 if points_arrangement is set to 'random', the seed used to generate the random points around each anchorpoints
@@ -95,13 +95,13 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
   print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
   
-  # predict and plot the mean and punctual value of f(*) for each newpoint
+  # predict and plot the mean and punctual value of z for each newpoint
   predictedvalues<-predikt(z,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id,model$kernel_id,FALSE,n_threads)
   means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
   ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$zpredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
   means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
-  ys<-ys+ggplot2::labs(color="f(*)") + ggplot2::theme_light()
-  title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and f(*)", fontface='bold')
+  ys<-ys+ggplot2::labs(color="z") + ggplot2::theme_light()
+  title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and z", fontface='bold')
   p <- cowplot::plot_grid(means, ys)
   print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
