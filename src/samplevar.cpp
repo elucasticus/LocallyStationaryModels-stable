@@ -79,7 +79,6 @@ void samplevar::build_squaredweights()
     const matrixIptr g = grid_.get_grid(); 
     const vectorptr normh = grid_.get_normh();
 
-    size_t n = g->rows();
     size_t N = denominators->cols();
     size_t htot = normh->rows();
 
