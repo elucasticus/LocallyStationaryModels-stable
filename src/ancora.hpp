@@ -23,6 +23,8 @@ private:
     double altezza_cubo = 0;
     double center_x = 0;
     double center_y = 0;
+    double min_x = 0;
+    double min_y = 0;
 
     /**
      * \brief   return the index of the position in the grid of each of the points of the dataset "data"
@@ -31,30 +33,19 @@ private:
     {
         unsigned int n = data->rows();
 
-        double min_x = (data->col(0)).minCoeff();
-        double max_x = (data->col(0)).maxCoeff();
-        double min_y = (data->col(1)).minCoeff();
-        double max_y = (data->col(1)).maxCoeff();
+        min_x = (data->col(0)).minCoeff();
+        min_y = (data->col(1)).minCoeff();
 
-        // find the origin of the grid
-        if (min_x > 0)
-            center_x = min_x*0.999999;
-        else
-            center_x = min_x*1.000001;
-        if (min_y > 0)
-            center_y = min_y*0.999999;
-        else
-            center_y = min_y*1.000001;
+        if (min_x < 0)
+            (data->col(0)).array() += std::abs(min_x) + 1;
+        if (min_y < 0)
+            (data->col(1)).array() += std::abs(min_y) + 1;
 
-        // find the dimensions of each cell
-        if (max_x > 0)
-            larghezza = max_x*1.000001 - center_x;
-        else
-            larghezza = max_x*0.999999 - center_x;
-        if (max_y > 0)
-            altezza = max_y*1.000001 - center_y;
-        else
-            altezza = max_y*0.999999 - center_y;
+        center_x = (data->col(0)).minCoeff()*0.999999;
+        center_y = (data->col(1)).minCoeff()*0.999999;
+
+        larghezza = (data->col(0)).maxCoeff()*1.000001 - center_x;
+        altezza = (data->col(1)).maxCoeff()*1.000001 - center_y;
         larghezza_cubo = larghezza/n_cubotti;
         altezza_cubo = altezza/n_cubotti;
 
@@ -101,6 +92,10 @@ public:
             anchorpos(i,0) = center_x + (I - floor((I*0.999999)/n_cubotti)*n_cubotti)*larghezza_cubo - larghezza_cubo/2;
             anchorpos(i,1) = center_y + ceil((I*0.999999)/n_cubotti)*altezza_cubo - altezza_cubo/2;
         }
+        if (min_x < 0)
+            (anchorpos.col(0)).array() -= std::abs(min_x) + 1;
+        if (min_y < 0)
+            (anchorpos.col(1)).array() -= std::abs(min_y) + 1;
         return anchorpos;
     }
 
