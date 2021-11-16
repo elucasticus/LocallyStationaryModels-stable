@@ -31,13 +31,30 @@ private:
     {
         unsigned int n = data->rows();
 
+        double min_x = (data->col(0)).minCoeff();
+        double max_x = (data->col(0)).maxCoeff();
+        double min_y = (data->col(1)).minCoeff();
+        double max_y = (data->col(1)).maxCoeff();
+
         // find the origin of the grid
-        center_x = (data->col(0)).minCoeff()*0.999999;
-        center_y = (data->col(1)).minCoeff()*0.999999;
+        if (min_x > 0)
+            center_x = min_x*0.999999;
+        else
+            center_x = min_x*1.000001;
+        if (min_y > 0)
+            center_y = min_y*0.999999;
+        else
+            center_y = min_y*1.000001;
 
         // find the dimensions of each cell
-        larghezza = (data->col(0)).maxCoeff()*1.000001 - center_x;
-        altezza = (data->col(1)).maxCoeff()*1.000001 - center_y;
+        if (max_x > 0)
+            larghezza = max_x*1.000001 - center_x;
+        else
+            larghezza = max_x*0.999999 - center_x;
+        if (max_y > 0)
+            altezza = max_y*1.000001 - center_y;
+        else
+            altezza = max_y*0.999999 - center_y;
         larghezza_cubo = larghezza/n_cubotti;
         altezza_cubo = altezza/n_cubotti;
 
