@@ -69,7 +69,18 @@ predict.lsm<-function(sol, newpos, z, d, bool = TRUE, print = TRUE, n_threads = 
 #' @param bool     if set to true plot the original dataset and the anchorpoints
 find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 {
+  min.c <- rep(0., dim(dataset)[2])
+  for (i in 1:dim(dataset)[2])
+  {
+    min.c[i] <- abs(min(dataset[,i]))
+    dataset[, i] <- dataset[, i] + min.c[i]
+  }
   result <- find_anchorpoints(dataset, n)
+  for (i in 1:dim(dataset)[2])
+  {
+    dataset[, i] <- dataset[, i] - min.c[i]
+    result$anchorpoints[, i] <- result$anchorpoints[, i] - min.c[i]
+  }
   if (bool)
   {
     D <- as.data.frame(dataset)
