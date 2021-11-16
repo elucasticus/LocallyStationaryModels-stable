@@ -23,8 +23,6 @@ private:
     double altezza_cubo = 0;
     double center_x = 0;
     double center_y = 0;
-    double min_x = 0;
-    double min_y = 0;
 
     /**
      * \brief   return the index of the position in the grid of each of the points of the dataset "data"
@@ -32,14 +30,6 @@ private:
     cd::vector cubotti() 
     {
         unsigned int n = data->rows();
-
-        min_x = (data->col(0)).minCoeff();
-        min_y = (data->col(1)).minCoeff();
-
-        if (min_x < 0)
-            (data->col(0)).array() += std::abs(min_x) + 1;
-        if (min_y < 0)
-            (data->col(1)).array() += std::abs(min_y) + 1;
 
         center_x = (data->col(0)).minCoeff()*0.999999;
         center_y = (data->col(1)).minCoeff()*0.999999;
@@ -92,10 +82,6 @@ public:
             anchorpos(i,0) = center_x + (I - floor((I*0.999999)/n_cubotti)*n_cubotti)*larghezza_cubo - larghezza_cubo/2;
             anchorpos(i,1) = center_y + ceil((I*0.999999)/n_cubotti)*altezza_cubo - altezza_cubo/2;
         }
-        if (min_x < 0)
-            (anchorpos.col(0)).array() -= std::abs(min_x) + 1;
-        if (min_y < 0)
-            (anchorpos.col(1)).array() -= std::abs(min_y) + 1;
         return anchorpos;
     }
 
