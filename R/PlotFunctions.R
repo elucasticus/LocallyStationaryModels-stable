@@ -6,7 +6,7 @@
 #' @param n_points             a parameter proportional to the number of points generated to visualize the model
 #' @param seed                 if points_arrangement is set to 'random', the seed used to generate the random points around each anchorpoints
 #' @param points_arrangement   the arrangement of the points around each anchorpoints
-plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement = "random", n_threads = -1)
+plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement = "random", n_threads = -1, bool = TRUE)
 {
   # set the seed
   set.seed(seed = seed)
@@ -94,17 +94,18 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
   p <- cowplot::plot_grid(p1,p2,p3,p4)
   print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
   
-  
-  # predict and plot the mean and punctual value of z for each newpoint
-  predictedvalues<-predikt(z,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id,model$kernel_id,FALSE,n_threads)
-  means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
-  ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$zpredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
-  means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
-  ys<-ys+ggplot2::labs(color="z") + ggplot2::theme_light()
-  title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and z", fontface='bold')
-  p <- cowplot::plot_grid(means, ys)
-  print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
-  
+  if(bool)
+  {
+    # predict and plot the mean and punctual value of z for each newpoint
+    predictedvalues<-predikt(z,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id,model$kernel_id,FALSE,n_threads)
+    means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+    ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$zpredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+    means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
+    ys<-ys+ggplot2::labs(color="z") + ggplot2::theme_light()
+    title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and z", fontface='bold')
+    p <- cowplot::plot_grid(means, ys)
+    print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
+  }
   return(allpoints)
 }
 

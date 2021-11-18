@@ -40,7 +40,7 @@ private:
         altezza_cubo = altezza/n_cubotti;
 
         // fill a vector with the position of each point
-        cd::vector result(n);
+        Eigen::VectorXi result(n);
         for (unsigned int i=0; i<n; ++i)
         {
             cd::vector coordinates = data->row(i);
