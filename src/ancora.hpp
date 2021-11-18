@@ -27,7 +27,7 @@ private:
     /**
      * \brief   return the index of the position in the grid of each of the points of the dataset "data"
     */
-    cd::vector cubotti() 
+    Eigen::VectorXi cubotti() 
     {
         unsigned int n = data->rows();
 
@@ -63,7 +63,7 @@ public:
     const cd::matrix find_anchorpoints()
     {
         unsigned int n = data->rows();
-        cd::vector results = cubotti();
+        Eigen::VectorXi results = cubotti();
 
         // build a new vector without duplicates
         std::vector<unsigned int> positions;
