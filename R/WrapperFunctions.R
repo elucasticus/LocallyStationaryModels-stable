@@ -78,7 +78,7 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
   result <- find_anchorpoints(dataset, n)
   for (i in 1:dim(dataset)[2])
   {
-    dataset[, i] <- dataset[, i] - min.c[i]
+    dataset[, i] <- dataset[, i] - min.c[i] -1
     result$anchorpoints[, i] <- result$anchorpoints[, i] - min.c[i] - 1
   }
   if (bool)
