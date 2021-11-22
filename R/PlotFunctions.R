@@ -105,6 +105,10 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
     title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and z", fontface='bold')
     p <- cowplot::plot_grid(means, ys)
     print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
+    allpoints <- cbind(allpoints, predictedvalues$predictedmean)
+    allpoints <- cbind(allpoints, predictedvalues$zpredicted)
+    allpoints <- cbind(allpoints, predictedvalues$krigingvariance)
+    colnames(allpoints)[7:9] <- c("predictedmean", "zpredicted", "krigingvariance")
   }
   return(allpoints)
 }
