@@ -37,11 +37,11 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
   {
     for (i in 1:n_points)
     {
-      vstep <- a$height/(n_points + 1)
+      vstep <- a$height/(n_points)
       for (j in 1:n_points)
       {
-        hstep <- a$width/(n_points+1)
-        newpoints <- rbind(newpoints, cbind(g$X-a$width+hstep*j, g$Y+a$height-vstep*i))
+        hstep <- a$width/(n_points)
+        newpoints <- rbind(newpoints, cbind(g$X-a$width+hstepj-hstep/2, g$Y+a$height-vstepi-vstep/2))
       }
     }
   }
