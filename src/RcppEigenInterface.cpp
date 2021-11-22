@@ -193,7 +193,7 @@ Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eig
     smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
     predictor predictor_(variogram_id, zz, smt_, epsilon, dd);
     // predict the mean, the variance and the pointwise prediction of z in positions
-    matrix predicted_ys(predictor_.predict_y<cd::matrix, cd::matrix>(positions));
+    matrix predicted_ys(predictor_.predict_z<cd::matrix, cd::matrix>(positions));
     vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));
     // stop the clock and calculate the processing time
     auto stop = high_resolution_clock::now();

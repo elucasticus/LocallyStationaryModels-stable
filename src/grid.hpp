@@ -23,20 +23,21 @@ cd::matrixIptr Pizza(const cd::matrixptr &d, const unsigned int &n_angles, const
 cd::gridfunction make_grid(const std::string &id);
 
 /**
- * \brief   two-dimensional version of the grid class
+ * \brief   class to build the grid
 */
 class grid
 {
 private:
-    cd::gridfunction f;
-    cd::matrixIptr g = std::make_shared<cd::matrixI>(0,0);
-    cd::vectorptr normh = nullptr;
-    cd::vectorptr mean_x = nullptr;
-    cd::vectorptr mean_y = nullptr;
-    double epsilon;
+    cd::gridfunction f; /// grid function
+    cd::matrixIptr g = std::make_shared<cd::matrixI>(0,0); /// grid matrix
+    cd::vectorptr normh = nullptr; /// vector with the norm of each cell of the grid (mean of the norm of all the pairs inside)
+    cd::vectorptr mean_x = nullptr; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    cd::vectorptr mean_y = nullptr; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    double epsilon; /// bandwidth parameter inside
 
     /**
-     * \brief           a "helper" function to build the vector containing the position of the centers of the cells of the grid. Each pair of coordinates is assigned to a position of the grid.
+     * \brief           a "helper" function to build the vector containing the position of the centers of the cells of the grid. 
+     * Each pair of coordinates is assigned to a position of the grid.
      * \param data      a shared pointer to the matrix of the coordinates
     */
     void build_normh(const cd::matrixptr &data);

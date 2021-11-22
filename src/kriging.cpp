@@ -141,7 +141,7 @@ cd::vector predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos
 }
 
 template<>
-std::pair<double,double> predictor::predict_y<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
+std::pair<double,double> predictor::predict_z<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
 {
     unsigned int n=d->rows();
     // predict the mean of z in pos
@@ -160,13 +160,13 @@ std::pair<double,double> predictor::predict_y<cd::vector, std::pair<double,doubl
 }
 
 template<>
-cd::matrix predictor::predict_y<cd::matrix, cd::matrix>(const cd::matrix &pos) const
+cd::matrix predictor::predict_z<cd::matrix, cd::matrix>(const cd::matrix &pos) const
 {
     matrix result(pos.rows(), 2);
     #pragma omp parallel for
     for (size_t i=0; i<pos.rows(); ++i)
     {
-        std::pair<double, double> prediction = predict_y<cd::vector, std::pair<double,double>>(pos.row(i));
+        std::pair<double, double> prediction = predict_z<cd::vector, std::pair<double,double>>(pos.row(i));
         result(i, 0) = prediction.first;
         result(i, 1) = prediction.second;
     }

@@ -15,12 +15,12 @@
 class predictor
 {
 private:
-    std::unique_ptr<variogramfunction> gammaisoptr;
-    cd::vectorptr z = nullptr;
-    smt smt_;
-    double b;
-    cd::vectorptr means = nullptr;
-    cd::matrixptr d = nullptr;
+    std::shared_ptr<variogramfunction> gammaisoptr; /// variogram function
+    cd::vectorptr z = nullptr; /// z(d)
+    smt smt_; /// smoother
+    double b; /// cutoff-radius of locally stationary neighbourhood
+    cd::vectorptr means = nullptr; /// vector with the mean predicted in each anchor point
+    cd::matrixptr d = nullptr; /// dataset with the initial points
 
     /**
      * \brief       build a vector with the index of the points in the neighbourhood of radius b of the point in position pos
@@ -65,10 +65,10 @@ public:
     Output predict_mean(const Input &pos) const;
 
     /**
-     * \brief   predict Y
+     * \brief   predict Z
     */
     template<typename Input, typename Output>
-    Output predict_y(const Input &pos) const;
+    Output predict_z(const Input &pos) const;
 };
 
 #endif //LOCALLY_STATIONARY_MODELS_KRIGING

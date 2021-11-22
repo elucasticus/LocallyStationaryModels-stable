@@ -25,9 +25,9 @@ cd::kernelfunction make_kernel(const std::string &id);
 class kernel
 {
 private:
-    cd::scalar epsilon;
-    cd::kernelfunction f;
-    cd::matrixptr k = std::make_shared<cd::matrix>(0,0);
+    cd::scalar epsilon; /// bandwidth parameter
+    cd::kernelfunction f; /// kernel function
+    cd::matrixptr k = std::make_shared<cd::matrix>(0,0); /// kernel matrix
 
 public:
     /**
@@ -48,9 +48,10 @@ public:
     cd::scalar operator()(const cd::vector &x, const cd::vector &y) const;
 
     /**
-     * \brief                   build the "star" version of the kernel needed for the empiric variogram
+     * \brief                   build the "star" version of the kernel that contains the standardized kernel weights in such
+     * a way that each row sums to one
      * \param coordinates       a shared pointer to the matrix with the coordinates of the original dataset
-     * \param anchorpoints      a shared pointer to the matrix with the coordinates of the anchorpoints
+     * \param anchorpoints      a shared pointer to the matrix with the coordinates of the anchor points
     */
     void build_kernel(const cd::matrixptr &coordinates, const cd::matrixptr &anchorpoints);
 

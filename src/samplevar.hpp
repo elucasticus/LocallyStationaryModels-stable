@@ -15,13 +15,13 @@
 class samplevar
 {
 private:
-    cd::matrixptr variogram = nullptr;
-    cd::matrixptr denominators = nullptr;
-    cd::matrixptr squaredweights = nullptr;
-    kernel kernel_;
-    grid grid_;
-    unsigned int n_angles;
-    unsigned int n_intervals;
+    cd::matrixptr variogram = nullptr; /// sample variogram matrix
+    cd::matrixptr denominators = nullptr; /// a matrix with the denominators necessary to compute the squared weights
+    cd::matrixptr squaredweights = nullptr; /// matrix with the squared weights
+    kernel kernel_; /// kernel
+    grid grid_; /// grid
+    unsigned int n_angles; /// number of angles of the grid
+    unsigned int n_intervals; /// number of intervals per angle of the grid
 
     /**
      * \brief a "helper" function which built the squared weights for the wls problem needed by the optimizer
@@ -46,8 +46,8 @@ public:
     /**
      * \brief                   build the matrix of the empiric variogram
      * \param dptr              a shared pointer to the matrix of the coordinates of the original dataset
-     * \param anchorpointsptr   a shared pointer to the matrix of the coordinates of the anchorpoitns 
-     * \param zptr              a shared pointer to the vector of the value of Y
+     * \param anchorpointsptr   a shared pointer to the matrix of the coordinates of the anchor poitns 
+     * \param zptr              a shared pointer to the vector of the value of Z
     */
     void build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr);
 

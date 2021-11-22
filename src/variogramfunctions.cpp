@@ -69,25 +69,25 @@ cd::scalar gaussian::operator()(const cd::vector &params, const cd::scalar &x, c
     return sigma * sigma * (1 - exp(-h*h));
 }
 
-std::unique_ptr<variogramfunction> make_variogramiso(const std::string &id)
+std::shared_ptr<variogramfunction> make_variogramiso(const std::string &id)
 {
     if(id == "exponential" || id == "esponenziale")
-        return std::make_unique<exponential>();
+        return std::make_shared<exponential>();
     if(id == "matern" || id == "Matern")
-        return std::make_unique<matern>();
+        return std::make_shared<matern>();
     if(id == "gaussian" || id == "Gaussian")
-        return std::make_unique<gaussian>();
+        return std::make_shared<gaussian>();
     if(id.substr(0, 13) == "maternNuFixed")
     {
         try
         {
             double NU = std::stod(id.substr(14));
-            return std::make_unique<maternNuFixed>(NU);
+            return std::make_shared<maternNuFixed>(NU);
         }
         catch (std::exception &e)
         {
-            return std::make_unique<exponential>();
+            return std::make_shared<exponential>();
         }
     }
-    return std::make_unique<exponential>();
+    return std::make_shared<exponential>();
 }

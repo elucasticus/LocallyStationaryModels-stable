@@ -10,19 +10,19 @@
 #include <algorithm>
 
 /**
- * \brief   a simple class to find the anchorpoints given the data
+ * \brief   a simple class to find the anchor points given the data
 */
 class ancora
 {
 private:
-    cd::matrixptr data;
-    double n_cubotti;
-    double larghezza = 0;
-    double altezza = 0;
-    double larghezza_cubo = 0;
-    double altezza_cubo = 0;
-    double center_x = 0;
-    double center_y = 0;
+    cd::matrixptr data; /// matrix to generate the anchor points
+    double n_cubotti; /// number of tiles per row and column of the grid
+    double larghezza = 0; /// total width of the grid
+    double altezza = 0; /// total height of the grid
+    double larghezza_cubo = 0; /// width of each tile
+    double altezza_cubo = 0; /// height of each tile
+    double center_x = 0; /// x of the origin of the grid
+    double center_y = 0; /// y of the origin of the gird
 
     /**
      * \brief   return the index of the position in the grid of each of the points of the dataset "data"
@@ -58,7 +58,7 @@ public:
     ancora(const cd::matrixptr &data_, const double h_): data(data_), n_cubotti(h_){};
 
     /**
-     * \brief   this function returns the coordinates of the anchorpoints in a way such that every anchorpoints has at least one point of the domain in its neighbourhood
+     * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point of the domain in its neighbourhood
     */
     const cd::matrix find_anchorpoints()
     {

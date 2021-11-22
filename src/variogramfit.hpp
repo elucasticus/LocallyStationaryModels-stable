@@ -15,19 +15,19 @@
 */
 struct funzionedaottimizzare
 {
-    const cd::matrixptr empiricvariogram;
-    const cd::matrixptr squaredweights;
-    const cd::vectorptr mean_x;
-    const cd::vectorptr mean_y;
-    unsigned int x0;
-    std::unique_ptr<variogramfunction> gammaisoptr;
+    const cd::matrixptr empiricvariogram; /// sample variogram matrix
+    const cd::matrixptr squaredweights; /// matrix of the squared weights
+    const cd::vectorptr mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    const cd::vectorptr mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    unsigned int x0; /// index of the position where to evaluate gammaisoptr
+    std::shared_ptr<variogramfunction> gammaisoptr; /// pointer to the variogram function
 
     /**
      * \brief                       constructor
      * \param empiricvariogram_     a shared pointer to the empiric variogram
      * \param squaredweights_       a shared pointer to the squared weights
-     * \param mean_x_                    a shared pointer to the vector of the abscissas of the centers
-     * \param mean_y_                    a shared pointer to the vector of the ordinates of the centers
+     * \param mean_x_               a shared pointer to the vector of the abscissas of the centers
+     * \param mean_y_               a shared pointer to the vector of the ordinates of the centers
      * \param x0_                   the index of the position x0
      * \param id                    the name of the variogram of your choice
     */
@@ -36,7 +36,7 @@ struct funzionedaottimizzare
 
     /**
      * \param params    a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
-     * \param grad      a vector containing the previous value of the gradient which will be updated
+     * \param grad      a vector containing the previous value of the gradient which is updated at each iteration
     */
     cd::scalar operator() (const cd::vector &params, cd::vector &grad);
     cd::scalar operator() (const cd::vector &params);
@@ -49,15 +49,15 @@ struct funzionedaottimizzare
 class opt
 {
 private:
-    cd::matrixptr empiricvariogram;
-    cd::matrixptr squaredweights;
-    cd::vectorptr mean_x;
-    cd::vectorptr mean_y;
-    std::string id;
-    cd::vector initialparameters;
-    cd::vector lowerbound;
-    cd::vector upperbound;
-    cd::matrixptr solutions = nullptr;
+    cd::matrixptr empiricvariogram; /// sample variogram matrix
+    cd::matrixptr squaredweights; /// matrix with the squared weights
+    cd::vectorptr mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    cd::vectorptr mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    std::string id; /// name of the chosen variogram
+    cd::vector initialparameters; /// initial parameters for the optimizer
+    cd::vector lowerbound; /// lower bounds for the optimizer
+    cd::vector upperbound; /// upper bounds for the optimizer
+    cd::matrixptr solutions = nullptr; /// matrix with the solution in all the anchor points
 
     /**
      * \brief       find the optimal solution for the point in position pos
@@ -70,8 +70,8 @@ public:
      * \brief                       constructor
      * \param empiricvariogram_     a shared pointer to the empiric variogram
      * \param squaredweights_       a shared pointer to the squared weights
-     * \param mean_x_                    a shared pointer to the vector of the abscissas of the centers
-     * \param mean_y_                    a shared pointer to the vector of the ordinates of the centers
+     * \param mean_x_               a shared pointer to the vector of the abscissas of the centers
+     * \param mean_y_               a shared pointer to the vector of the ordinates of the centers
      * \param id                    the name of the variogram of your choice
      * \param initialparameters_    the initial value of the parameters required from the optimizer to start the search for a minimum
      * \param lowerbound_           the lower bounds for the parameters in the nonlinear optimization problem

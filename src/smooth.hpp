@@ -15,12 +15,12 @@
 class smt
 {
 private:
-    cd::matrixptr solutions = nullptr;
-    cd::matrixptr anchorpos = nullptr;
+    cd::matrixptr solutions = nullptr; /// matrix wiht the solution of the optimization
+    cd::matrixptr anchorpos = nullptr; /// anchor points
 
-    kernel kernel_;
+    kernel kernel_; /// kernel
 
-    double optimal_delta = 0;
+    double optimal_delta = 0; /// optimal value for delta
 
     /**
      * \brief       smooth a single parameter for a point in position pos
