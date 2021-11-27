@@ -51,7 +51,7 @@ void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 		sums(i) = (k->row(i)).sum();
 	}
 
-	// divide each row of k by the sum of the elements of that row
+	// divide each element of k by the sum of the elements of its row to obtained the normalized version of the kernel matrix K*
 	#pragma omp parallel for
 	for (size_t i = 0; i < N; ++i)
 	{

@@ -152,10 +152,10 @@ std::pair<double,double> predictor::predict_z<cd::vector, std::pair<double,doubl
     // build etakriging and calculate the variance
     std::pair<vector, double> fulletakriging(build_etakriging(params, pos));
     vector &etakriging = fulletakriging.first;
-    // predict the value of f(pos)
+    // predict the value of z(pos)
     for (unsigned int i=0; i<n; ++i)
-        result += etakriging(i)*(z->operator()(i)-means->operator()(i)); //sistemare predict mean 
-    // return f(pos) and the kriging variance
+        result += etakriging(i)*(z->operator()(i)-means->operator()(i)); 
+    // return z(pos) and the kriging variance
     return std::make_pair(result, fulletakriging.second);
 }
 
@@ -176,7 +176,7 @@ cd::matrix predictor::predict_z<cd::matrix, cd::matrix>(const cd::matrix &pos) c
 predictor::predictor(const std::string &id, const cd::vectorptr &z_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaisoptr(make_variogramiso(id)), z(z_), smt_(mysmt), b(b_), d(d_) 
 {
     means = std::make_shared<vector>(z_->size());
-    // build a vector with the prediction of the mean of f in every anchorpoint to speed up the next computations
+    // build a vector with the prediction of the mean of z in every anchorpoint to speed up the next computations
     #pragma omp parallel for
     for (unsigned int i=0; i<means->size(); ++i)
         means->operator()(i) = predict_mean<unsigned int, double>(i);

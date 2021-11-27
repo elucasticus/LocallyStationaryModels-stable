@@ -77,6 +77,7 @@ std::shared_ptr<variogramfunction> make_variogramiso(const std::string &id)
         return std::make_shared<matern>();
     if(id == "gaussian" || id == "Gaussian")
         return std::make_shared<gaussian>();
+    // using the following method we can set directly from R passing a string a constant value for nu
     if(id.substr(0, 13) == "maternNuFixed")
     {
         try

@@ -35,12 +35,17 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
         truegamma[h] = gammaiso(params, mean_x->operator[](h), mean_y->operator[](h));
     }
     
+    double c = 10e-8;
+    // we update the gradient of the function
+    // partial derivative are calcutated with central differences method
+    // the step for the numerical estimation of the gradient is chosen proportionally to the parameter with respect to which we are
+    // calculating the derivative
     for (unsigned int i=0; i<params.size(); ++i)
     {
         vector paramsdeltaplus(params);
         vector paramsdeltaminus(params);
 
-        double increment = 10e-8*params[i];
+        double increment = c*params[i];
 
         paramsdeltaplus[i] += increment;
         paramsdeltaminus[i] -= increment;

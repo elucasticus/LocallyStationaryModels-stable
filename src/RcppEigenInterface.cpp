@@ -53,7 +53,7 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
 */
 // [[Rcpp::export]]
 Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
-    const unsigned int& n_intervals, const std::string &kernel_id,const bool print, const int &n_threads) {
+    const unsigned int& n_intervals, const std::string &kernel_id, const bool print, const int &n_threads) {
     // start the clock
     auto start = high_resolution_clock::now();
     // if n_threads is positive open open n_threads threads to process the data

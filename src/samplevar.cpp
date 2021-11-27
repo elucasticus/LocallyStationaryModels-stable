@@ -13,21 +13,25 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
 
     kernel_.build_kernel(dptr, anchorpointsptr);
 
+    // d is the matrix with the coordinates of the initial points
     const matrix &d = *(dptr);
+    // z is the vector with z(d)
     const vector &z = *(zptr);
+    // a is the matrix with the coordinates of the anchor points
     const matrix &a = *(anchorpointsptr);
     const matrixIptr g = grid_.get_grid();
     const matrix &K = *(kernel_.get_kernel());
 
     size_t n = g->rows();
 
-    size_t hh = g->maxCoeff();
+    size_t max_index = g->maxCoeff();
 
     size_t N = a.rows();
 
-    variogram = std::make_shared<matrix>(matrix::Zero(hh+1, N));
-    denominators = std::make_shared<matrix>(matrix::Zero(hh+1, N));
+    variogram = std::make_shared<matrix>(matrix::Zero(max_index+1, N));
+    denominators = std::make_shared<matrix>(matrix::Zero(max_index+1, N));
 
+    // Z is the matrix that contains the squared norm of the difference between each possible pair z_i and z_j
     matrix Z(n, n);
 
     #pragma omp parallel for
@@ -47,7 +51,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
         #pragma omp for
         for (size_t l=0; l < N; ++l)
         {
-            Eigen::VectorXi counters = Eigen::VectorXi::Zero(hh+1);
+            Eigen::VectorXi counters = Eigen::VectorXi::Zero(max_index+1);
             // for every couple of locations in d
             for (size_t i = 0; i < n-1; ++i)
             {
@@ -64,7 +68,7 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
                     }   
                 }
             }
-            for (size_t u = 0; u < hh+1; ++u)
+            for (size_t u = 0; u < max_index+1; ++u)
             {
                 if (counters[u] != 0)
                     variogram->operator()(u, l) /= (2*denominators->operator()(u, l));
