@@ -144,7 +144,11 @@ plotgrid<-function(d,grid,index){
 }
 
 # DA COMMENTARE
-plotvario<-function(n_angles,n_intervals,empvariogram,pos,epsilon){
+plotvario<-function(variogram, pos){
+  n_angles <- variogram$n_angles
+  n_intervals <- variogram$n_intervals
+  epsilon <- variogram$epsilon
+  empvariogram <- variogram$empiricvariogram
   b=2*epsilon
   diminterval = b/n_intervals
   

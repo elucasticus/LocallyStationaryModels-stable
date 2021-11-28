@@ -109,6 +109,8 @@ variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, ke
   }
   vario <- variogramlsm(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads)
   vario$kernel_id <- kernel_id
+  vario$n_angles <- n_angles
+  vario$n_intervals <- n_intervals
   return(vario)
 }
 
