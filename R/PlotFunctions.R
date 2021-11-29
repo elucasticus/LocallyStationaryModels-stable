@@ -1,13 +1,13 @@
 #' @brief                      generate various plots in order to better visualize the model built 
 #' @param model                an object returned by findsolutions.lsm
 #' @param a                    the object returned by findanchorpoints.lsm used to generate the model
-#' @param z                    the vector with the values of z used to generate the model
-#' @param d                    a matrix with the coordinates of the points in the original dataset used to build the model
 #' @param n_points             a parameter proportional to the number of points generated to visualize the model
 #' @param seed                 if points_arrangement is set to 'random', the seed used to generate the random points around each anchorpoints
 #' @param points_arrangement   the arrangement of the points around each anchorpoints
 plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement = "random", n_threads = -1, bool = TRUE)
 {
+  d <- model$initial_coordinates
+  z <- model$initial_z
   # set the seed
   set.seed(seed = seed)
   # associate each anchorpoints with the value of the parameters lambda1, lambda2, phi and sigma in its position

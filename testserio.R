@@ -23,7 +23,7 @@ mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 10, points_arra
 
 # Kriging on the original data
 x11()
-previsions <- predict.lsm(solu, d, y, d)
+previsions <- predict.lsm(solu, d)
 max(previsions$zpredicted - y)
 
 # Test the performace of our model via cross-validation
