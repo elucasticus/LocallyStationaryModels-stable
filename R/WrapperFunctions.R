@@ -1,8 +1,22 @@
-#' @brief                     for each anchorpoints solves a problem of nonlinear optimization and returns the results
-#' @param vario               a variogram obtained using variogram.lsm()
-#' @param id                  the type of variogram to be used
-#' @param initial.position    the starting position to be given to the optimizer
-#' @param bool                if set to TRUE removes the anchorpoints which cause troubles to the optimizer
+#' @description for each anchorpoints solves a problem of nonlinear optimization and returns the results
+#' @param vario a variogram obtained using variogram.lsm()
+#' @param id the type of variogram to be used
+#' @param initial.position the starting position to be given to the optimizer
+#' @param lower.bound the lower bound for the optimization, by default (1e-8, 1e-8, ...)
+#' @param upper.bound the upper bound for the optimizaion, by default (Inf, Inf, pi/2, Inf, Inf, ...)
+#' @param bool if set to TRUE removes the anchorpoints which cause troubles to the optimizer, by default is TRUE
+#' @param print if set to FALSE suppress the console output, by default is TRUE
+#' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
+#' @return an object containing the matrix with the optimal parameters, the optimal value of delta for smoothing, the value of the bandwidth
+#' parameter epsilon used, the matrix with the coordinates of the anchor points used, the id of the variogram chosen and the id of the kernel
+#' you used to generate the sample variogram
+#' @details given an object of type "sample_variogram" returned by variogram.lsm, this function solves a problem of non linear
+#' optimization in order to find the parameters that better fit the variogram function chosen via id in each anchor point. The initial position
+#' to find the optimum must be provided by the user, which can also provide the upper and lower bounds for the solutions. Always remember that
+#' the order of the parameters is always lambda1, lambda2, phi and sigma followed by additional ones required by the chosen variogram function
+#' @examples
+#' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+#' print(solu)
 findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), bool = FALSE, print = TRUE, n_threads = -1)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
@@ -31,22 +45,26 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,
   }
   result$id <- id
   result$kernel_id <- vario$kernel_id
+  result$initial_coordinates <- vario$initial_coordinates
+  result$initial_z <- vario$initial_z
   class(result) <- "lsm"
   return(result)
 }
 
-#' @brief         for each couple of coordinates in newpos predict the mean and punctual value of z
-#' @param sol     an object of type lsm obtained by calling findsolutions.lsm
-#' @param newpos  a matrix with the coordinates of the points where to evaluate z
-#' @param z       the vector z used to generate the solutions
-#' @param d       the matrix d used to generate the solutions
-#' @param bool    if set to TRUE plot the solutions
-predict.lsm<-function(sol, newpos, z, d, bool = TRUE, print = TRUE, n_threads = -1)
+#' @description for each couple of coordinates in newpos predict the mean and punctual value of z
+#' @param sol an object of type lsm obtained by calling findsolutions.lsm
+#' @param newpos a matrix with the coordinates of the points where to evaluate z
+#' @param bool if set to TRUE plot the solutions, by default is TRUE
+#' @param print if set to FALSE suppress the console output, by default is TRUE
+#' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
+#' @return an object containing the vector with the means, the vector with the punctual predictions and the vector with the kriging variance
+#' in newpos
+#' @details given an object of type "lsm" returned by findsolutions.lsm this function performs kriging on the coordinates provided by newpos
+#' and possibly plot the results found
+predict.lsm<-function(sol, newpos, bool = TRUE, print = TRUE, n_threads = -1)
 {
-  if(length(z) != dim(d)[1])
-  {
-    print("The length of z and the number or rows of d do not coincide")
-  }
+  d <- sol$initial_coordinates
+  z <- sol$initial_z
   predictedvalues <- predikt(z,d,sol$anchorpoints,sol$epsilon,sol$delta,sol$solutions,newpos,sol$id,sol$kernel_id,print,n_threads)
   if (bool)
   {
@@ -111,6 +129,9 @@ variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, ke
   vario$kernel_id <- kernel_id
   vario$n_angles <- n_angles
   vario$n_intervals <- n_intervals
+  vario$initial_coordinates <- d
+  vario$initial_z <- z
+  class(vario) <- "sample_variogram"
   return(vario)
 }
 
