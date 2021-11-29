@@ -11,6 +11,7 @@
 #include "kriging.hpp"
 #include "ancora.hpp"
 #include <chrono>
+using namespace LocallyStationaryModels;
 using namespace cd;
 using namespace LBFGSpp;
 using namespace std::chrono;

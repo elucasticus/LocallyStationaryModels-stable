@@ -4,6 +4,8 @@
 
 #include "variogramfunctions.hpp"
 
+namespace LocallyStationaryModels
+{
 using namespace cd;
 
 cd::scalar variogramfunction::compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y)
@@ -92,3 +94,4 @@ std::shared_ptr<variogramfunction> make_variogramiso(const std::string &id)
     }
     return std::make_shared<exponential>();
 }
+}; // namespace LocallyStationaryModels

@@ -9,6 +9,8 @@
 #include "kernel.hpp"
 #include "grid.hpp"
 
+namespace LocallyStationaryModels
+{
 /**
  * \brief a class to build and store the empiric variogram in all the anchor points
 */
@@ -84,5 +86,6 @@ public:
     */
     const cd::vectorptr get_normh() const;
 };
+}; // namespace LocallyStationaryModels
 
 #endif // LOCALLY_STATIONARY_MODELS_SAMPLEVAR

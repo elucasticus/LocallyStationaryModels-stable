@@ -7,6 +7,8 @@
 
 #include "traits.hpp"
 
+namespace LocallyStationaryModels
+{
 /**
  * \brief               this function builds a 2D-grid using a "a fette di pizza" (slices-of-pizza like) algorithm to partition the domain
  * \param d             a shared pointer to the matrix of the coordinates
@@ -80,5 +82,6 @@ public:
     */
     const cd::vectorptr get_y() const;
 };
+}; // namespace LocallyStationaryModels
 
 #endif // LOCALLY_STATIONARY_MODELS_GRID

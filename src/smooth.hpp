@@ -9,6 +9,8 @@
 #include "traits.hpp"
 #include <vector>
 
+namespace LocallyStationaryModels
+{
 /**
  * \brief a class to perform kernel smoothing of the paramters estimated in the anchor points to get the non stationary value of the parameters in any position of the domain
 */
@@ -80,6 +82,6 @@ public:
     */
     const cd::matrixptr get_anchorpos() const;
 };
-
+}; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_SMOOTH

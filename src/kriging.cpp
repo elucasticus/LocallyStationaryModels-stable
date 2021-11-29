@@ -4,6 +4,8 @@
 
 #include "kriging.hpp"
 
+namespace LocallyStationaryModels
+{
 using namespace cd;
 
 vectorind predictor::build_neighbourhood(const cd::vector &pos) const
@@ -183,3 +185,4 @@ predictor::predictor(const std::string &id, const cd::vectorptr &z_, const smt &
 };
 
 predictor::predictor(): gammaisoptr(make_variogramiso("esponenziale")) {}
+}; // namespace LocallyStationaryModels

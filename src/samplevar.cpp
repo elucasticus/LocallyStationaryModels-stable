@@ -5,6 +5,8 @@
 #include "samplevar.hpp"
 #include <iostream>
 
+namespace LocallyStationaryModels
+{
 using namespace cd;
 
 void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr)
@@ -142,3 +144,4 @@ const vectorptr samplevar::get_normh() const
 {
     return grid_.get_normh();
 }
+}; // namespace LocallyStationaryModels

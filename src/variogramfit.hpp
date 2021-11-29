@@ -10,6 +10,8 @@
 #include "variogramfunctions.hpp"
 #include <vector>
 
+namespace LocallyStationaryModels
+{
 /**
  * \brief functor to pass to the optimizer that contains the wls to be minimized
 */
@@ -90,5 +92,6 @@ public:
     */
     cd::matrixptr get_solutions() const;
 };
+}; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_GRADIENT

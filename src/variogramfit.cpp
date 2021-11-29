@@ -7,6 +7,8 @@
 #include <cfloat>
 #include <iostream>
 
+namespace LocallyStationaryModels
+{
 using namespace cd;
 using namespace LBFGSpp;
 
@@ -113,3 +115,4 @@ void opt::findallsolutions()
 }
 
 cd::matrixptr opt::get_solutions() const {return solutions;}
+}; // namespace LocallyStationaryModels

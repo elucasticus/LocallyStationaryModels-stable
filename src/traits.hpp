@@ -12,6 +12,8 @@
 
 #include "Eigen/Dense"
 
+namespace LocallyStationaryModels
+{
 namespace cd
 {
     // defining basic types
@@ -29,5 +31,6 @@ namespace cd
     using gridfunction = std::function<matrixIptr(const matrixptr&, const unsigned int&, const unsigned int&, const double &)>;
      
 }; // namespace cd
+}; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_TRAITS

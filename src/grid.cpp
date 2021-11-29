@@ -6,6 +6,8 @@
 #include <iostream>
 #include <unordered_map>
 
+namespace LocallyStationaryModels
+{
 using namespace cd;
 
 matrixIptr Pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
@@ -116,3 +118,4 @@ void grid::build_normh(const matrixptr &data)
         }
     }
 }
+}; // namespace LocallyStationaryModels

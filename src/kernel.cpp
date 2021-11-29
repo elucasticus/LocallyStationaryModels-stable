@@ -4,6 +4,8 @@
 
 #include "kernel.hpp"
 
+namespace LocallyStationaryModels
+{
 using namespace cd;
 
 scalar gaussian(const vector &x, const vector &y, const scalar &epsilon)
@@ -85,3 +87,4 @@ void kernel::build_simple_kernel(const matrixptr &d, const scalar &epsilon_)
 }
 
 const matrixptr kernel::get_kernel() const {return k;}
+}; // namespace LocallyStationaryModels

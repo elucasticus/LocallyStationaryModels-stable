@@ -9,6 +9,8 @@
 #include "smooth.hpp"
 #include "variogramfit.hpp"
 
+namespace LocallyStationaryModels
+{
 /**
  * \brief   class to perform kriging on the data
 */
@@ -70,5 +72,6 @@ public:
     template<typename Input, typename Output>
     Output predict_z(const Input &pos) const;
 };
+}; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_KRIGING

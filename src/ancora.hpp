@@ -9,6 +9,8 @@
 #include <vector>
 #include <algorithm>
 
+namespace LocallyStationaryModels
+{
 /**
  * \brief   a simple class to find the anchor points given the data
 */
@@ -94,5 +96,6 @@ public:
     */
     std::pair<double, double> get_dimensionecubotti() const{return std::make_pair(larghezza_cubo, altezza_cubo);}
 };
+}; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_ANCORA

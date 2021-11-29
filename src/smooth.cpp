@@ -6,6 +6,8 @@
 #include  <algorithm>
 #include <iostream>
 
+namespace LocallyStationaryModels
+{
 using namespace cd;
 
 double smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
@@ -98,3 +100,4 @@ const cd::matrixptr smt::get_anchorpos() const
 }
 
 smt::smt(): kernel_() {};
+}; // namespace LocallyStationaryModels
