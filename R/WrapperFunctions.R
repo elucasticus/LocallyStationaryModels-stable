@@ -61,6 +61,8 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,
 #' in newpos
 #' @details given an object of type "lsm" returned by findsolutions.lsm this function performs kriging on the coordinates provided by newpos
 #' and possibly plot the results found
+#' @examples
+#' previsions <- predict.lsm(solu, d)
 predict.lsm<-function(sol, newpos, bool = TRUE, print = TRUE, n_threads = -1)
 {
   d <- sol$initial_coordinates
@@ -81,10 +83,14 @@ predict.lsm<-function(sol, newpos, bool = TRUE, print = TRUE, n_threads = -1)
   return(predictedvalues)
 }
 
-#' @brief          given a dataset find the corresponding equally spaced anchorpoints
-#' @param dataset  a dataset full of coordinates
-#' @param n        a parameter proportional to the number of anchorpoints
-#' @param bool     if set to true plot the original dataset and the anchorpoints
+#' @description given a dataset find the corresponding equally spaced anchorpoints
+#' @param dataset a dataset full of coordinates
+#' @param n a parameter proportional to the number of anchorpoints
+#' @param bool if set to true plot the original dataset and the anchorpoints
+#' @details given a set of points this function builds n*n grid covering all the locations. Then takes as anchor points all the
+#' centers of the cells such that at least one of the points of d belongs to the same cell 
+#' @examples
+#' a <- find_anchorpoints.lsm(d,12)
 find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 {
   min.c <- rep(0., dim(dataset)[2])
@@ -111,14 +117,21 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
   return(result)
 }
 
-#' @brief               compute the sample variogram in the anchorpoints
-#' @param z             the vector contatining f(d)
-#' @param d             the matrix contatining the coordinates in which we know the value of z
-#' @param anchorpoints  a matrix with the coordinates of the anchorpoints which can be obtained calling find_anchorpoints.lsm
-#' @param epsilon       the value of epsilon regulating the kernel
-#' @param n_angles      the number of angles for the grid
-#' @param n_intervals   the number of intervals for the grid
-#' @param kernel_id     the type of kernel to be used
+#' @description compute the sample variogram in the anchorpoints
+#' @param z the vector contatining f(d)
+#' @param d the matrix contatining the coordinates in which we know the value of z
+#' @param anchorpoints a matrix with the coordinates of the anchorpoints which can be obtained calling find_anchorpoints.lsm
+#' @param epsilon the value of epsilon regulating the kernel
+#' @param n_angles the number of angles for the grid
+#' @param n_intervals the number of intervals for the grid
+#' @param kernel_id the type of kernel to be used
+#' @print if set to FALSE suppress the console output, by default is TRUE
+#' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
+#' @details the purpose of this function is to calculate the value of the sample variogram in every anchor point. To do so 
+#' the function requires to be given as input all the information about the construction of the grid and of the kernel as in the paper by
+#' Fouedjio.
+#' @examples
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print=TRUE, n_threads = -1)
 {
   if(length(z) != dim(d)[1])
@@ -135,6 +148,15 @@ variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, ke
   return(vario)
 }
 
+#' @description compute the value of the parameters of the variogram function of model in the points contained in newpoints
+#' @param model a "lsm" object generated via findsolutions.lsm
+#' @param newpoints a matrix with the coordinates of the points the knowledge of the parameters is needed
+#' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
+#' @details given model, this function exploits model$solutions and model$delta to perform smoothing and find the value of the 
+#' parameters regulating the variogram function in other points beyond the anchor ones. model$delta already contains the optimal value of 
+#' delta which does not need to be evaluated again.
+#' @examples 
+#' newparams <- smooth.lsm(solu, newpos)
 smooth.lsm <- function(model, newpoints, n_threads = -1)
 {
   result <- smoothing(model$solutions,model$anchorpoints,model$delta,newpoints,model$kernel_id,n_threads)

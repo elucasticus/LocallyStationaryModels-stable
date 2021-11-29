@@ -19,7 +19,7 @@ solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 solu
 # Plot of the solutions
 x11()
-mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 10, points_arrangement = "random", bool = TRUE)
+mypoints<-plot.lsm(model = solu, a = a, n_points = 10, points_arrangement = "random", bool = TRUE)
 
 # Kriging on the original data
 x11()
