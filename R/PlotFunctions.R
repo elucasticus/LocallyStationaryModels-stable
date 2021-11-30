@@ -129,7 +129,6 @@ plot.parameters<-function(allpoints)
 #' @param d            The dataset of coordinates of all initial points.
 #' @param grid         A grid object returned by variogram.lsm, accessed through variogram$grid.
 #' @param index        the index of the vector neighborhood for which segments are going to be plotted.
-
 plotgrid<-function(d,grid,index){
   
   plot(d,xlab="Latitude",ylab="Longitude")
