@@ -7,7 +7,7 @@ Authors@R: c(person("Luca", "Crippa", role = "aut",
                     email = "luca7.crippa@mail.polimi.it"), 
              person("Giacomo", "De Carlo", role = c("aut", "cre"), 
                     email = "giacomo.decarlo@mail.polimi.it"))
-Description: More about what it does (maybe more than one line)
+Description: R package for the estimation of locally stationary models for spatial data
 License: What license is it under?
 Imports: Rcpp , RcppEigen , ggplot2, ggforce, cowplot
 LinkingTo: Rcpp  , RcppEigen , ggplot2, ggforce, cowplot
