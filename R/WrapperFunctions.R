@@ -1,3 +1,5 @@
+#' Find Solutions (Fit Variogram)
+#' 
 #' @description for each anchorpoints solves a problem of nonlinear optimization and returns the results
 #' @param vario a "sample_variogram" object obtained using variogram.lsm()
 #' @param id the type of variogram to be used. Can be one of the following: "exponential", "gaussian", "matern", "maternNuFixed N", where N must
@@ -56,6 +58,8 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,
   return(result)
 }
 
+#' Predict LSM (Kriging)
+#' 
 #' @description for each couple of coordinates in newpos predict the mean and punctual value of z
 #' @param sol an object of type lsm obtained by calling findsolutions.lsm
 #' @param newpos a matrix with the coordinates of the points where to evaluate z
@@ -88,6 +92,8 @@ predict.lsm<-function(sol, newpos, bool = TRUE, print = TRUE, n_threads = -1)
   return(predictedvalues)
 }
 
+#' Find Anchor Points
+#' 
 #' @description given a dataset find the corresponding equally spaced anchorpoints
 #' @param dataset a dataset full of coordinates
 #' @param n a parameter proportional to the number of anchorpoints
@@ -123,6 +129,8 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
   return(result)
 }
 
+#' Empiric Variogram LSM
+#' 
 #' @description compute the sample variogram in the anchorpoints
 #' @param z the vector contatining f(d)
 #' @param d the matrix contatining the coordinates in which we know the value of z
@@ -158,6 +166,8 @@ variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, ke
   return(vario)
 }
 
+#' Smooth LSM
+#' 
 #' @description compute the value of the parameters of the variogram function of model in the points contained in newpoints
 #' @param model a "lsm" object generated via findsolutions.lsm
 #' @param newpoints a matrix with the coordinates of the points the knowledge of the parameters is needed

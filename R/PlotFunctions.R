@@ -1,3 +1,5 @@
+#' Plot LSM
+#' 
 #' @description generate various plots in order to better visualize the model built 
 #' @param model an object returned by findsolutions.lsm
 #' @param a the object returned by findanchorpoints.lsm used to generate the model
@@ -123,6 +125,8 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
   return(allpoints)
 }
 
+#' Plot parameters
+#' 
 #' @description sequential plot of all the paramters obtained by smoothing
 #' @param allpoints a dataframe containing the coordinates and the value of the parameters
 #' @details given a dataframe containing the coordinates and the the value of the parameters for a set of points
@@ -140,6 +144,8 @@ plot.parameters<-function(allpoints)
   }
 }
 
+#' Plot Grid
+#' 
 #' @description  A function to plot segments for all pairs of locations belonging to the same vector neighborhood.        
 #' @param variogram an object of type "sample_variogram" built via variogram.lsm
 #' @param index  the index of the vector neighborhood for which segments are going to be plotted.
@@ -163,6 +169,8 @@ plotgrid<-function(variogram,index){
   }
 }
 
+#' Plot Vario
+#' 
 #' @description plot all directional empiric variograms sequentially in n_angles number of directions, from -pi to pi in radians.
 #' @param variogram  a variogram object returned by variogram.lsm
 #' @param pos the index of an anchor point where the empiric variogram is plotted

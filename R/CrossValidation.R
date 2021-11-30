@@ -1,3 +1,5 @@
+#' Cross-Validation MSE
+#' 
 #' @description calculate the mean squred error via cross-validation
 #' @param z the vector contatining f(d)
 #' @param d the matrix contatining the coordinates in which we know the value of z
