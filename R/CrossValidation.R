@@ -1,16 +1,21 @@
 #' Cross-Validation MSE
 #' 
-#' @description calculate the mean squred error via cross-validation
-#' @param z the vector contatining f(d)
-#' @param d the matrix contatining the coordinates in which we know the value of z
-#' @param anchorpoints a matrix with the coordinates of the anchorpoints which can be obtained calling find_anchorpoints.lsm
-#' @param epsilon the value of epsilon regulating the kernel
+#' @description calculate the mean squared error via cross-validation
+#' @param z the vector containing z(d)
+#' @param d the matrix containing the coordinates in which we know the value of z
+#' @param anchorpoints a matrix with the coordinates of the anchor points which can be obtained calling find_anchorpoints.lsm
+#' @param epsilon the value of the bandwidth parameter epsilon
 #' @param n_angles the number of angles for the grid
 #' @param n_intervals the number of intervals for the grid
 #' @param kernel_id the type of kernel to be used
 #' @param id the type of variogram to be used
 #' @param initial.position the starting position to be given to the optimizer
-cv.lsm <- function(z,d,anchorpoints,epsilon,n_angles,n_intervals,kernel_id, id, initial.position,n_threads = -1){
+#' @param lower.bound the lower bound for the optimization, by default (1e-8, 1e-8, ...)
+#' @param upper.bound the upper bound for the optimization, by default (Inf, Inf, pi/2, Inf, Inf, ...)
+#' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
+#' @examples 
+#' MSE <- cv.lsm(y,d,a$anchorpoints,350,8,8,"gaussian","exponential", c(200,200,0.01,100))
+cv.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), n_threads = -1){
   # set the MSE to 0
   MSE=0
   
@@ -28,7 +33,7 @@ cv.lsm <- function(z,d,anchorpoints,epsilon,n_angles,n_intervals,kernel_id, id, 
     
     # predict the value of f(d[i, ]) and update the MSE
     vario <- variogram.lsm(znew,dnew,anchorpoints,epsilon,n_angles,n_intervals,kernel_id,FALSE, n_threads = n_threads)
-    solu <- findsolutions.lsm(vario, id, initial.position,print=FALSE, n_threads = n_threads)
+    solu <- findsolutions.lsm(vario, id, initial.position,lower.bound, upper.bound, print=FALSE, n_threads = n_threads)
     previsions <- predict.lsm(solu, rbind(d[i,]), znew, dnew,FALSE,FALSE, n_threads = n_threads)
     MSE <- MSE + (previsions$zpredicted - z[i])^2
     
