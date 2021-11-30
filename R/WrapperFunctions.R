@@ -92,6 +92,7 @@ predict.lsm<-function(sol, newpos, bool = TRUE, print = TRUE, n_threads = -1)
 #' @param dataset a dataset full of coordinates
 #' @param n a parameter proportional to the number of anchorpoints
 #' @param bool if set to true plot the original dataset and the anchorpoints
+#' @return the coordinates of the anchor points found and the specification of the grid used to build them
 #' @details given a set of points this function builds n*n grid covering all the locations. Then takes as anchor points all the
 #' centers of the cells such that at least one of the points of d belongs to the same cell 
 #' @examples
@@ -132,6 +133,10 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 #' @param kernel_id the type of kernel to be used. At the moment the only possibility is "gaussian".
 #' @print if set to FALSE suppress the console output, by default is TRUE
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
+#' @return an object of type "sample_variogram" containing the kernel matrix, the grid matrix, the vecors with the value of x, y and norm of
+#' every tile of the grid, the matrix of the squaredweights, the matrix with the sample variogam, the matrix with the anchor points used,
+#' the value of the bandwidth parameter epsilon used, the id of the kernel function, the number of angles and of intervals used to build
+#' the grid, the matrix with the coordinates of the initial points and the vector with the function z evaluated in these points.
 #' @details the purpose of this function is to calculate the value of the sample variogram in every anchor point. To do so 
 #' the function requires to be given as input all the information about the construction of the grid and of the kernel as in the paper by
 #' Fouedjio.
@@ -157,6 +162,7 @@ variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, ke
 #' @param model a "lsm" object generated via findsolutions.lsm
 #' @param newpoints a matrix with the coordinates of the points the knowledge of the parameters is needed
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
+#' @return a matrix with the values of the paramters smoothed in newpoints
 #' @details given model, this function exploits model$solutions and model$delta to perform smoothing and find the value of the 
 #' parameters regulating the variogram function in other points beyond the anchor ones. model$delta already contains the optimal value of 
 #' delta which does not need to be evaluated again.
