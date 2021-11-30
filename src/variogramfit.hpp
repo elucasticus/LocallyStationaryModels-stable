@@ -42,7 +42,7 @@ struct funzionedaottimizzare
     */
     cd::scalar operator() (const cd::vector &params, cd::vector &grad);
     cd::scalar operator() (const cd::vector &params);
-};
+}; // struct funzionedaottimizzare
 
 
 /**
@@ -91,7 +91,7 @@ public:
      * \brief   return the solutions found by solving the problem of nonlinear optimization
     */
     cd::matrixptr get_solutions() const;
-};
+}; // class opt
 }; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_GRADIENT

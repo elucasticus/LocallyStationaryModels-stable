@@ -1,6 +1,8 @@
 #' @description for each anchorpoints solves a problem of nonlinear optimization and returns the results
-#' @param vario a variogram obtained using variogram.lsm()
-#' @param id the type of variogram to be used
+#' @param vario a "sample_variogram" object obtained using variogram.lsm()
+#' @param id the type of variogram to be used. Can be one of the following: "exponential", "gaussian", "matern", "maternNuFixed N", where N must
+#' be replaced with a double of your choice. If the id is not correct, "exponential" is used by default. Remember that the matern has an extra
+#' parameter nu that must be passed to the function.
 #' @param initial.position the starting position to be given to the optimizer
 #' @param lower.bound the lower bound for the optimization, by default (1e-8, 1e-8, ...)
 #' @param upper.bound the upper bound for the optimizaion, by default (Inf, Inf, pi/2, Inf, Inf, ...)
@@ -15,7 +17,10 @@
 #' to find the optimum must be provided by the user, which can also provide the upper and lower bounds for the solutions. Always remember that
 #' the order of the parameters is always lambda1, lambda2, phi and sigma followed by additional ones required by the chosen variogram function
 #' @examples
-#' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+#' solu1 <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+#' solu2 <- findsolutions.lsm(vario, "gaussian", c(200,200,0.01,100))
+#' solu3 <- findsolutions.lsm(vario, "matern", c(200,200,0.01,100,10))
+#' solu4 <- findsolutions.lsm(vario, "maternNuFixed 18.5", c(200,200,0.01,100))
 #' print(solu)
 findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), bool = FALSE, print = TRUE, n_threads = -1)
 {
@@ -124,7 +129,7 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 #' @param epsilon the value of epsilon regulating the kernel
 #' @param n_angles the number of angles for the grid
 #' @param n_intervals the number of intervals for the grid
-#' @param kernel_id the type of kernel to be used
+#' @param kernel_id the type of kernel to be used. At the moment the only possibility is "gaussian".
 #' @print if set to FALSE suppress the console output, by default is TRUE
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
 #' @details the purpose of this function is to calculate the value of the sample variogram in every anchor point. To do so 

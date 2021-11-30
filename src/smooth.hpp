@@ -81,7 +81,7 @@ public:
      * \brief   return a shared pointer the coordinates of the anchorpoints
     */
     const cd::matrixptr get_anchorpos() const;
-};
+}; // class smt
 }; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_SMOOTH

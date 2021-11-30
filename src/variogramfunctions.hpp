@@ -23,7 +23,7 @@ public:
      * \brief   return f(params, x, y)
     */
     virtual cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) = 0;
-};
+}; // class variogramfunction
 
 class exponential: public variogramfunction
 {
@@ -34,7 +34,7 @@ public:
      * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
-};
+}; // class exponential
 
 class matern: public variogramfunction
 {
@@ -45,7 +45,7 @@ public:
      * \param params    a vector with lambda1, lambda2, phi, sigma and nu in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
-};
+}; // class matern
 
 class maternNuFixed: public variogramfunction
 {
@@ -58,7 +58,7 @@ public:
      * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
-};
+}; // class maternNuFixed
 
 class gaussian: public variogramfunction
 {
@@ -69,7 +69,7 @@ public:
      * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     cd::scalar operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y) override;
-};
+}; // class gaussian
 
 /**
  * \brief       allow to select between different functions for the variogram

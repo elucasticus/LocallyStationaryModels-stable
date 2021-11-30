@@ -71,7 +71,7 @@ public:
     */
     template<typename Input, typename Output>
     Output predict_z(const Input &pos) const;
-};
+}; // class predictor
 }; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_KRIGING

@@ -69,7 +69,7 @@ public:
      * \brief   return a shared pointer to the matrix pointed by k
     */
     const cd::matrixptr get_kernel() const;
-};
+}; // class kernel
 }; // namespace LocallyStationaryModels
 
 #endif // LOCALLY_STATIONARY_MODELS_KERNEL

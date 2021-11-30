@@ -95,7 +95,7 @@ public:
      * \brief   return the dimensions (height and width) of each cell of the grid
     */
     std::pair<double, double> get_dimensionecubotti() const{return std::make_pair(larghezza_cubo, altezza_cubo);}
-};
+}; // class ancora
 }; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_ANCORA

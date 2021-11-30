@@ -85,7 +85,7 @@ public:
      * \brief   return grid_.normh
     */
     const cd::vectorptr get_normh() const;
-};
+}; // class samplevar
 }; // namespace LocallyStationaryModels
 
 #endif // LOCALLY_STATIONARY_MODELS_SAMPLEVAR

@@ -81,7 +81,7 @@ public:
      * \brief   return a pointer to the vector containing the ys of the centers of the cells of the grid
     */
     const cd::vectorptr get_y() const;
-};
+}; // class grid
 }; // namespace LocallyStationaryModels
 
 #endif // LOCALLY_STATIONARY_MODELS_GRID
