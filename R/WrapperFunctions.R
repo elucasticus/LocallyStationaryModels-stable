@@ -131,7 +131,7 @@ find_anchorpoints.lsm<-function(dataset, n, bool = TRUE)
 #' @param n_angles the number of angles for the grid
 #' @param n_intervals the number of intervals for the grid
 #' @param kernel_id the type of kernel to be used. At the moment the only possibility is "gaussian".
-#' @print if set to FALSE suppress the console output, by default is TRUE
+#' @param print if set to FALSE suppress the console output, by default is TRUE
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
 #' @return an object of type "sample_variogram" containing the kernel matrix, the grid matrix, the vecors with the value of x, y and norm of
 #' every tile of the grid, the matrix of the squaredweights, the matrix with the sample variogam, the matrix with the anchor points used,

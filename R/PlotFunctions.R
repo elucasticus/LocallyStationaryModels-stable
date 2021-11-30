@@ -143,7 +143,7 @@ plot.parameters<-function(allpoints)
 #' @description  A function to plot segments for all pairs of locations belonging to the same vector neighborhood.        
 #' @param variogram an object of type "sample_variogram" built via variogram.lsm
 #' @param index  the index of the vector neighborhood for which segments are going to be plotted.
-#' @example 
+#' @examples 
 #' plotgrid(vario, 0)
 plotgrid<-function(variogram,index){
   d <- variogram$initial_coordinates
@@ -166,7 +166,7 @@ plotgrid<-function(variogram,index){
 #' @description plot all directional empiric variograms sequentially in n_angles number of directions, from -pi to pi in radians.
 #' @param variogram  a variogram object returned by variogram.lsm
 #' @param pos the index of an anchor point where the empiric variogram is plotted
-#' @example 
+#' @examples 
 #' pltovario(vario, 0)
 plotvario<-function(variogram, pos){
   n_angles <- variogram$n_angles
