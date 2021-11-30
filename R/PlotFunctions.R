@@ -125,7 +125,11 @@ plot.parameters<-function(allpoints)
   }
 }
 
-# DA COMMENTARE
+#' @brief              A function to plot segments for all pairs of locations belonging to the same vector neighborhood.        
+#' @param d            The dataset of coordinates of all initial points.
+#' @param grid         A grid object returned by variogram.lsm, accessed through variogram$grid.
+#' @param index        the index of the vector neighborhood for which segments are going to be plotted.
+
 plotgrid<-function(d,grid,index){
   
   plot(d,xlab="Latitude",ylab="Longitude")
@@ -143,7 +147,9 @@ plotgrid<-function(d,grid,index){
   }
 }
 
-# DA COMMENTARE
+#' @brief                      plot all directional empiric variograms sequentially in n_angles number of directions, from -pi to pi in radians.
+#' @param variogram            a variogram object returned by variogram.lsm
+#' @param pos                  the index of an anchor point where the empiric variogram is plotted
 plotvario<-function(variogram, pos){
   n_angles <- variogram$n_angles
   n_intervals <- variogram$n_intervals
@@ -160,9 +166,12 @@ plotvario<-function(variogram, pos){
   par(ask=TRUE)
   for (i in 1:n_angles){
     plot(coordnormh , empvariogram[(n_intervals*(i-1)+1):(n_intervals*i),pos] , xlab=paste("Distance",
-      "  (",
-      as.character(180*(i-1)/n_angles),"\u00B0 -",
-      as.character(180*i/n_angles),"\u00B0 )"),
+                                                                                           "  (",
+                                                                                           as.character((180*(i-1))/n_angles-90),"\u00B0 :",
+                                                                                           as.character((180*i)/n_angles-90),"\u00B0 )"),
          ylab= paste("Empiric Anisotropic Variogram"))
   }
 }
+
+
+
