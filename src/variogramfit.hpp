@@ -15,25 +15,25 @@ namespace LocallyStationaryModels
 /**
  * \brief functor to pass to the optimizer that contains the wls to be minimized
 */
-struct funzionedaottimizzare
+struct FunzioneDaOttimizzare
 {
-    const cd::matrixptr empiricvariogram; /// sample variogram matrix
-    const cd::matrixptr squaredweights; /// matrix of the squared weights
-    const cd::vectorptr mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
-    const cd::vectorptr mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
-    unsigned int x0; /// index of the position where to evaluate gammaisoptr
-    std::shared_ptr<variogramfunction> gammaisoptr; /// pointer to the variogram function
+    const cd::matrixptr m_empiricvariogram; /// sample variogram matrix
+    const cd::matrixptr m_squaredweights; /// matrix of the squared weights
+    const cd::vectorptr m_mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    const cd::vectorptr m_mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    unsigned int m_x0; /// index of the position where to evaluate gammaisoptr
+    std::shared_ptr<VariogramFunction> m_gammaisoptr; /// pointer to the variogram function
 
     /**
      * \brief                       constructor
-     * \param empiricvariogram_     a shared pointer to the empiric variogram
-     * \param squaredweights_       a shared pointer to the squared weights
-     * \param mean_x_               a shared pointer to the vector of the abscissas of the centers
-     * \param mean_y_               a shared pointer to the vector of the ordinates of the centers
-     * \param x0_                   the index of the position x0
+     * \param empiricvariogram      a shared pointer to the empiric variogram
+     * \param squaredweights        a shared pointer to the squared weights
+     * \param mean_x                a shared pointer to the vector of the abscissas of the centers
+     * \param mean_y                a shared pointer to the vector of the ordinates of the centers
+     * \param x0                    the index of the position x0
      * \param id                    the name of the variogram of your choice
     */
-    funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_, unsigned int x0_, 
+    FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, unsigned int x0, 
     const std::string &id);
 
     /**
@@ -42,24 +42,24 @@ struct funzionedaottimizzare
     */
     cd::scalar operator() (const cd::vector &params, cd::vector &grad);
     cd::scalar operator() (const cd::vector &params);
-}; // struct funzionedaottimizzare
+}; // struct FunzioneDaOttimizzare
 
 
 /**
  * \brief a class to estimate the value of the parameters of the variogram in each point by optimizing the correspondent funzionedaottimizzare relying on the library LBFGSpp
 */
-class opt
+class Opt
 {
 private:
-    cd::matrixptr empiricvariogram; /// sample variogram matrix
-    cd::matrixptr squaredweights; /// matrix with the squared weights
-    cd::vectorptr mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
-    cd::vectorptr mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
-    std::string id; /// name of the chosen variogram
-    cd::vector initialparameters; /// initial parameters for the optimizer
-    cd::vector lowerbound; /// lower bounds for the optimizer
-    cd::vector upperbound; /// upper bounds for the optimizer
-    cd::matrixptr solutions = nullptr; /// matrix with the solution in all the anchor points
+    cd::matrixptr m_empiricvariogram; /// sample variogram matrix
+    cd::matrixptr m_squaredweights; /// matrix with the squared weights
+    cd::vectorptr m_mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    cd::vectorptr m_mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    std::string m_id; /// name of the chosen variogram
+    cd::vector m_initialparameters; /// initial parameters for the optimizer
+    cd::vector m_lowerbound; /// lower bounds for the optimizer
+    cd::vector m_upperbound; /// upper bounds for the optimizer
+    cd::matrixptr m_solutions = nullptr; /// matrix with the solution in all the anchor points
 
     /**
      * \brief       find the optimal solution for the point in position pos
@@ -69,18 +69,18 @@ private:
 
 public:
     /**
-     * \brief                       constructor
-     * \param empiricvariogram_     a shared pointer to the empiric variogram
-     * \param squaredweights_       a shared pointer to the squared weights
-     * \param mean_x_               a shared pointer to the vector of the abscissas of the centers
-     * \param mean_y_               a shared pointer to the vector of the ordinates of the centers
-     * \param id                    the name of the variogram of your choice
-     * \param initialparameters_    the initial value of the parameters required from the optimizer to start the search for a minimum
-     * \param lowerbound_           the lower bounds for the parameters in the nonlinear optimization problem
-     * \param upperbound_           the upper bounds for the parameters in the nonlinear optimization problem
+     * \brief                     constructor
+     * \param empiricvariogram    a shared pointer to the empiric variogram
+     * \param squaredweights      a shared pointer to the squared weights
+     * \param mean_x              a shared pointer to the vector of the abscissas of the centers
+     * \param mean_y              a shared pointer to the vector of the ordinates of the centers
+     * \param id                  the name of the variogram of your choice
+     * \param initialparameters   the initial value of the parameters required from the optimizer to start the search for a minimum
+     * \param lowerbound          the lower bounds for the parameters in the nonlinear optimization problem
+     * \param upperbound          the upper bounds for the parameters in the nonlinear optimization problem
     */
-    opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_,
-    const std::string &id_, const cd::vector &initialparameters_, const cd::vector &lowerbound_, const cd::vector &upperbound_);
+    Opt(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y,
+    const std::string &id, const cd::vector &initialparameters, const cd::vector &lowerbound, const cd::vector &upperbound);
 
     /**
      * \brief   find the optimal solution in all the position
@@ -91,7 +91,7 @@ public:
      * \brief   return the solutions found by solving the problem of nonlinear optimization
     */
     cd::matrixptr get_solutions() const;
-}; // class opt
+}; // class Opt
 }; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_GRADIENT

@@ -74,7 +74,7 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, cons
     vectorptr zz = std::make_shared<vector>(z);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
-    samplevar samplevar_(kernel_id, n_angles, n_intervals, epsilon);
+    SampleVar samplevar_(kernel_id, n_angles, n_intervals, epsilon);
     // build the sample variogram
     samplevar_.build_samplevar(dd, anchorpointsptr, zz);
     // stop the clock and calculate the processing time
@@ -135,11 +135,11 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     vectorptr yptr = std::make_shared<vector>(mean_y);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
-    opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters, lowerbound, upperbound);
+    Opt opt_(empiricvariogramptr, squaredweightsptr, xptr,  yptr, variogram_id, parameters, lowerbound, upperbound);
     // solve the nonlinaear optimization problems and store the solutions inside opt_
     opt_.findallsolutions();
     // build the smoother and find delta by cross-validation
-    smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon*10, kernel_id);
+    Smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon*10, kernel_id);
 
     double delta_ottimale = smt_.get_optimal_delta();
     // stop the clock and calculate the processing time
@@ -193,8 +193,8 @@ Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eig
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
-    smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
-    predictor predictor_(variogram_id, zz, smt_, epsilon, dd);
+    Smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
+    Predictor predictor_(variogram_id, zz, smt_, epsilon, dd);
     // predict the mean, the variance and the pointwise prediction of z in positions
     matrix predicted_ys(predictor_.predict_z<cd::matrix, cd::matrix>(positions));
     vector predicted_means(predictor_.predict_mean<cd::matrix, cd::vector>(positions));
@@ -239,7 +239,7 @@ Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anc
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
     
-    smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
+    Smt smt_(solutionsptr, anchorpointsptr, delta, kernel_id);
     
     Eigen::MatrixXd result(positions.rows(), solutions.cols());
     #pragma omp parallel for

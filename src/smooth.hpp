@@ -14,15 +14,15 @@ namespace LocallyStationaryModels
 /**
  * \brief a class to perform kernel smoothing of the paramters estimated in the anchor points to get the non stationary value of the parameters in any position of the domain
 */
-class smt
+class Smt
 {
 private:
-    cd::matrixptr solutions = nullptr; /// matrix wiht the solution of the optimization
-    cd::matrixptr anchorpos = nullptr; /// anchor points
+    cd::matrixptr m_solutions = nullptr; /// matrix wiht the solution of the optimization
+    cd::matrixptr m_anchorpos = nullptr; /// anchor points
 
-    kernel kernel_; /// kernel
+    Kernel m_kernel; /// kernel
 
-    double optimal_delta = 0; /// optimal value for delta
+    double m_optimal_delta = 0; /// optimal value for delta
 
     /**
      * \brief       smooth a single parameter for a point in position pos
@@ -35,25 +35,25 @@ private:
 public:
     /**
      * \brief constructor
-     * \param solutions_    a shared pointer to the solutions of the optimization
-     * \param anchorpos_    a vector containing the indeces of the anchor position obtained by clustering
+     * \param solutions     a shared pointer to the solutions of the optimization
+     * \param anchorpos     a vector containing the indeces of the anchor position obtained by clustering
      * \param d             a shared pointer to the matrix of the coordinates
      * \param min_delta     the minimum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
      * \param max_delta     the maximum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
     */
-    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id);
+    Smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id);
     /**
      * \brief constructor
-     * \param solutions_    a shared pointer to the solutions of the optimization
-     * \param anchorpos_    a vector containing the indeces of the anchor position obtained by clustering
+     * \param solutions     a shared pointer to the solutions of the optimization
+     * \param anchorpos     a vector containing the indeces of the anchor position obtained by clustering
      * \param d             a shared pointer to the matrix of the coordinates
      * \param delta         a user-chosen value for delta
     */
-    smt(const cd::matrixptr solutions_, const cd::matrixptr &anchorpos_, const double delta, const std::string &kernel_id);
+    Smt(const cd::matrixptr solutions, const cd::matrixptr &anchorpos, const double delta, const std::string &kernel_id);
     /**
      * \brief call the default constructor for kernel_
     */
-    smt();
+    Smt();
 
     /**
      * \brief       smooth all the parameters for a point in position pos
@@ -62,8 +62,8 @@ public:
     template<class Input>
     cd::vector smooth_vector(const Input &pos) const
     {
-        cd::vector result(solutions->cols());
-        for (unsigned int i=0; i<solutions->cols(); ++i)
+        cd::vector result(m_solutions->cols());
+        for (unsigned int i=0; i<m_solutions->cols(); ++i)
             result(i) = smooth_value(pos, i);
 
         return result;
@@ -81,7 +81,7 @@ public:
      * \brief   return a shared pointer the coordinates of the anchorpoints
     */
     const cd::matrixptr get_anchorpos() const;
-}; // class smt
+}; // class Smt
 }; // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_SMOOTH

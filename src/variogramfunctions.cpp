@@ -8,7 +8,7 @@ namespace LocallyStationaryModels
 {
 using namespace cd;
 
-cd::scalar variogramfunction::compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y)
+cd::scalar VariogramFunction::compute_anisotropic_h(const cd::scalar &lambda1, const cd::scalar &lambda2, const cd::scalar &phi, const cd::scalar &x, const cd::scalar &y)
 {
     scalar xx = x * x;
     scalar yy = y * y;
@@ -19,7 +19,7 @@ cd::scalar variogramfunction::compute_anisotropic_h(const cd::scalar &lambda1, c
                      + lambda1 * lambda1 * xy * sin(2 * phi) - lambda2 * lambda2 * xy * sin(2 * phi)) / (lambda1 * lambda1 * lambda2 * lambda2));
 }
 
-cd::scalar exponential::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+cd::scalar Exponential::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
     double lambda2 = params[1];
@@ -30,7 +30,7 @@ cd::scalar exponential::operator()(const cd::vector &params, const cd::scalar &x
     return sigma * sigma * (1 - exp(-h));
 }
 
-cd::scalar matern::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+cd::scalar Matern::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
     double lambda2 = params[1];
@@ -45,13 +45,13 @@ cd::scalar matern::operator()(const cd::vector &params, const cd::scalar &x, con
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));
 }
 
-cd::scalar maternNuFixed::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+cd::scalar MaternNuFixed::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
     double lambda2 = params[1];
     double phi = params[2];
     double sigma = params[3];
-    double nu = NU;
+    double nu = m_NU;
 
     if (std::abs(x) < 1e-12 && std::abs(y) < 1e-12)
         return 1e12;
@@ -60,7 +60,7 @@ cd::scalar maternNuFixed::operator()(const cd::vector &params, const cd::scalar 
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));
 }
 
-cd::scalar gaussian::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
+cd::scalar Gaussian::operator()(const cd::vector &params, const cd::scalar &x, const cd::scalar &y)
 {
     double lambda1 = params[0];
     double lambda2 = params[1];
@@ -71,27 +71,27 @@ cd::scalar gaussian::operator()(const cd::vector &params, const cd::scalar &x, c
     return sigma * sigma * (1 - exp(-h*h));
 }
 
-std::shared_ptr<variogramfunction> make_variogramiso(const std::string &id)
+std::shared_ptr<VariogramFunction> make_variogramiso(const std::string &id)
 {
     if(id == "exponential" || id == "esponenziale")
-        return std::make_shared<exponential>();
+        return std::make_shared<Exponential>();
     if(id == "matern" || id == "Matern")
-        return std::make_shared<matern>();
+        return std::make_shared<Matern>();
     if(id == "gaussian" || id == "Gaussian")
-        return std::make_shared<gaussian>();
+        return std::make_shared<Gaussian>();
     // using the following method we can set directly from R passing a string a constant value for nu
     if(id.substr(0, 13) == "maternNuFixed")
     {
         try
         {
             double NU = std::stod(id.substr(14));
-            return std::make_shared<maternNuFixed>(NU);
+            return std::make_shared<MaternNuFixed>(NU);
         }
         catch (std::exception &e)
         {
-            return std::make_shared<exponential>();
+            return std::make_shared<Exponential>();
         }
     }
-    return std::make_shared<exponential>();
+    return std::make_shared<Exponential>();
 }
 }; // namespace LocallyStationaryModels

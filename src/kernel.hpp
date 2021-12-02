@@ -24,25 +24,25 @@ cd::kernelfunction make_kernel(const std::string &id);
 /**
  * \brief   class to compute the kernel matrix
 */
-class kernel
+class Kernel
 {
 private:
-    cd::scalar epsilon; /// bandwidth parameter
-    cd::kernelfunction f; /// kernel function
-    cd::matrixptr k = std::make_shared<cd::matrix>(0,0); /// kernel matrix
+    cd::scalar m_epsilon; /// bandwidth parameter
+    cd::kernelfunction m_f; /// kernel function
+    cd::matrixptr m_k = std::make_shared<cd::matrix>(0,0); /// kernel matrix
 
 public:
     /**
 	 * \brief               constructor
 	 * \param id 	        name of the kernel function
-     * \param epsilon_      value of the bandwidth parameter epsilon
+     * \param epsilon       value of the bandwidth parameter epsilon
 	*/
-	kernel(const std::string &id, const cd::scalar &epsilon_);
+	Kernel(const std::string &id, const cd::scalar &epsilon);
 
     /** 
      * \brief   default constuctor with a gaussian kernel and epsilon equal to 1.
     */
-    kernel();
+    Kernel();
 
     /**
 	 * \return  f(x ,y) where f is the kernel function
@@ -60,16 +60,16 @@ public:
     /**
      * \brief               these functions build the "standard" version of the kernel needed for smoothing
      * \param coordinates   a shared pointer to the matrix with all coordinates
-     * \param epsilon_      if needed, replace the old epsilon with a new value
+     * \param epsilon       if needed, replace the old epsilon with a new value
     */
     void build_simple_kernel(const cd::matrixptr &coordinates);
-    void build_simple_kernel(const cd::matrixptr &coordinates, const cd::scalar &epsilon_);
+    void build_simple_kernel(const cd::matrixptr &coordinates, const cd::scalar &epsilon);
 
     /**
      * \brief   return a shared pointer to the matrix pointed by k
     */
     const cd::matrixptr get_kernel() const;
-}; // class kernel
+}; // class Kernel
 }; // namespace LocallyStationaryModels
 
 #endif // LOCALLY_STATIONARY_MODELS_KERNEL

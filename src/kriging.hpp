@@ -14,15 +14,15 @@ namespace LocallyStationaryModels
 /**
  * \brief   class to perform kriging on the data
 */
-class predictor
+class Predictor
 {
 private:
-    std::shared_ptr<variogramfunction> gammaisoptr; /// variogram function
-    cd::vectorptr z = nullptr; /// z(d)
-    smt smt_; /// smoother
-    double b; /// cutoff-radius of locally stationary neighbourhood
-    cd::vectorptr means = nullptr; /// vector with the mean predicted in each anchor point
-    cd::matrixptr d = nullptr; /// dataset with the initial points
+    std::shared_ptr<VariogramFunction> m_gammaisoptr; /// variogram function
+    cd::vectorptr m_z = nullptr; /// z(d)
+    Smt m_smt; /// smoother
+    double m_b; /// cutoff-radius of locally stationary neighbourhood
+    cd::vectorptr m_means = nullptr; /// vector with the mean predicted in each anchor point
+    cd::matrixptr m_d = nullptr; /// dataset with the initial points
 
     /**
      * \brief       build a vector with the index of the points in the neighbourhood of radius b of the point in position pos
@@ -49,16 +49,16 @@ public:
     /**
      * \brief           constructor
      * \param id        name of the variogram function associated with the problem
-     * \param z_        the vector with the value of the function Y in the known points
+     * \param z         the vector with the value of the function Y in the known points
      * \param mysmt     the one used to previously smooth the variogram
-     * \param b_        the radius of the neighbourhood of the point where to perform kriging
-     * \param d_        a shared pointer to the matrix with the coordinates of the original dataset
+     * \param b         the radius of the neighbourhood of the point where to perform kriging
+     * \param d         a shared pointer to the matrix with the coordinates of the original dataset
     */
-    predictor(const std::string &id, const cd::vectorptr &z_, const smt &mysmt, const double b_, const cd::matrixptr &d_);
+    Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &d);
     /**
      * \brief   gammaiso set by default to exponential
     */
-    predictor();
+    Predictor();
 
     /**
      * \brief   predict the mean

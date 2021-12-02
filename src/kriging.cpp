@@ -8,45 +8,45 @@ namespace LocallyStationaryModels
 {
 using namespace cd;
 
-vectorind predictor::build_neighbourhood(const cd::vector &pos) const
+vectorind Predictor::build_neighbourhood(const cd::vector &pos) const
 {
     vectorind n;
-    for (unsigned int i=0; i< d->rows(); ++i)
+    for (unsigned int i=0; i< m_d->rows(); ++i)
     {
-        vector datapos = d->row(i);
-        // if datapos is in a neighbourhood of radius b
-        if ((pos - datapos).norm() < b)
+        vector datapos = m_d->row(i);
+        // if datapos is in a neighbourhood of radius m_b
+        if ((pos - datapos).norm() < m_b)
             n.push_back(i);
     }
     return n;
 }
 
-vectorind predictor::build_neighbourhood(const unsigned int &pos) const
+vectorind Predictor::build_neighbourhood(const unsigned int &pos) const
 {
     vectorind n;
-    const vector &pospos = d->row(pos);
-    for (unsigned int i=0; i< d->rows(); ++i)
+    const vector &pospos = m_d->row(pos);
+    for (unsigned int i=0; i< m_d->rows(); ++i)
     {
-        const vector &posi =  d->row(i);
-        // if pos is in a neighbourhood of radius b
-        if ((pospos - posi).norm() < b)
+        const vector &posi =  m_d->row(i);
+        // if pos is in a neighbourhood of radius m_b
+        if ((pospos - posi).norm() < m_b)
             n.push_back(i);
     }
     return n;
 }
 
-cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) const
+cd::vector Predictor::build_eta(cd::vector &params, vectorind &neighbourhood) const
 {
     unsigned int n = neighbourhood.size();
     matrix gamma(n,n);
-    variogramfunction &gammaiso = *(gammaisoptr);
+    VariogramFunction &gammaiso = *(m_gammaisoptr);
     // compute gamma
     for (unsigned int i=0; i<n; ++i)
     {
         for (unsigned int j=0; j<n; ++j)
         {
-            const vector &posi = d->row(neighbourhood[i]);
-            const vector &posj = d->row(neighbourhood[j]);
+            const vector &posi = m_d->row(neighbourhood[i]);
+            const vector &posj = m_d->row(neighbourhood[j]);
             cd::vector s = posi - posj;
             gamma(i, j) = gammaiso(params, s[0], s[1]);
         }
@@ -65,22 +65,22 @@ cd::vector predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
     return eta;
 }
 
-std::pair<cd::vector, double> predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
+std::pair<cd::vector, double> Predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
 {
-    unsigned int n = d->rows();
+    unsigned int n = m_d->rows();
     
     vector etakriging(n);
     vector C0(n);
     matrix correlationmatrix(n,n);
     double sigma2 = params[3]*params[3];
-    variogramfunction &gammaiso = *(gammaisoptr);
+    VariogramFunction &gammaiso = *(m_gammaisoptr);
     // compute the corralation matrix and C0
     for (unsigned int i=0; i<n; ++i)
     {
-        const vector &posi = d->row(i);
+        const vector &posi = m_d->row(i);
         for (unsigned int j=0; j<n; ++j)
         {
-            const vector &posj = d->row(j);
+            const vector &posj = m_d->row(j);
             cd::vector s = posi - posj;
             correlationmatrix(i, j) = sigma2-gammaiso(params, s[0], s[1]);
         }
@@ -95,10 +95,10 @@ std::pair<cd::vector, double> predictor::build_etakriging(const cd::vector &para
 }
 
 template<>
-double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
+double Predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
 {
     // find the value of the parameters in pos
-    cd::vector params = smt_.smooth_vector(pos);
+    cd::vector params = m_smt.smooth_vector(pos);
     // find the anchorpoints in its neighbourhood
     vectorind neighbourhood = build_neighbourhood(pos);
     unsigned int n = neighbourhood.size();
@@ -108,16 +108,16 @@ double predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
     double result = 0;
     // compute the mean of z in pos
     for (unsigned int i=0; i<n; ++i)
-        result += eta(i) * z->operator()(neighbourhood[i]);
+        result += eta(i) * m_z->operator()(neighbourhood[i]);
     
     return result;
 }
 
 template<>
-double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) const
+double Predictor::predict_mean<unsigned int, double>(const unsigned int &pos) const
 {
     // find the value of the parameters relative to the anchorpoint in row pos
-    cd::vector params = smt_.smooth_vector(d->row(pos));
+    cd::vector params = m_smt.smooth_vector(m_d->row(pos));
     // find the anchropoints in its neighbourhood
     vectorind neighbourhood = build_neighbourhood(pos);
     unsigned int n = neighbourhood.size();
@@ -127,13 +127,13 @@ double predictor::predict_mean<unsigned int, double>(const unsigned int &pos) co
     double result = 0;
     // compute the mean of z in position pos
     for (unsigned int i=0; i<n; ++i)
-        result += eta(i) * z->operator()(neighbourhood[i]);
+        result += eta(i) * m_z->operator()(neighbourhood[i]);
     
     return result;
 }
 
 template<>
-cd::vector predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos) const
+cd::vector Predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos) const
 {
     vector result(pos.rows());
     #pragma omp parallel for
@@ -143,26 +143,26 @@ cd::vector predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos
 }
 
 template<>
-std::pair<double,double> predictor::predict_z<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
+std::pair<double,double> Predictor::predict_z<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
 {
-    unsigned int n=d->rows();
+    unsigned int n = m_d->rows();
     // predict the mean of z in pos
     double m0 = predict_mean<cd::vector, double>(pos);
     double result = m0;
     // find the value of the parameters in pos
-    cd::vector params = smt_.smooth_vector(pos);
+    cd::vector params = m_smt.smooth_vector(pos);
     // build etakriging and calculate the variance
     std::pair<vector, double> fulletakriging(build_etakriging(params, pos));
     vector &etakriging = fulletakriging.first;
     // predict the value of z(pos)
     for (unsigned int i=0; i<n; ++i)
-        result += etakriging(i)*(z->operator()(i)-means->operator()(i)); 
+        result += etakriging(i)*(m_z->operator()(i)-m_means->operator()(i)); 
     // return z(pos) and the kriging variance
     return std::make_pair(result, fulletakriging.second);
 }
 
 template<>
-cd::matrix predictor::predict_z<cd::matrix, cd::matrix>(const cd::matrix &pos) const
+cd::matrix Predictor::predict_z<cd::matrix, cd::matrix>(const cd::matrix &pos) const
 {
     matrix result(pos.rows(), 2);
     #pragma omp parallel for
@@ -175,14 +175,14 @@ cd::matrix predictor::predict_z<cd::matrix, cd::matrix>(const cd::matrix &pos) c
     return result;
 }
 
-predictor::predictor(const std::string &id, const cd::vectorptr &z_, const smt &mysmt, const double b_, const cd::matrixptr &d_): gammaisoptr(make_variogramiso(id)), z(z_), smt_(mysmt), b(b_), d(d_) 
+Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &d): m_gammaisoptr(make_variogramiso(id)), m_z(z), m_smt(mysmt), m_b(b), m_d(d) 
 {
-    means = std::make_shared<vector>(z_->size());
+    m_means = std::make_shared<vector>(z->size());
     // build a vector with the prediction of the mean of z in every anchorpoint to speed up the next computations
     #pragma omp parallel for
-    for (unsigned int i=0; i<means->size(); ++i)
-        means->operator()(i) = predict_mean<unsigned int, double>(i);
+    for (unsigned int i=0; i<m_means->size(); ++i)
+        m_means->operator()(i) = predict_mean<unsigned int, double>(i);
 };
 
-predictor::predictor(): gammaisoptr(make_variogramiso("esponenziale")) {}
+Predictor::Predictor(): m_gammaisoptr(make_variogramiso("esponenziale")) {}
 }; // namespace LocallyStationaryModels

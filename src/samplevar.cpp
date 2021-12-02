@@ -9,11 +9,11 @@ namespace LocallyStationaryModels
 {
 using namespace cd;
 
-void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr)
+void SampleVar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr)
 {
-    grid_.build_grid(dptr, n_angles, n_intervals);
+    m_grid.build_grid(dptr, m_n_angles, m_n_intervals);
 
-    kernel_.build_kernel(dptr, anchorpointsptr);
+    m_kernel.build_kernel(dptr, anchorpointsptr);
 
     // d is the matrix with the coordinates of the initial points
     const matrix &d = *(dptr);
@@ -21,8 +21,8 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
     const vector &z = *(zptr);
     // a is the matrix with the coordinates of the anchor points
     const matrix &a = *(anchorpointsptr);
-    const matrixIptr g = grid_.get_grid();
-    const matrix &K = *(kernel_.get_kernel());
+    const matrixIptr g = m_grid.get_grid();
+    const matrix &K = *(m_kernel.get_kernel());
 
     size_t n = g->rows();
 
@@ -30,8 +30,8 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
 
     size_t N = a.rows();
 
-    variogram = std::make_shared<matrix>(matrix::Zero(max_index+1, N));
-    denominators = std::make_shared<matrix>(matrix::Zero(max_index+1, N));
+    m_variogram = std::make_shared<matrix>(matrix::Zero(max_index+1, N));
+    m_denominators = std::make_shared<matrix>(matrix::Zero(max_index+1, N));
 
     // Z is the matrix that contains the squared norm of the difference between each possible pair z_i and z_j
     matrix Z(n, n);
@@ -64,8 +64,8 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
                     if (k >= 0)
                     {
                         scalar prodotto = K(l, i) * K(l, j);
-                        variogram->operator()(k, l) += prodotto * Z(i, j);
-                        denominators->operator()(k, l) += prodotto;
+                        m_variogram->operator()(k, l) += prodotto * Z(i, j);
+                        m_denominators->operator()(k, l) += prodotto;
                         counters[k]++;
                     }   
                 }
@@ -73,22 +73,22 @@ void samplevar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
             for (size_t u = 0; u < max_index+1; ++u)
             {
                 if (counters[u] != 0)
-                    variogram->operator()(u, l) /= (2*denominators->operator()(u, l));
+                    m_variogram->operator()(u, l) /= (2*m_denominators->operator()(u, l));
             }
         }
     }
     build_squaredweights();
 }
 
-void samplevar::build_squaredweights()
+void SampleVar::build_squaredweights()
 {
-    const matrixIptr g = grid_.get_grid(); 
-    const vectorptr normh = grid_.get_normh();
+    const matrixIptr g = m_grid.get_grid(); 
+    const vectorptr normh = m_grid.get_normh();
 
-    size_t N = denominators->cols();
+    size_t N = m_denominators->cols();
     size_t htot = normh->rows();
 
-    squaredweights = std::make_shared<matrix>(matrix::Zero(N, htot));
+    m_squaredweights = std::make_shared<matrix>(matrix::Zero(N, htot));
 
     #pragma omp parallel for
     for (size_t k = 0; k < N ; ++k)
@@ -96,52 +96,52 @@ void samplevar::build_squaredweights()
         for (size_t h = 0 ; h < htot; ++h)
         {
             if (normh->operator()(h) != 0)
-                squaredweights->operator()(k,h) = denominators->operator()(h,k)/normh->operator()(h);
+                m_squaredweights->operator()(k,h) = m_denominators->operator()(h,k)/normh->operator()(h);
         }
     } 
 }
 
-samplevar::samplevar(const std::string &kernel_id, const unsigned int &n_angles_, const unsigned int &n_intervals_, const scalar &epsilon): kernel_(kernel_id, epsilon), grid_("Pizza", epsilon), n_angles(n_angles_), n_intervals(n_intervals_) {};
+SampleVar::SampleVar(const std::string &kernel_id, const unsigned int &n_angles, const unsigned int &n_intervals, const scalar &epsilon): m_kernel(kernel_id, epsilon), m_grid("pizza", epsilon), m_n_angles(n_angles), m_n_intervals(n_intervals) {};
 
-samplevar::samplevar(): kernel_(), grid_() {};
+SampleVar::SampleVar(): m_kernel(), m_grid() {};
 
-const matrixptr samplevar::get_variogram() const
+const matrixptr SampleVar::get_variogram() const
 {
-    return variogram;
+    return m_variogram;
 }
 
-const matrixptr samplevar::get_denominators() const
+const matrixptr SampleVar::get_denominators() const
 {
-    return denominators;
+    return m_denominators;
 }
 
-const matrixptr samplevar::get_squaredweights() const
+const matrixptr SampleVar::get_squaredweights() const
 {
-    return squaredweights;
+    return m_squaredweights;
 }
 
-const vectorptr samplevar::get_x() const
+const vectorptr SampleVar::get_x() const
 {
-    return grid_.get_x();
+    return m_grid.get_x();
 }
 
-const vectorptr samplevar::get_y() const
+const vectorptr SampleVar::get_y() const
 {
-    return grid_.get_y();
+    return m_grid.get_y();
 }
 
-const matrixptr samplevar::get_kernel() const
+const matrixptr SampleVar::get_kernel() const
 {
-    return kernel_.get_kernel();
+    return m_kernel.get_kernel();
 }
 
-const matrixIptr samplevar::get_grid() const
+const matrixIptr SampleVar::get_grid() const
 {
-    return grid_.get_grid();
+    return m_grid.get_grid();
 }
 
-const vectorptr samplevar::get_normh() const
+const vectorptr SampleVar::get_normh() const
 {
-    return grid_.get_normh();
+    return m_grid.get_normh();
 }
 }; // namespace LocallyStationaryModels

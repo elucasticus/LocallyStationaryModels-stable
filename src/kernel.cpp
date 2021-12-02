@@ -18,22 +18,22 @@ kernelfunction make_kernel(const std::string &id)
  	return gaussian;
 }
 
-kernel::kernel(const std::string &id, const scalar &epsilon_): epsilon(epsilon_), f(make_kernel(id)) {};
+Kernel::Kernel(const std::string &id, const scalar &epsilon): m_epsilon(epsilon), m_f(make_kernel(id)) {};
 
-kernel::kernel(): kernel("Gaussian", 1.) {};
+Kernel::Kernel(): Kernel("Gaussian", 1.) {};
 
-scalar kernel::operator()(const vector &x, const vector &y) const
+scalar Kernel::operator()(const vector &x, const vector &y) const
 {
-	return f(x, y, epsilon);
+	return m_f(x, y, m_epsilon);
 }
 
-void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
+void Kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 {
 	size_t n = d->rows();
 
 	size_t N = anchorpoints->rows();
 
-	k->resize(N, n);
+	m_k->resize(N, n);
 
 	// fill each component of k with the value of the kernel function evaluated between the i-th anchor point and the j-th initial point
 	#pragma omp parallel for
@@ -41,7 +41,7 @@ void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 	{
 		for (size_t j = 0; j < n; ++j)
 		{
-			k->operator()(i, j) = this->operator()(anchorpoints->row(i), d->row(j));
+			m_k->operator()(i, j) = this->operator()(anchorpoints->row(i), d->row(j));
 		}
 	}
 
@@ -50,7 +50,7 @@ void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 	#pragma omp parallel for
 	for (size_t i=0; i < N; ++i)
 	{
-		sums(i) = (k->row(i)).sum();
+		sums(i) = (m_k->row(i)).sum();
 	}
 
 	// divide each element of k by the sum of the elements of its row to obtained the normalized version of the kernel matrix K*
@@ -59,32 +59,32 @@ void kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 	{
 		for (size_t j = 0; j < n; ++j)
 		{
-			k->operator()(i, j) /= sums(i);
+			m_k->operator()(i, j) /= sums(i);
 		}
 	}
 }
 
-void kernel::build_simple_kernel(const matrixptr &d)
+void Kernel::build_simple_kernel(const matrixptr &d)
 {
 	size_t n = d->rows();
-	k->resize(n, n);
+	m_k->resize(n, n);
 	// fill each component of k with the kernel function evaluated between the i-th and the j-th point of d
 	#pragma omp parallel for
 	for (size_t i = 0; i < n; ++i)
 	{
 		for (size_t j = i; j < n; ++j)
 		{
-			k->operator()(i, j) = this->operator()(d->row(i), d->row(j));
-			k->operator()(j, i) = k->operator()(i, j);
+			m_k->operator()(i, j) = this->operator()(d->row(i), d->row(j));
+			m_k->operator()(j, i) = m_k->operator()(i, j);
 		}
 	}
 }
 
-void kernel::build_simple_kernel(const matrixptr &d, const scalar &epsilon_)
+void Kernel::build_simple_kernel(const matrixptr &d, const scalar &epsilon)
 {
-	epsilon = epsilon_;
+	m_epsilon = epsilon;
 	build_simple_kernel(d);
 }
 
-const matrixptr kernel::get_kernel() const {return k;}
+const matrixptr Kernel::get_kernel() const {return m_k;}
 }; // namespace LocallyStationaryModels

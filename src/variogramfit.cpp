@@ -12,29 +12,29 @@ namespace LocallyStationaryModels
 using namespace cd;
 using namespace LBFGSpp;
 
-cd::scalar funzionedaottimizzare::operator() (const cd::vector &params)
+cd::scalar FunzioneDaOttimizzare::operator() (const cd::vector &params)
 {
-    variogramfunction &gammaiso = *(gammaisoptr);
-    vector w = squaredweights->row(x0);
-    vector truegamma(empiricvariogram->rows());
+    VariogramFunction &gammaiso = *(m_gammaisoptr);
+    vector w = m_squaredweights->row(m_x0);
+    vector truegamma(m_empiricvariogram->rows());
 
     for (unsigned int h = 0; h < truegamma.size(); ++h)
     {
-        truegamma[h] = gammaiso(params, mean_x->operator[](h), mean_y->operator[](h));
+        truegamma[h] = gammaiso(params, m_mean_x->operator[](h), m_mean_y->operator[](h));
     }
-    vector empiricgamma = empiricvariogram->col(x0);
+    vector empiricgamma = m_empiricvariogram->col(m_x0);
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &grad)
+cd::scalar FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &grad)
 {
-    variogramfunction &gammaiso = *(gammaisoptr);
-    vector w = squaredweights->row(x0);
-    vector truegamma(empiricvariogram->rows());
+    VariogramFunction &gammaiso = *(m_gammaisoptr);
+    vector w = m_squaredweights->row(m_x0);
+    vector truegamma(m_empiricvariogram->rows());
 
     for (unsigned int h = 0; h < truegamma.size(); ++h)
     {
-        truegamma[h] = gammaiso(params, mean_x->operator[](h), mean_y->operator[](h));
+        truegamma[h] = gammaiso(params, m_mean_x->operator[](h), m_mean_y->operator[](h));
     }
     
     double c = 10e-8;
@@ -52,27 +52,27 @@ cd::scalar funzionedaottimizzare::operator() (const cd::vector &params, vector &
         paramsdeltaplus[i] += increment;
         paramsdeltaminus[i] -= increment;
 
-        grad[i] = (funzionedaottimizzare::operator()(paramsdeltaplus) - funzionedaottimizzare::operator()(paramsdeltaminus))/(2*increment);
+        grad[i] = (FunzioneDaOttimizzare::operator()(paramsdeltaplus) - FunzioneDaOttimizzare::operator()(paramsdeltaminus))/(2*increment);
     }
     
-    vector empiricgamma = empiricvariogram->col(x0);
+    vector empiricgamma = m_empiricvariogram->col(m_x0);
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-funzionedaottimizzare::funzionedaottimizzare(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_, unsigned int x0_, 
-    const std::string &id): empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), mean_x(mean_x_), mean_y(mean_y_), x0(x0_), gammaisoptr(make_variogramiso(id)) {};
+FunzioneDaOttimizzare::FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, unsigned int x0, 
+    const std::string &id): m_empiricvariogram(empiricvariogram), m_squaredweights(squaredweights), m_mean_x(mean_x), m_mean_y(mean_y), m_x0(x0), m_gammaisoptr(make_variogramiso(id)) {};
 
-opt::opt(const cd::matrixptr empiricvariogram_, const cd::matrixptr squaredweights_, const cd::vectorptr mean_x_, const cd::vectorptr mean_y_, const std::string &id_, 
-    const cd::vector &initialparameters_, const cd::vector &lowerbound_, const cd::vector &upperbound_): 
-    empiricvariogram(empiricvariogram_), squaredweights(squaredweights_), mean_x(mean_x_), mean_y(mean_y_), id(id_), initialparameters(initialparameters_), lowerbound(lowerbound_),
-    upperbound(upperbound_)
+Opt::Opt(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, const std::string &id, 
+    const cd::vector &initialparameters, const cd::vector &lowerbound, const cd::vector &upperbound): 
+    m_empiricvariogram(empiricvariogram), m_squaredweights(squaredweights), m_mean_x(mean_x), m_mean_y(mean_y), m_id(id), m_initialparameters(initialparameters), m_lowerbound(lowerbound),
+    m_upperbound(upperbound)
 {
-    solutions = std::make_shared<matrix>(matrix::Zero(empiricvariogram->cols(),initialparameters.size()));
+    m_solutions = std::make_shared<matrix>(matrix::Zero(m_empiricvariogram->cols(),m_initialparameters.size()));
 };
 
-vector opt::findonesolution(const unsigned int pos) const
+vector Opt::findonesolution(const unsigned int pos) const
 {
-    funzionedaottimizzare fun(empiricvariogram, squaredweights, mean_x,  mean_y, pos, id);
+    FunzioneDaOttimizzare fun(m_empiricvariogram, m_squaredweights, m_mean_x,  m_mean_y, pos, m_id);
 
     // Set up parameters
     LBFGSBParam<double> param;
@@ -83,10 +83,10 @@ vector opt::findonesolution(const unsigned int pos) const
     LBFGSBSolver<double> solver(param);
 
     // Bounds
-    Eigen::VectorXd lb(lowerbound);
-    Eigen::VectorXd ub(upperbound);
+    Eigen::VectorXd lb(m_lowerbound);
+    Eigen::VectorXd ub(m_upperbound);
     
-    cd::vector x(initialparameters);
+    cd::vector x(m_initialparameters);
     // x will be overwritten to be the best point found
     double fx;
 
@@ -96,23 +96,23 @@ vector opt::findonesolution(const unsigned int pos) const
     } catch (std::exception &e)
     {
         std::cerr << e.what() << std::endl;
-        x = initialparameters;
+        x = m_initialparameters;
     }
     return x;
 }
 
-void opt::findallsolutions()
+void Opt::findallsolutions()
 {
     #pragma omp parallel for
-    for (unsigned int i=0; i<empiricvariogram->cols(); ++i)
+    for (unsigned int i=0; i<m_empiricvariogram->cols(); ++i)
     {
         vector sol = findonesolution(i);
-        for (unsigned int j = 0; j < initialparameters.size(); ++j)
+        for (unsigned int j = 0; j < m_initialparameters.size(); ++j)
         {
-            solutions->operator()(i, j) = sol[j];
+            m_solutions->operator()(i, j) = sol[j];
         }
     }
 }
 
-cd::matrixptr opt::get_solutions() const {return solutions;}
+cd::matrixptr Opt::get_solutions() const {return m_solutions;}
 }; // namespace LocallyStationaryModels
