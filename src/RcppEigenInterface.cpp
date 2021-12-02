@@ -29,7 +29,7 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
     
     matrixptr dd = std::make_shared<matrix>(d);
 
-    ancora a(dd, n_cubotti);
+    Ancora a(dd, n_cubotti);
 
     cd::matrix anchorpos = a.find_anchorpoints();
    
