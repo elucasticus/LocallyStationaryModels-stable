@@ -3,9 +3,6 @@
 /// Under MIT license
 
 #include "variogramfit.hpp"
-#include <cmath>
-#include <cfloat>
-#include <iostream>
 
 namespace LocallyStationaryModels
 {

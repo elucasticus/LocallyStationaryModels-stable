@@ -6,7 +6,6 @@
 #define LOCALLY_STATIONARY_MODELS_KERNEL
 
 #include "traits.hpp"
-#include <string>
 
 namespace LocallyStationaryModels
 {

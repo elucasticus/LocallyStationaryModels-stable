@@ -3,7 +3,6 @@
 /// Under MIT license
 
 #include "samplevar.hpp"
-#include <iostream>
 
 namespace LocallyStationaryModels
 {

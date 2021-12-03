@@ -7,7 +7,6 @@
 
 #include "kernel.hpp"
 #include "traits.hpp"
-#include <vector>
 
 namespace LocallyStationaryModels
 {

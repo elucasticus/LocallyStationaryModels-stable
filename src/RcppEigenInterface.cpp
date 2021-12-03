@@ -4,16 +4,17 @@
 /// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
 /// Under MIT license
 
-#include <RcppEigen.h>
-#include "samplevar.hpp"
-#include "variogramfit.hpp"
-#include "smooth.hpp"
-#include "kriging.hpp"
-#include "ancora.hpp"
 #include <chrono>
+#include <RcppEigen.h>
+
+#include "ancora.hpp"
+#include "kriging.hpp"
+#include "samplevar.hpp"
+#include "smooth.hpp"
+#include "variogramfit.hpp"
+
 using namespace LocallyStationaryModels;
-using namespace cd;
-using namespace LBFGSpp;
+using namespace LocallyStationaryModels::cd;
 using namespace std::chrono;
 
 // [[Rcpp::depends(RcppEigen)]]

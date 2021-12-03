@@ -5,8 +5,8 @@
 #ifndef LOCALLY_STATIONARY_MODELS_KRIGING
 #define LOCALLY_STATIONARY_MODELS_KRIGING
 
-#include "traits.hpp"
 #include "smooth.hpp"
+#include "traits.hpp"
 #include "variogramfit.hpp"
 
 namespace LocallyStationaryModels

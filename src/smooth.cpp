@@ -3,8 +3,6 @@
 /// Under MIT license
 
 #include "smooth.hpp"
-#include  <algorithm>
-#include <iostream>
 
 namespace LocallyStationaryModels
 {

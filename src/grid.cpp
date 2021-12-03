@@ -3,8 +3,6 @@
 /// Under MIT license
 
 #include "grid.hpp"
-#include <iostream>
-#include <unordered_map>
 
 namespace LocallyStationaryModels
 {

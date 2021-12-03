@@ -6,8 +6,6 @@
 #define LOCALLY_STATIONARY_MODELS_ANCORA
 
 #include "traits.hpp"
-#include <vector>
-#include <algorithm>
 
 namespace LocallyStationaryModels
 {
@@ -53,11 +51,11 @@ private:
 
 public:
     /**
-     * \brief           constructor
-     * \param data_     shared pointer to the matrix with the coordinates of the dataset points
-     * \param h_        the number of squares per row and column of the grid
+     * \brief          constructor
+     * \param data     shared pointer to the matrix with the coordinates of the dataset points
+     * \param h        the number of squares per row and column of the grid
     */
-    Ancora(const cd::matrixptr &data_, const double h_): m_data(data_), m_n_cubotti(h_){};
+    Ancora(const cd::matrixptr &data, const double h): m_data(data), m_n_cubotti(h){};
 
     /**
      * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point of the domain in its neighbourhood

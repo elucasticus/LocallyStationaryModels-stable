@@ -5,9 +5,9 @@
 #ifndef LOCALLY_STATIONARY_MODELS_SAMPLEVAR
 #define LOCALLY_STATIONARY_MODELS_SAMPLEVAR
 
-#include "traits.hpp"
 #include "kernel.hpp"
 #include "grid.hpp"
+#include "traits.hpp"
 
 namespace LocallyStationaryModels
 {

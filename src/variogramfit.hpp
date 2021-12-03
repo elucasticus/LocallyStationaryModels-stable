@@ -5,10 +5,9 @@
 #ifndef LOCALLY_STATIONARY_MODELS_GRADIENT
 #define LOCALLY_STATIONARY_MODELS_GRADIENT
 
-#include "traits.hpp"
 #include "LBFGS/LBFGSB.h"
+#include "traits.hpp"
 #include "variogramfunctions.hpp"
-#include <vector>
 
 namespace LocallyStationaryModels
 {

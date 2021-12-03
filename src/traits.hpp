@@ -5,9 +5,14 @@
 #ifndef LOCALLY_STATIONARY_MODELS_TRAITS
 #define LOCALLY_STATIONARY_MODELS_TRAITS
 
+#include <algorithm>
+#include <cfloat>
+#include <cmath>
 #include <functional>
+#include <iostream>
 #include <memory>
 #include <omp.h>
+#include <string>
 #include <vector>
 
 #include "Eigen/Dense"
