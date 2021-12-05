@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "Eigen/Dense"
+#include "tolerances.hpp"
 
 namespace LocallyStationaryModels
 {

@@ -31,11 +31,11 @@ private:
     {
         unsigned int n = m_data->rows();
 
-        m_center_x = (m_data->col(0)).minCoeff()*0.999999;
-        m_center_y = (m_data->col(1)).minCoeff()*0.999999;
+        m_center_x = (m_data->col(0)).minCoeff()*(1 - Tolerances::anchor_tollerance);
+        m_center_y = (m_data->col(1)).minCoeff()*(1 - Tolerances::anchor_tollerance);
 
-        m_larghezza = (m_data->col(0)).maxCoeff()*1.000001 - m_center_x;
-        m_altezza = (m_data->col(1)).maxCoeff()*1.000001 - m_center_y;
+        m_larghezza = (m_data->col(0)).maxCoeff()*(1 + Tolerances::anchor_tollerance) - m_center_x;
+        m_altezza = (m_data->col(1)).maxCoeff()*(1 + Tolerances::anchor_tollerance) - m_center_y;
         m_larghezza_cubo = m_larghezza/m_n_cubotti;
         m_altezza_cubo = m_altezza/m_n_cubotti;
 
