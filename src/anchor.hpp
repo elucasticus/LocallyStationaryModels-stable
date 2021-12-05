@@ -2,8 +2,8 @@
 /// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
 /// Under MIT license
 
-#ifndef LOCALLY_STATIONARY_MODELS_ANCORA
-#define LOCALLY_STATIONARY_MODELS_ANCORA
+#ifndef LOCALLY_STATIONARY_MODELS_ANCHOR
+#define LOCALLY_STATIONARY_MODELS_ANCHOR
 
 #include "traits.hpp"
 
@@ -12,7 +12,7 @@ namespace LocallyStationaryModels
 /**
  * \brief   a simple class to find the anchor points given the data
 */
-class Ancora
+class Anchor
 {
 private:
     cd::matrixptr m_data; /// matrix to generate the anchor points
@@ -27,7 +27,7 @@ private:
     /**
      * \brief   return the index of the position in the grid of each of the points of the dataset "m_data"
     */
-    Eigen::VectorXi cubotti() 
+    Eigen::VectorXi find_indeces()
     {
         unsigned int n = m_data->rows();
 
@@ -55,7 +55,7 @@ public:
      * \param data             shared pointer to the matrix with the coordinates of the dataset points
      * \param n_cubotti        the number of squares per row and column of the grid
     */
-    Ancora(const cd::matrixptr &data, const double n_cubotti): m_data(data), m_n_cubotti(n_cubotti){};
+    Anchor(const cd::matrixptr &data, const double n_cubotti): m_data(data), m_n_cubotti(n_cubotti){};
 
     /**
      * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point of the domain in its neighbourhood
@@ -63,13 +63,13 @@ public:
     const cd::matrix find_anchorpoints()
     {
         unsigned int n = m_data->rows();
-        Eigen::VectorXi results = cubotti();
+        Eigen::VectorXi indeces = find_indeces();
 
         // build a new vector without duplicates
         std::vector<unsigned int> positions;
         for (unsigned int i=0; i<n; ++i)
         {
-            unsigned int pos = results(i);
+            unsigned int pos = indeces(i);
             if (std::find(positions.begin(), positions.end(), pos) == positions.end())
                 positions.push_back(pos);
         }
@@ -79,8 +79,8 @@ public:
         for (unsigned int i=0; i<anchorpos.rows(); ++i)
         {
             unsigned int I = positions[i];
-            anchorpos(i,0) = m_center_x + (I - floor((I*0.999999)/m_n_cubotti)*m_n_cubotti)*m_larghezza_cubo - m_larghezza_cubo/2;
-            anchorpos(i,1) = m_center_y + ceil((I*0.999999)/m_n_cubotti)*m_altezza_cubo - m_altezza_cubo/2;
+            anchorpos(i,0) = m_center_x + (I - floor((I*(1 - Tolerances::anchor_tolerance))/m_n_cubotti)*m_n_cubotti)*m_larghezza_cubo - m_larghezza_cubo/2;
+            anchorpos(i,1) = m_center_y + ceil((I*(1 - Tolerances::anchor_tolerance))/m_n_cubotti)*m_altezza_cubo - m_altezza_cubo/2;
         }
         return anchorpos;
     }
@@ -92,8 +92,8 @@ public:
     /**
      * \brief   return the dimensions (height and width) of each cell of the grid
     */
-    std::pair<double, double> get_dimensionecubotti() const{return std::make_pair(m_larghezza_cubo, m_altezza_cubo);}
-}; // class Ancora
+    std::pair<double, double> get_tiles_dimensions() const{return std::make_pair(m_larghezza_cubo, m_altezza_cubo);}
+}; // class Anchor
 }; // namespace LocallyStationaryModels
 
-#endif //LOCALLY_STATIONARY_MODELS_ANCORA
+#endif //LOCALLY_STATIONARY_MODELS_ANCHOR
