@@ -21,8 +21,8 @@ private:
     double m_altezza = 0; /// total height of the grid
     double m_larghezza_cubo = 0; /// width of each tile
     double m_altezza_cubo = 0; /// height of each tile
-    double m_center_x = 0; /// x of the origin of the grid
-    double m_center_y = 0; /// y of the origin of the gird
+    double m_origin_x = 0; /// x of the origin of the grid
+    double m_origin_y = 0; /// y of the origin of the gird
 
     /**
      * \brief   return the index of the position in the grid of each of the points of the dataset "m_data"
@@ -31,11 +31,11 @@ private:
     {
         unsigned int n = m_data->rows();
 
-        m_center_x = (m_data->col(0)).minCoeff()*(1 - Tolerances::anchor_tolerance);
-        m_center_y = (m_data->col(1)).minCoeff()*(1 - Tolerances::anchor_tolerance);
+        m_origin_x = (m_data->col(0)).minCoeff()*(1 - Tolerances::anchor_tolerance);
+        m_origin_y = (m_data->col(1)).minCoeff()*(1 - Tolerances::anchor_tolerance);
 
-        m_larghezza = (m_data->col(0)).maxCoeff()*(1 + Tolerances::anchor_tolerance) - m_center_x;
-        m_altezza = (m_data->col(1)).maxCoeff()*(1 + Tolerances::anchor_tolerance) - m_center_y;
+        m_larghezza = (m_data->col(0)).maxCoeff()*(1 + Tolerances::anchor_tolerance) - m_origin_x;
+        m_altezza = (m_data->col(1)).maxCoeff()*(1 + Tolerances::anchor_tolerance) - m_origin_y;
         m_larghezza_cubo = m_larghezza/m_n_cubotti;
         m_altezza_cubo = m_altezza/m_n_cubotti;
 
@@ -44,7 +44,7 @@ private:
         for (unsigned int i=0; i<n; ++i)
         {
             cd::vector coordinates = m_data->row(i);
-            result(i) = ceil((coordinates(0)-m_center_x)/m_larghezza_cubo) + m_n_cubotti*floor((coordinates(1)-m_center_y)/m_altezza_cubo);
+            result(i) = ceil((coordinates(0)-m_origin_x)/m_larghezza_cubo) + m_n_cubotti*floor((coordinates(1)-m_origin_y)/m_altezza_cubo);
         }
         return result;
     }
@@ -79,8 +79,8 @@ public:
         for (unsigned int i=0; i<anchorpos.rows(); ++i)
         {
             unsigned int I = positions[i];
-            anchorpos(i,0) = m_center_x + (I - floor((I*(1 - Tolerances::anchor_tolerance))/m_n_cubotti)*m_n_cubotti)*m_larghezza_cubo - m_larghezza_cubo/2;
-            anchorpos(i,1) = m_center_y + ceil((I*(1 - Tolerances::anchor_tolerance))/m_n_cubotti)*m_altezza_cubo - m_altezza_cubo/2;
+            anchorpos(i,0) = m_origin_x + (I - floor((I*(1 - Tolerances::anchor_tolerance))/m_n_cubotti)*m_n_cubotti)*m_larghezza_cubo - m_larghezza_cubo/2;
+            anchorpos(i,1) = m_origin_y + ceil((I*(1 - Tolerances::anchor_tolerance))/m_n_cubotti)*m_altezza_cubo - m_altezza_cubo/2;
         }
         return anchorpos;
     }
@@ -88,7 +88,7 @@ public:
     /**
      * \brief   return the coordinates of the origin of the grid
     */
-    std::pair<double, double> get_center() const{return std::make_pair(m_center_x, m_center_y);}
+    std::pair<double, double> get_origin() const{return std::make_pair(m_origin_x, m_origin_y);}
     /**
      * \brief   return the dimensions (height and width) of each cell of the grid
     */
