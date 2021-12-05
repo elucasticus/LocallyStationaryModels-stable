@@ -9,7 +9,7 @@ namespace LocallyStationaryModels
 {
 struct Tolerances
 {
-    static constexpr double anchor_tollerance = 1e-6;
+    static constexpr double anchor_tolerance = 1e-6;
     
 }; // struct Tolerances
 }; // namespace LocallyStationaryModels

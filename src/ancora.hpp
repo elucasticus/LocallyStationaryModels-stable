@@ -31,11 +31,11 @@ private:
     {
         unsigned int n = m_data->rows();
 
-        m_center_x = (m_data->col(0)).minCoeff()*(1 - Tolerances::anchor_tollerance);
-        m_center_y = (m_data->col(1)).minCoeff()*(1 - Tolerances::anchor_tollerance);
+        m_center_x = (m_data->col(0)).minCoeff()*(1 - Tolerances::anchor_tolerance);
+        m_center_y = (m_data->col(1)).minCoeff()*(1 - Tolerances::anchor_tolerance);
 
-        m_larghezza = (m_data->col(0)).maxCoeff()*(1 + Tolerances::anchor_tollerance) - m_center_x;
-        m_altezza = (m_data->col(1)).maxCoeff()*(1 + Tolerances::anchor_tollerance) - m_center_y;
+        m_larghezza = (m_data->col(0)).maxCoeff()*(1 + Tolerances::anchor_tolerance) - m_center_x;
+        m_altezza = (m_data->col(1)).maxCoeff()*(1 + Tolerances::anchor_tolerance) - m_center_y;
         m_larghezza_cubo = m_larghezza/m_n_cubotti;
         m_altezza_cubo = m_altezza/m_n_cubotti;
 
@@ -51,11 +51,11 @@ private:
 
 public:
     /**
-     * \brief          constructor
-     * \param data     shared pointer to the matrix with the coordinates of the dataset points
-     * \param h        the number of squares per row and column of the grid
+     * \brief                  constructor
+     * \param data             shared pointer to the matrix with the coordinates of the dataset points
+     * \param n_cubotti        the number of squares per row and column of the grid
     */
-    Ancora(const cd::matrixptr &data, const double h): m_data(data), m_n_cubotti(h){};
+    Ancora(const cd::matrixptr &data, const double n_cubotti): m_data(data), m_n_cubotti(n_cubotti){};
 
     /**
      * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point of the domain in its neighbourhood
