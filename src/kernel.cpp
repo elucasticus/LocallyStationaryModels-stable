@@ -3,22 +3,13 @@
 /// Under MIT license
 
 #include "kernel.hpp"
+#include "kernelfunctions.hpp"
 
 namespace LocallyStationaryModels
 {
 using namespace cd;
 
-scalar gaussian(const vector &x, const vector &y, const scalar &epsilon)
-{
-	return std::exp(-(x - y).squaredNorm()/(2*epsilon*epsilon));
-}
-
-kernelfunction make_kernel(const std::string &id)
-{
- 	return gaussian;
-}
-
-Kernel::Kernel(const std::string &id, const scalar &epsilon): m_epsilon(epsilon), m_f(make_kernel(id)) {};
+Kernel::Kernel(const std::string &id, const scalar &epsilon): m_epsilon(epsilon), m_f(kf::make_kernel(id)) {};
 
 Kernel::Kernel(): Kernel("Gaussian", 1.) {};
 
@@ -27,9 +18,9 @@ scalar Kernel::operator()(const vector &x, const vector &y) const
 	return m_f(x, y, m_epsilon);
 }
 
-void Kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
+void Kernel::build_kernel(const matrixptr &data, const matrixptr &anchorpoints)
 {
-	size_t n = d->rows();
+	size_t n = data->rows();
 
 	size_t N = anchorpoints->rows();
 
@@ -41,7 +32,7 @@ void Kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 	{
 		for (size_t j = 0; j < n; ++j)
 		{
-			m_k->operator()(i, j) = this->operator()(anchorpoints->row(i), d->row(j));
+			m_k->operator()(i, j) = this->operator()(anchorpoints->row(i), data->row(j));
 		}
 	}
 
@@ -64,9 +55,9 @@ void Kernel::build_kernel(const matrixptr &d, const matrixptr &anchorpoints)
 	}
 }
 
-void Kernel::build_simple_kernel(const matrixptr &d)
+void Kernel::build_simple_kernel(const matrixptr &coordinates)
 {
-	size_t n = d->rows();
+	size_t n = coordinates->rows();
 	m_k->resize(n, n);
 	// fill each component of k with the kernel function evaluated between the i-th and the j-th point of d
 	#pragma omp parallel for
@@ -74,16 +65,16 @@ void Kernel::build_simple_kernel(const matrixptr &d)
 	{
 		for (size_t j = i; j < n; ++j)
 		{
-			m_k->operator()(i, j) = this->operator()(d->row(i), d->row(j));
+			m_k->operator()(i, j) = this->operator()(coordinates->row(i), coordinates->row(j));
 			m_k->operator()(j, i) = m_k->operator()(i, j);
 		}
 	}
 }
 
-void Kernel::build_simple_kernel(const matrixptr &d, const scalar &epsilon)
+void Kernel::build_simple_kernel(const matrixptr &coordinates, const scalar &epsilon)
 {
 	m_epsilon = epsilon;
-	build_simple_kernel(d);
+	build_simple_kernel(coordinates);
 }
 
 const matrixptr Kernel::get_kernel() const {return m_k;}

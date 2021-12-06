@@ -38,8 +38,8 @@ cd::scalar Matern::operator()(const cd::vector &params, const cd::scalar &x, con
     double sigma = params[3];
     double nu = params[4];
 
-    if (std::abs(x) < 1e-12 && std::abs(y) < 1e-12)
-        return 1e12;
+    if (std::abs(x) < Tolerances::min_norm && std::abs(y) < Tolerances::min_norm)
+        return Tolerances::infinity;
     
     scalar h = compute_anisotropic_h(lambda1, lambda2, phi, x, y);
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));
@@ -53,8 +53,8 @@ cd::scalar MaternNuFixed::operator()(const cd::vector &params, const cd::scalar 
     double sigma = params[3];
     double nu = m_NU;
 
-    if (std::abs(x) < 1e-12 && std::abs(y) < 1e-12)
-        return 1e12;
+    if (std::abs(x) < Tolerances::min_norm && std::abs(y) < Tolerances::min_norm)
+        return Tolerances::infinity;
     
     scalar h = compute_anisotropic_h(lambda1, lambda2, phi, x, y);
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));

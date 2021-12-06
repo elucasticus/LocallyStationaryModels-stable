@@ -2,8 +2,8 @@
 /// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
 /// Under MIT license
 
-#ifndef LOCALLY_STATIONARY_MODELS_GRIDFUNCTIONS
-#define LOCALLY_STATIONARY_MODELS_GRIDFUNCTIONS
+#ifndef LOCALLY_STATIONARY_MODELS_GRID_FUNCTIONS
+#define LOCALLY_STATIONARY_MODELS_GRID_FUNCTIONS
 
 #include "traits.hpp"
 
@@ -29,4 +29,4 @@ namespace gf
 } // namespace LocallyStationaryModels
 
 
-#endif //LOCALLY_STATIONARY_MODELS_GRIDFUNCTIONS
+#endif //LOCALLY_STATIONARY_MODELS_GRID_FUNCTIONS

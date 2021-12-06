@@ -8,18 +8,18 @@ namespace LocallyStationaryModels
 {
 using namespace cd;
 
-void SampleVar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr)
+void SampleVar::build_samplevar(const cd::matrixptr &data, const cd::matrixptr &anchorpoints, const cd::vectorptr &z)
 {
-    m_grid.build_grid(dptr, m_n_angles, m_n_intervals);
+    m_grid.build_grid(data, m_n_angles, m_n_intervals);
 
-    m_kernel.build_kernel(dptr, anchorpointsptr);
+    m_kernel.build_kernel(data, anchorpoints);
 
     // d is the matrix with the coordinates of the initial points
-    const matrix &d = *(dptr);
+    const matrix &d = *(data);
     // z is the vector with z(d)
-    const vector &z = *(zptr);
+    const vector &zz = *(z);
     // a is the matrix with the coordinates of the anchor points
-    const matrix &a = *(anchorpointsptr);
+    const matrix &a = *(anchorpoints);
     const matrixIptr g = m_grid.get_grid();
     const matrix &K = *(m_kernel.get_kernel());
 
@@ -40,7 +40,7 @@ void SampleVar::build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &
     {
         for (size_t j = 1; j < n; ++j)
         {
-            Z(i, j) = (z(i) - z(j)) * (z(i) - z(j));
+            Z(i, j) = (zz(i) - zz(j)) * (zz(i) - zz(j));
             Z(j, i) = Z(i, j);
         }
     }

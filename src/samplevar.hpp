@@ -46,12 +46,12 @@ public:
     SampleVar();
 
     /**
-     * \brief                   build the matrix of the empiric variogram
-     * \param dptr              a shared pointer to the matrix of the coordinates of the original dataset
-     * \param anchorpointsptr   a shared pointer to the matrix of the coordinates of the anchor poitns 
-     * \param zptr              a shared pointer to the vector of the value of Z
+     * \brief                build the matrix of the empiric variogram
+     * \param data           a shared pointer to the matrix of the coordinates of the original dataset
+     * \param anchorpoints   a shared pointer to the matrix of the coordinates of the anchor poitns 
+     * \param z              a shared pointer to the vector of the value of Z
     */
-    void build_samplevar(const cd::matrixptr &dptr, const cd::matrixptr &anchorpointsptr, const cd::vectorptr &zptr);
+    void build_samplevar(const cd::matrixptr &data, const cd::matrixptr &anchorpoints, const cd::vectorptr &z);
 
     /**
      * \brief   return a shared pointer to the sample variogram

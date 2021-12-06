@@ -73,8 +73,8 @@ vector Opt::findonesolution(const unsigned int pos) const
 
     // Set up parameters
     LBFGSBParam<double> param;
-    param.epsilon = 1e-6;
-    param.max_iterations = 1000000;
+    param.epsilon = Tolerances::param_epsilon;
+    param.max_iterations = Tolerances::param_max_iterations;
 
     // Create solver and function object
     LBFGSBSolver<double> solver(param);

@@ -22,7 +22,7 @@ private:
     Smt m_smt; /// smoother
     double m_b; /// cutoff-radius of locally stationary neighbourhood
     cd::vectorptr m_means = nullptr; /// vector with the mean predicted in each anchor point
-    cd::matrixptr m_d = nullptr; /// dataset with the initial points
+    cd::matrixptr m_data = nullptr; /// dataset with the initial points
 
     /**
      * \brief       build a vector with the index of the points in the neighbourhood of radius b of the point in position pos
@@ -43,7 +43,7 @@ private:
      * \param params            the params obtained by smoothing in the center of the neighbourhood
      * \param neighbourhood     a "neighbourhood" vector build with the previous functions
     */
-    std::pair<cd::vector, double> build_etakriging(const cd::vector &params,const cd::vector &pos) const;
+    std::pair<cd::vector, double> build_etakriging(const cd::vector &params, const cd::vector &pos) const;
     
 public:
     /**
@@ -52,9 +52,9 @@ public:
      * \param z         the vector with the value of the function Y in the known points
      * \param mysmt     the one used to previously smooth the variogram
      * \param b         the radius of the neighbourhood of the point where to perform kriging
-     * \param d         a shared pointer to the matrix with the coordinates of the original dataset
+     * \param data      a shared pointer to the matrix with the coordinates of the original dataset
     */
-    Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &d);
+    Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &data);
     /**
      * \brief   gammaiso set by default to exponential
     */

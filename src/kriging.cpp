@@ -11,9 +11,9 @@ using namespace cd;
 vectorind Predictor::build_neighbourhood(const cd::vector &pos) const
 {
     vectorind n;
-    for (unsigned int i=0; i< m_d->rows(); ++i)
+    for (unsigned int i=0; i< m_data->rows(); ++i)
     {
-        vector datapos = m_d->row(i);
+        vector datapos = m_data->row(i);
         // if datapos is in a neighbourhood of radius m_b
         if ((pos - datapos).norm() < m_b)
             n.push_back(i);
@@ -24,10 +24,10 @@ vectorind Predictor::build_neighbourhood(const cd::vector &pos) const
 vectorind Predictor::build_neighbourhood(const unsigned int &pos) const
 {
     vectorind n;
-    const vector &pospos = m_d->row(pos);
-    for (unsigned int i=0; i< m_d->rows(); ++i)
+    const vector &pospos = m_data->row(pos);
+    for (unsigned int i=0; i< m_data->rows(); ++i)
     {
-        const vector &posi =  m_d->row(i);
+        const vector &posi =  m_data->row(i);
         // if pos is in a neighbourhood of radius m_b
         if ((pospos - posi).norm() < m_b)
             n.push_back(i);
@@ -45,8 +45,8 @@ cd::vector Predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
     {
         for (unsigned int j=0; j<n; ++j)
         {
-            const vector &posi = m_d->row(neighbourhood[i]);
-            const vector &posj = m_d->row(neighbourhood[j]);
+            const vector &posi = m_data->row(neighbourhood[i]);
+            const vector &posj = m_data->row(neighbourhood[j]);
             cd::vector s = posi - posj;
             gamma(i, j) = gammaiso(params, s[0], s[1]);
         }
@@ -54,7 +54,7 @@ cd::vector Predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 
     vector ones = vector::Ones(n);
     // if gamma is not invertible, return ones/n
-    if (std::abs(gamma.determinant()) < 1e-12)
+    if (std::abs(gamma.determinant()) < Tolerances::min_determinant)
         return ones/n;
 
     // compute eta
@@ -67,7 +67,7 @@ cd::vector Predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 
 std::pair<cd::vector, double> Predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
 {
-    unsigned int n = m_d->rows();
+    unsigned int n = m_data->rows();
     
     vector etakriging(n);
     vector C0(n);
@@ -77,10 +77,10 @@ std::pair<cd::vector, double> Predictor::build_etakriging(const cd::vector &para
     // compute the corralation matrix and C0
     for (unsigned int i=0; i<n; ++i)
     {
-        const vector &posi = m_d->row(i);
+        const vector &posi = m_data->row(i);
         for (unsigned int j=0; j<n; ++j)
         {
-            const vector &posj = m_d->row(j);
+            const vector &posj = m_data->row(j);
             cd::vector s = posi - posj;
             correlationmatrix(i, j) = sigma2-gammaiso(params, s[0], s[1]);
         }
@@ -117,7 +117,7 @@ template<>
 double Predictor::predict_mean<unsigned int, double>(const unsigned int &pos) const
 {
     // find the value of the parameters relative to the anchorpoint in row pos
-    cd::vector params = m_smt.smooth_vector(m_d->row(pos));
+    cd::vector params = m_smt.smooth_vector(m_data->row(pos));
     // find the anchropoints in its neighbourhood
     vectorind neighbourhood = build_neighbourhood(pos);
     unsigned int n = neighbourhood.size();
@@ -145,7 +145,7 @@ cd::vector Predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos
 template<>
 std::pair<double,double> Predictor::predict_z<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
 {
-    unsigned int n = m_d->rows();
+    unsigned int n = m_data->rows();
     // predict the mean of z in pos
     double m0 = predict_mean<cd::vector, double>(pos);
     double result = m0;
@@ -175,7 +175,7 @@ cd::matrix Predictor::predict_z<cd::matrix, cd::matrix>(const cd::matrix &pos) c
     return result;
 }
 
-Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &d): m_gammaisoptr(make_variogramiso(id)), m_z(z), m_smt(mysmt), m_b(b), m_d(d) 
+Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &data): m_gammaisoptr(make_variogramiso(id)), m_z(z), m_smt(mysmt), m_b(b), m_data(data) 
 {
     m_means = std::make_shared<vector>(z->size());
     // build a vector with the prediction of the mean of z in every anchorpoint to speed up the next computations
