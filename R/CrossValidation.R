@@ -34,7 +34,7 @@ cv.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id
     # predict the value of f(d[i, ]) and update the MSE
     vario <- variogram.lsm(znew,dnew,anchorpoints,epsilon,n_angles,n_intervals,kernel_id,FALSE, n_threads = n_threads)
     solu <- findsolutions.lsm(vario, id, initial.position,lower.bound, upper.bound, print=FALSE, n_threads = n_threads)
-    previsions <- predict.lsm(solu, rbind(d[i,]), znew, dnew,FALSE,FALSE, n_threads = n_threads)
+    previsions <- predict.lsm(solu, rbind(d[i,]),FALSE,FALSE, n_threads = n_threads)
     MSE <- MSE + (previsions$zpredicted - z[i])^2
     
     # update the progress bar
