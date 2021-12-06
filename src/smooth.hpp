@@ -81,6 +81,6 @@ public:
     */
     const cd::matrixptr get_anchorpos() const;
 }; // class Smt
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_SMOOTH

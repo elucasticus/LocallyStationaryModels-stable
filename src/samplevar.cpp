@@ -143,4 +143,4 @@ const vectorptr SampleVar::get_normh() const
 {
     return m_grid.get_normh();
 }
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels

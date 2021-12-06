@@ -98,4 +98,4 @@ const cd::matrixptr Smt::get_anchorpos() const
 }
 
 Smt::Smt(): m_kernel() {};
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels

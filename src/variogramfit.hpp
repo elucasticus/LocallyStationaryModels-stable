@@ -91,6 +91,6 @@ public:
     */
     cd::matrixptr get_solutions() const;
 }; // class Opt
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_GRADIENT

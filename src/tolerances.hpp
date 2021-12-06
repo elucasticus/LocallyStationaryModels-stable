@@ -10,8 +10,9 @@ namespace LocallyStationaryModels
 struct Tolerances
 {
     static constexpr double anchor_tolerance = 1e-6;
+    inline static double pi = 4*std::atan(1.);
     
 }; // struct Tolerances
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_TOLERANCES

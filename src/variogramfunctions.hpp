@@ -76,6 +76,6 @@ public:
  * \param id    the name of chosen variogram
 */
 std::shared_ptr<VariogramFunction> make_variogramiso(const std::string &id);
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODES_VARIOGRAM_FUNCTIONS

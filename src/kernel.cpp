@@ -87,4 +87,4 @@ void Kernel::build_simple_kernel(const matrixptr &d, const scalar &epsilon)
 }
 
 const matrixptr Kernel::get_kernel() const {return m_k;}
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels

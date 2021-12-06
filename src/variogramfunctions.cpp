@@ -94,4 +94,4 @@ std::shared_ptr<VariogramFunction> make_variogramiso(const std::string &id)
     }
     return std::make_shared<Exponential>();
 }
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels

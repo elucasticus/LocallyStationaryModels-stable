@@ -94,6 +94,6 @@ public:
     */
     std::pair<double, double> get_tiles_dimensions() const{return std::make_pair(m_larghezza_cubo, m_altezza_cubo);}
 }; // class Anchor
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_ANCHOR

@@ -3,55 +3,19 @@
 /// Under MIT license
 
 #include "grid.hpp"
+#include "gridfunctions.hpp"
 
 namespace LocallyStationaryModels
 {
 using namespace cd;
 
-matrixIptr pizza(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
+void Grid::build_grid(const matrixptr &data, const unsigned int &n_angles, const unsigned int &n_intervals)
 {
-    double pi = 4*std::atan(1.);
-    // create a square matrix of dimension d->rows()^2 and fill it with -1
-    matrixIptr grid(std::make_shared<matrixI>(matrixI::Constant(d->rows(), d->rows(), -1)));
-    // b is the radius of locally stationary neighbourhood as function of bandwidth parameter epsilon
-    double b = 2*epsilon;
-    double cell_length = b / n_intervals;
-    double cell_angle = pi / (n_angles);
-    
-    // for every couple of points i and j in d compute the position of the vector (j - i) in the grid and fill grid(i, j) accordingly
-    // since grid is symmetric we only need to fill the upper triangular part of the matrix 
-    #pragma omp parallel for
-    for (unsigned int i = 0; i < d->rows() - 1; ++i)
-    {
-        for (unsigned int j = i+1; j < d->rows(); ++j)
-        {
-            scalar deltax =  d->operator()(j, 0) - d->operator()(i, 0);
-            scalar deltay =  d->operator()(j, 1) - d->operator()(i, 1);
-            scalar radius =  std::sqrt( deltax*deltax + deltay*deltay );
-
-            if (radius >= b)
-                grid->operator()(i, j) = -1;
-            else if (deltax!=0)
-                grid->operator()(i, j) = floor( radius / cell_length ) + n_intervals *  floor( (pi/2 + std::atan( deltay / deltax )) / cell_angle );
-            else 
-                grid->operator()(i, j) = floor( radius / cell_length );
-        }
-    }
-    return grid;
+    m_g = m_f(data, n_angles, n_intervals, m_epsilon);
+    build_normh(data);
 }
 
-gridfunction make_grid(const std::string &id)
-{
-    return pizza;
-}
-
-void Grid::build_grid(const matrixptr &d, const unsigned int &n_angles, const unsigned int &n_intervals)
-{
-    m_g = m_f(d, n_angles, n_intervals, m_epsilon);
-    build_normh(d);
-}
-
-Grid::Grid(const std::string &id, const double epsilon): m_f(make_grid(id)), m_epsilon(epsilon){};
+Grid::Grid(const std::string &id, const double epsilon): m_f(gf::make_grid(id)), m_epsilon(epsilon){};
 
 Grid::Grid(): Grid("pizza", 1.) {};
 
@@ -116,4 +80,4 @@ void Grid::build_normh(const matrixptr &data)
         }
     }
 }
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels

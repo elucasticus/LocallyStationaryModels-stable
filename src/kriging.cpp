@@ -185,4 +185,4 @@ Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &m
 };
 
 Predictor::Predictor(): m_gammaisoptr(make_variogramiso("esponenziale")) {}
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels

@@ -112,4 +112,4 @@ void Opt::findallsolutions()
 }
 
 cd::matrixptr Opt::get_solutions() const {return m_solutions;}
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels

@@ -86,6 +86,6 @@ public:
     */
     const cd::vectorptr get_normh() const;
 }; // class SampleVar
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels
 
 #endif // LOCALLY_STATIONARY_MODELS_SAMPLEVAR

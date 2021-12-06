@@ -37,6 +37,6 @@ namespace cd
     using gridfunction = std::function<matrixIptr(const matrixptr&, const unsigned int&, const unsigned int&, const double &)>;
      
 }; // namespace cd
-}; // namespace LocallyStationaryModels
+} // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_TRAITS
