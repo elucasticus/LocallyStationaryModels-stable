@@ -204,7 +204,7 @@ Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const 
     auto duration = duration_cast<milliseconds>(stop - start);
     
     if(print)
-      Rcpp::Rcout << predicted_ys.rows() << " pairs of values predicted in " << duration.count() << " ms" << std::endl;
+      Rcpp::Rcout << predicted_ys.rows() << " pairs of values predicted in " << duration.count() << "ms" << std::endl;
 
     return Rcpp::List::create(Rcpp::Named("zpredicted")=predicted_ys.col(0),
                               Rcpp::Named("predictedmean")=predicted_means,
