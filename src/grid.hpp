@@ -55,7 +55,7 @@ public:
     */
     const cd::matrixIptr get_grid() const;
     /**
-     * \brief   return a shared pointer to normh
+     * \brief   return a shared pointer to m_normh
     */
     const cd::vectorptr get_normh() const;
     /**

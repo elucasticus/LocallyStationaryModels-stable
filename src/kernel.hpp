@@ -54,7 +54,7 @@ public:
     void build_simple_kernel(const cd::matrixptr &coordinates, const cd::scalar &epsilon);
 
     /**
-     * \brief   return a shared pointer to the matrix pointed by k
+     * \brief   return a shared pointer to the matrix pointed by m_k
     */
     const cd::matrixptr get_kernel() const;
 }; // class Kernel

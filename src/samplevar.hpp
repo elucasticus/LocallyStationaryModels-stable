@@ -66,23 +66,23 @@ public:
     */
     const cd::matrixptr get_squaredweights() const;
     /**
-     * \brief   return m_grid.mean_x
+     * \brief   return m_grid.m_mean_x
     */
     const cd::vectorptr get_x() const;
     /**
-     * \brief   return m_grid.mean_y
+     * \brief   return m_grid.m_mean_y
     */
     const cd::vectorptr get_y() const;
     /**
-     * \brief   return m_kernel.k
+     * \brief   return m_kernel.m_k
     */
     const cd::matrixptr get_kernel() const;
     /**
-     * \brief   return m_grid.g
+     * \brief   return m_grid.m_g
     */
     const cd::matrixIptr get_grid() const;
     /**
-     * \brief   return m_grid.normh
+     * \brief   return m_grid.m_normh
     */
     const cd::vectorptr get_normh() const;
 }; // class SampleVar
