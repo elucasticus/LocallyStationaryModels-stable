@@ -23,6 +23,8 @@ struct Tolerances
     static constexpr double min_norm = 1e-12;
     /// huge value to be considered as infinite when returning inf would cause troubles
     static constexpr double infinity = 1e12;
+    /// number of delta between min_delta and max_delta to perform cross-validation
+    static constexpr double n_deltas = 1000;
 }; // struct Tolerances
 } // namespace LocallyStationaryModels
 

@@ -45,7 +45,7 @@ Smt::Smt(const cd::matrixptr solutions, const matrixptr &anchorpos, const cd::sc
 {
     double min_error= std::numeric_limits<double>::infinity();
     m_optimal_delta = (max_delta-min_delta)/2;
-    const unsigned int n_deltas = 1000;
+    const unsigned int n_deltas = Tolerances::n_deltas;
     // find the optimal value of delta via cross-validation
     for (size_t i=0; i<=n_deltas; i++)
     {
