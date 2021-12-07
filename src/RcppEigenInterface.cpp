@@ -21,14 +21,14 @@ using namespace std::chrono;
 
 /**
  * \brief               finds the anchor points given the position of the points in the initial dataset
- * \param d             a matrix with the coordinates of the points in the original dataset
+ * \param data          a matrix with the coordinates of the points in the original dataset
  * \param n_cubotti     the number of cells per row and column in the grid of the anchor points
 */
 // [[Rcpp::export]]
-Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cubotti) {
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const unsigned int& n_cubotti) {
     auto start = high_resolution_clock::now();
     
-    matrixptr dd = std::make_shared<matrix>(d);
+    matrixptr dd = std::make_shared<matrix>(data);
 
     Anchor a(dd, n_cubotti);
 
@@ -43,8 +43,8 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
 
 /**
  * \brief                   calculate the empiric variogram in each anchor points
- * \param z                 a vector with the values of Z for each point in the dataset d
- * \param d                 a matrix with the coordinates of the points in the original dataset
+ * \param z                 a vector with the values of Z for each point in the dataset data
+ * \param data              a matrix with the coordinates of the points in the original dataset
  * \param anchorpoints      a matrix with the coordinates of each anchor point
  * \param epsilon           the value of the bandwidth parameter epsilon
  * \param n_angles          the number of the angles for the grid
@@ -54,7 +54,7 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &d, const unsigned int& n_cub
  * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 // [[Rcpp::export]]
-Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
+Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
     const unsigned int& n_intervals, const std::string &kernel_id, const bool print, const int &n_threads) {
     // start the clock
     auto start = high_resolution_clock::now();
@@ -71,7 +71,7 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, cons
         omp_set_num_threads(used_threads);
     }
   
-    matrixptr dd = std::make_shared<matrix>(d);
+    matrixptr dd = std::make_shared<matrix>(data);
     vectorptr zz = std::make_shared<vector>(z);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
 
@@ -159,8 +159,8 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
 
 /**
  * \brief                   predict the mean value and the punctual value of Z
- * \param z                 a vector with the values of Z for each point in the dataset d
- * \param d                 a matrix with the coordinates of the points in the original dataset
+ * \param z                 a vector with the values of Z for each point in the dataset data
+ * \param data              a matrix with the coordinates of the points in the original dataset
  * \param anchorpoints      a matrix with the coordinates of each anchor point
  * \param epsilon           bandwidth parameter epsilon regulating the kernel
  * \param delta             delta regulating the smoothing
@@ -172,7 +172,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
  * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 // [[Rcpp::export]]
-Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
+Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
     const Eigen::MatrixXd &positions, const std::string &variogram_id, const std::string &kernel_id, const bool print, const int &n_threads) {
     // start the clock
     auto start = high_resolution_clock::now();
@@ -189,7 +189,7 @@ Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &d, const Eig
         omp_set_num_threads(used_threads);
     }
 
-    matrixptr dd = std::make_shared<matrix>(d);
+    matrixptr dd = std::make_shared<matrix>(data);
     vectorptr zz = std::make_shared<vector>(z);
     matrixptr solutionsptr = std::make_shared<matrix>(solutions);
     matrixptr anchorpointsptr = std::make_shared<matrix>(anchorpoints);
