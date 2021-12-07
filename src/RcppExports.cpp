@@ -12,25 +12,25 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // find_anchorpoints
-Rcpp::List find_anchorpoints(const Eigen::MatrixXd& d, const unsigned int& n_cubotti);
-RcppExport SEXP _LocallyStationaryModels_find_anchorpoints(SEXP dSEXP, SEXP n_cubottiSEXP) {
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd& data, const unsigned int& n_cubotti);
+RcppExport SEXP _LocallyStationaryModels_find_anchorpoints(SEXP dataSEXP, SEXP n_cubottiSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const unsigned int& >::type n_cubotti(n_cubottiSEXP);
-    rcpp_result_gen = Rcpp::wrap(find_anchorpoints(d, n_cubotti));
+    rcpp_result_gen = Rcpp::wrap(find_anchorpoints(data, n_cubotti));
     return rcpp_result_gen;
 END_RCPP
 }
 // variogramlsm
-Rcpp::List variogramlsm(const Eigen::VectorXd& z, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const bool print, const int& n_threads);
-RcppExport SEXP _LocallyStationaryModels_variogramlsm(SEXP zSEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
+Rcpp::List variogramlsm(const Eigen::VectorXd& z, const Eigen::MatrixXd& data, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const bool print, const int& n_threads);
+RcppExport SEXP _LocallyStationaryModels_variogramlsm(SEXP zSEXP, SEXP dataSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type z(zSEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const unsigned int& >::type n_angles(n_anglesSEXP);
@@ -38,7 +38,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
     Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(variogramlsm(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads));
+    rcpp_result_gen = Rcpp::wrap(variogramlsm(z, data, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -66,13 +66,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // predikt
-Rcpp::List predikt(const Eigen::VectorXd& z, const Eigen::MatrixXd& d, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions, const Eigen::MatrixXd& positions, const std::string& variogram_id, const std::string& kernel_id, const bool print, const int& n_threads);
-RcppExport SEXP _LocallyStationaryModels_predikt(SEXP zSEXP, SEXP dSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP, SEXP positionsSEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
+Rcpp::List predikt(const Eigen::VectorXd& z, const Eigen::MatrixXd& data, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const double& delta, const Eigen::MatrixXd& solutions, const Eigen::MatrixXd& positions, const std::string& variogram_id, const std::string& kernel_id, const bool print, const int& n_threads);
+RcppExport SEXP _LocallyStationaryModels_predikt(SEXP zSEXP, SEXP dataSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP deltaSEXP, SEXP solutionsSEXP, SEXP positionsSEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type z(zSEXP);
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
@@ -82,7 +82,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
     Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(predikt(z, d, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads));
+    rcpp_result_gen = Rcpp::wrap(predikt(z, data, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
