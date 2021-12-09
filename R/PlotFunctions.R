@@ -98,10 +98,20 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
   print(cowplot::plot_grid(p1, p2))
   
   # parameters
-  p1 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda1)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
-  p2 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda2)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
-  p3 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=phi)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
-  p4 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=sigma)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  if (points_arrangement == "random")
+  {
+    p1 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda1)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+    p2 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=lambda2)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+    p3 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=phi)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+    p4 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=sigma)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  }
+  else
+  {
+    p1 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=lambda1)) + ggplot2::geom_tile() + ggplot2::scale_fill_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+    p2 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=lambda2)) + ggplot2::geom_tile() + ggplot2::scale_fill_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+    p3 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=phi)) + ggplot2::geom_tile() + ggplot2::scale_fill_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+    p4 <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=sigma)) + ggplot2::geom_tile() + ggplot2::scale_fill_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed() + ggplot2::theme_light()
+  }
   title <- cowplot::ggdraw() + cowplot::draw_label("Parameters", fontface='bold')
   p <- cowplot::plot_grid(p1,p2,p3,p4)
   print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
@@ -110,10 +120,18 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
   {
     # predict and plot the mean and punctual value of z for each newpoint
     predictedvalues<-predikt(z,d,model$anchorpoints,model$epsilon,model$delta,model$solutions,as.matrix(allpoints)[,1:2],model$id,model$kernel_id,FALSE,n_threads)
-    means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
-    ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$zpredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
-    means<-means+ggplot2::labs(color="mean") + ggplot2::theme_light()
-    ys<-ys+ggplot2::labs(color="z") + ggplot2::theme_light()
+    if (points_arrangement == "random")
+    {
+      means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$predictedmean)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+      ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, color=predictedvalues$zpredicted)) + ggplot2::geom_point() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+    }
+    else
+    {
+      means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=predictedvalues$predictedmean)) + ggplot2::geom_tile() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+      ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=predictedvalues$zpredicted)) + ggplot2::geom_tile() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+    }
+    means<-means+ggplot2::labs(fill="mean") + ggplot2::theme_light()
+    ys<-ys+ggplot2::labs(fill="z") + ggplot2::theme_light()
     title <- cowplot::ggdraw() + cowplot::draw_label("Predicted mean and z", fontface='bold')
     p <- cowplot::plot_grid(means, ys)
     print(cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1)))
