@@ -16,12 +16,15 @@
 #' two plots with the values of the mean and punctual value of z predicted.
 #' @examples
 #' mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 10, points_arrangement = "random", bool = TRUE)
-plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement = "random", n_threads = -1, bool = TRUE)
+plot.lsm<-function(model, a, z, d, n_points = 3, seed = 69, points_arrangement = "straight", n_threads = -1, bool = TRUE)
 {
   d <- model$initial_coordinates
   z <- model$initial_z
   # set the seed
-  set.seed(seed = seed)
+  if(points_arrangement == "random")
+  {
+    set.seed(seed = seed)
+  }
   # associate each anchorpoints with the value of the parameters lambda1, lambda2, phi and sigma in its position
   aa <- as.data.frame(a$anchorpoints)
   colnames(aa) <- c("X","Y")

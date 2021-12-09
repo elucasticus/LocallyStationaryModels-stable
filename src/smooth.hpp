@@ -63,8 +63,9 @@ public:
     {
         cd::vector result(m_solutions->cols());
         for (unsigned int i=0; i<m_solutions->cols(); ++i)
+        {
             result(i) = smooth_value(pos, i);
-
+        }
         return result;
     };
 

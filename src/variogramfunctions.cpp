@@ -39,7 +39,9 @@ cd::scalar Matern::operator()(const cd::vector &params, const cd::scalar &x, con
     double nu = params[4];
 
     if (std::abs(x) < Tolerances::min_norm && std::abs(y) < Tolerances::min_norm)
+    {
         return Tolerances::infinity;
+    }
     
     scalar h = compute_anisotropic_h(lambda1, lambda2, phi, x, y);
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));
@@ -54,7 +56,9 @@ cd::scalar MaternNuFixed::operator()(const cd::vector &params, const cd::scalar 
     double nu = m_NU;
 
     if (std::abs(x) < Tolerances::min_norm && std::abs(y) < Tolerances::min_norm)
+    {
         return Tolerances::infinity;
+    }
     
     scalar h = compute_anisotropic_h(lambda1, lambda2, phi, x, y);
     return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)));
@@ -74,11 +78,17 @@ cd::scalar Gaussian::operator()(const cd::vector &params, const cd::scalar &x, c
 std::shared_ptr<VariogramFunction> make_variogramiso(const std::string &id)
 {
     if(id == "exponential" || id == "esponenziale")
+    {
         return std::make_shared<Exponential>();
+    }
     if(id == "matern" || id == "Matern")
+    {
         return std::make_shared<Matern>();
+    }
     if(id == "gaussian" || id == "Gaussian")
+    {
         return std::make_shared<Gaussian>();
+    }
     // using the following method we can set directly from R passing a string a constant value for nu
     if(id.substr(0, 13) == "maternNuFixed")
     {

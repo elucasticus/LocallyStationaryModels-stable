@@ -15,8 +15,10 @@ vectorind Predictor::build_neighbourhood(const cd::vector &pos) const
     {
         vector datapos = m_data->row(i);
         // if datapos is in a neighbourhood of radius m_b
-        if ((pos - datapos).norm() < m_b)
+        if ((pos - datapos).norm() < m_b) 
+        {
             n.push_back(i);
+        }
     }
     return n;
 }
@@ -29,8 +31,10 @@ vectorind Predictor::build_neighbourhood(const unsigned int &pos) const
     {
         const vector &posi =  m_data->row(i);
         // if pos is in a neighbourhood of radius m_b
-        if ((pospos - posi).norm() < m_b)
+        if ((pospos - posi).norm() < m_b) 
+        {
             n.push_back(i);
+        }
     }
     return n;
 }
@@ -54,8 +58,10 @@ cd::vector Predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 
     vector ones = vector::Ones(n);
     // if gamma is not invertible, return ones/n
-    if (std::abs(gamma.determinant()) < Tolerances::min_determinant)
+    if (std::abs(gamma.determinant()) < Tolerances::min_determinant) 
+    {
         return ones/n;
+    }
 
     // compute eta
     vector gammaones(n);
@@ -108,7 +114,9 @@ double Predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
     double result = 0;
     // compute the mean of z in pos
     for (unsigned int i=0; i<n; ++i)
+    {
         result += eta(i) * m_z->operator()(neighbourhood[i]);
+    }
     
     return result;
 }
@@ -126,8 +134,10 @@ double Predictor::predict_mean<unsigned int, double>(const unsigned int &pos) co
 
     double result = 0;
     // compute the mean of z in position pos
-    for (unsigned int i=0; i<n; ++i)
+    for (unsigned int i=0; i<n; ++i) 
+    {
         result += eta(i) * m_z->operator()(neighbourhood[i]);
+    }
     
     return result;
 }
@@ -138,7 +148,9 @@ cd::vector Predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos
     vector result(pos.rows());
     #pragma omp parallel for
     for (size_t i=0; i<pos.rows(); ++i)
+    {
         result(i) = predict_mean<cd::vector, double>(pos.row(i));
+    }
     return result;
 }
 
@@ -155,8 +167,10 @@ std::pair<double,double> Predictor::predict_z<cd::vector, std::pair<double,doubl
     std::pair<vector, double> fulletakriging(build_etakriging(params, pos));
     vector &etakriging = fulletakriging.first;
     // predict the value of z(pos)
-    for (unsigned int i=0; i<n; ++i)
-        result += etakriging(i)*(m_z->operator()(i)-m_means->operator()(i)); 
+    for (unsigned int i=0; i<n; ++i) 
+    {
+        result += etakriging(i)*(m_z->operator()(i)-m_means->operator()(i));
+    } 
     // return z(pos) and the kriging variance
     return std::make_pair(result, fulletakriging.second);
 }
@@ -180,8 +194,10 @@ Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &m
     m_means = std::make_shared<vector>(z->size());
     // build a vector with the prediction of the mean of z in every anchorpoint to speed up the next computations
     #pragma omp parallel for
-    for (unsigned int i=0; i<m_means->size(); ++i)
+    for (unsigned int i=0; i<m_means->size(); ++i) 
+    {
         m_means->operator()(i) = predict_mean<unsigned int, double>(i);
+    }
 };
 
 Predictor::Predictor(): m_gammaisoptr(make_variogramiso("esponenziale")) {}

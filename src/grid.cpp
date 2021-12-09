@@ -60,10 +60,14 @@ void Grid::build_normh(const matrixptr &data)
                 m_normh->operator()(k) += sqrt((d(j, 0) - d(i, 0))*(d(j, 0) - d(i, 0)) + (d(j,1)-d(i,1))*(d(j,1)-d(i,1)) );
                 // because of the way we have constructed the grid we need to add the absolute value of pairs in the first and third quadrant
                 // and subtract in the second and fourth ones
-                if ((d(j, 0) - d(i, 0))*(d(j,1) - d(i,1)) < 0)
+                if ((d(j, 0) - d(i, 0))*(d(j,1) - d(i,1)) < 0) 
+                {
                     m_mean_x->operator()(k) -= std::abs(d(j, 0) - d(i, 0));
-                else
-                    m_mean_x->operator()(k) += std::abs(d(j, 0) - d(i, 0));  
+                } 
+                else 
+                {
+                    m_mean_x->operator()(k) += std::abs(d(j, 0) - d(i, 0)); 
+                } 
                 m_mean_y->operator()(k) += std::abs(d(j,1) - d(i,1));
                 nn[k]++;
             }

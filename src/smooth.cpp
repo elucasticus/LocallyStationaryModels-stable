@@ -21,7 +21,9 @@ double Smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
         denominator += K(pos, i);
     }
     if (denominator < std::numeric_limits<double>::min())
+    {
         return 0;
+    }
     return numerator/denominator;
 }
 
@@ -36,7 +38,9 @@ double Smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
         denominator += m_kernel(pos, m_anchorpos->row(i));
     }
     if (denominator < std::numeric_limits<double>::min())
+    {
         return 0;
+    }
     return numerator/denominator;
 }
 

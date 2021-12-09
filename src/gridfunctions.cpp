@@ -27,12 +27,18 @@ namespace gf
                 scalar deltay =  data->operator()(j, 1) - data->operator()(i, 1);
                 scalar radius =  std::sqrt( deltax*deltax + deltay*deltay );
 
-                if (radius >= b)
+                if (radius >= b) 
+                {
                     grid->operator()(i, j) = -1;
-                else if (deltax!=0)
+                } 
+                else if (deltax!=0) 
+                {
                     grid->operator()(i, j) = floor( radius / cell_length ) + n_intervals *  floor( (pi/2 + std::atan( deltay / deltax )) / cell_angle );
+                } 
                 else 
+                {
                     grid->operator()(i, j) = floor( radius / cell_length );
+                }
             }
         }
         return grid;

@@ -245,7 +245,9 @@ Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anc
     Eigen::MatrixXd result(positions.rows(), solutions.cols());
     #pragma omp parallel for
     for (size_t i=0; i<positions.rows(); ++i)
+    {
         result.row(i)=smt_.smooth_vector(positions.row(i));
+    }
 
     return Rcpp::List::create(Rcpp::Named("parameters")=result);
 }

@@ -72,7 +72,9 @@ void SampleVar::build_samplevar(const cd::matrixptr &data, const cd::matrixptr &
             for (size_t u = 0; u < max_index+1; ++u)
             {
                 if (counters[u] != 0)
+                {
                     m_variogram->operator()(u, l) /= (2*m_denominators->operator()(u, l));
+                }
             }
         }
     }
@@ -95,7 +97,9 @@ void SampleVar::build_squaredweights()
         for (size_t h = 0 ; h < htot; ++h)
         {
             if (normh->operator()(h) != 0)
+            {
                 m_squaredweights->operator()(k,h) = m_denominators->operator()(h,k)/normh->operator()(h);
+            }
         }
     } 
 }
