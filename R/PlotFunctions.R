@@ -127,8 +127,8 @@ plot.lsm<-function(model, a, z, d, n_points = 10, seed = 69, points_arrangement 
     }
     else
     {
-      means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=predictedvalues$predictedmean)) + ggplot2::geom_tile() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
-      ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=predictedvalues$zpredicted)) + ggplot2::geom_tile() + ggplot2::scale_color_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+      means <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=predictedvalues$predictedmean)) + ggplot2::geom_tile() + ggplot2::scale_fill_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
+      ys <- ggplot2::ggplot(allpoints, ggplot2::aes(x=X, y=Y, fill=predictedvalues$zpredicted)) + ggplot2::geom_tile() + ggplot2::scale_fill_gradientn(colours = rainbow(5)) + ggplot2::coord_fixed()
     }
     means<-means+ggplot2::labs(fill="mean") + ggplot2::theme_light()
     ys<-ys+ggplot2::labs(fill="z") + ggplot2::theme_light()
@@ -180,9 +180,7 @@ plotgrid<-function(variogram,index){
       
       if(grid[i,j]==index){
         segments(d[i,1],d[i,2],d[j,1],d[j,2])
-                 
       }
-      
     }
   }
 }
