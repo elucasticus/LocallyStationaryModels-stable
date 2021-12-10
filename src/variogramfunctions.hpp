@@ -30,7 +30,7 @@ class Exponential: public VariogramFunction
 public:
     Exponential() = default;
     /**
-     * \brief           return sigma * sigma * (1 - exp(-h))
+     * \return          sigma * sigma * (1 - exp(-h))
      * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     double operator()(const cd::vector &params, const double &x, const double &y) override;
@@ -41,7 +41,7 @@ class Matern: public VariogramFunction
 public:
     Matern() = default;
     /**
-     * \brief           return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+     * \return          sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
      * \param params    a vector with lambda1, lambda2, phi, sigma and nu in this exact order
     */
     double operator()(const cd::vector &params, const double &x, const double &y) override;
@@ -54,7 +54,7 @@ private:
 public:
     MaternNuFixed(const double &NU): m_NU(NU) {};
     /**
-     * \brief           return sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
+     * \return          sigma * sigma *(1 - std::pow(std::sqrt(2*nu)*h, nu)*std::cyl_bessel_k(nu, std::sqrt(2*nu)*h)/(std::tgamma(nu)*std::pow(2,nu-1)))
      * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     double operator()(const cd::vector &params, const double &x, const double &y) override;
@@ -65,7 +65,7 @@ class Gaussian: public VariogramFunction
 public:
     Gaussian() = default;
     /**
-     * \brief           return sigma * sigma * (1 - exp(-h*h))
+     * \return          sigma * sigma * (1 - exp(-h*h))
      * \param params    a vector with lambda1, lambda2, phi and sigma in this exact order
     */
     double operator()(const cd::vector &params, const double &x, const double &y) override;

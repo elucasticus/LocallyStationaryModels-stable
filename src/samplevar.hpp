@@ -17,13 +17,13 @@ namespace LocallyStationaryModels
 class SampleVar
 {
 private:
-    cd::matrixptr m_variogram = nullptr; /// sample variogram matrix
-    cd::matrixptr m_denominators = nullptr; /// a matrix with the denominators necessary to compute the squared weights
-    cd::matrixptr m_squaredweights = nullptr; /// matrix with the squared weights
-    Kernel m_kernel; /// kernel
-    Grid m_grid; /// grid
-    size_t m_n_angles; /// number of angles of the grid
-    size_t m_n_intervals; /// number of intervals per angle of the grid
+    cd::matrixptr m_variogram = nullptr; ///< sample variogram matrix
+    cd::matrixptr m_denominators = nullptr; ///< a matrix with the denominators necessary to compute the squared weights
+    cd::matrixptr m_squaredweights = nullptr; ///< matrix with the squared weights
+    Kernel m_kernel; ///< kernel
+    Grid m_grid; ///< grid
+    size_t m_n_angles; ///< number of angles of the grid
+    size_t m_n_intervals; ///< number of intervals per angle of the grid
 
     /**
      * \brief a "helper" function which built the squared weights for the wls problem needed by the optimizer
@@ -54,35 +54,35 @@ public:
     void build_samplevar(const cd::matrixptr &data, const cd::matrixptr &anchorpoints, const cd::vectorptr &z);
 
     /**
-     * \brief   return a shared pointer to the sample variogram
+     * \return  a shared pointer to the sample variogram
     */
     const cd::matrixptr get_variogram() const;
     /**
-     * \brief   return a shared pointer to the matrix of the denominators
+     * \return  a shared pointer to the matrix of the denominators
     */
     const cd::matrixptr get_denominators() const;
     /**
-     * \brief   return a shared pointers to the squaredweigths required to evaluate the function to be optimized
+     * \return  a shared pointers to the squaredweigths required to evaluate the function to be optimized
     */
     const cd::matrixptr get_squaredweights() const;
     /**
-     * \brief   return m_grid.m_mean_x
+     * \return  m_grid.m_mean_x
     */
     const cd::vectorptr get_x() const;
     /**
-     * \brief   return m_grid.m_mean_y
+     * \return  m_grid.m_mean_y
     */
     const cd::vectorptr get_y() const;
     /**
-     * \brief   return m_kernel.m_k
+     * \return  m_kernel.m_k
     */
     const cd::matrixptr get_kernel() const;
     /**
-     * \brief   return m_grid.m_g
+     * \return  m_grid.m_g
     */
     const cd::matrixIptr get_grid() const;
     /**
-     * \brief   return m_grid.m_normh
+     * \return  m_grid.m_normh
     */
     const cd::vectorptr get_normh() const;
 }; // class SampleVar

@@ -12,7 +12,8 @@ namespace LocallyStationaryModels
 namespace gf
 {
     /**
-     * \brief               this function builds a 2D-grid using a "a fette di pizza" (slices-of-pizza like) algorithm to partition the domain
+     * \brief               this function builds a 2D-grid using a "a fette di pizza" (slices-of-pizza like) algorithm to partition 
+     * the domain
      * \param data          a shared pointer to the matrix of the coordinates
      * \param n_angles      number of slices of the pizza
      * \param n_intervals   number of the pieces for each slice of the pizza

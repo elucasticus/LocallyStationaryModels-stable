@@ -17,12 +17,12 @@ namespace LocallyStationaryModels
 class Predictor
 {
 private:
-    std::shared_ptr<VariogramFunction> m_gammaisoptr; /// variogram function
-    cd::vectorptr m_z = nullptr; /// z(d)
-    Smt m_smt; /// smoother
-    double m_b; /// cutoff-radius of locally stationary neighbourhood
-    cd::vectorptr m_means = nullptr; /// vector with the mean predicted in each anchor point
-    cd::matrixptr m_data = nullptr; /// dataset with the initial points
+    std::shared_ptr<VariogramFunction> m_gammaisoptr; ///< variogram function
+    cd::vectorptr m_z = nullptr; ///< z(m_data)
+    Smt m_smt; ///< smoother
+    double m_b; ///< cutoff-radius of locally stationary neighbourhood
+    cd::vectorptr m_means = nullptr; ///< vector with the mean predicted in each anchor point
+    cd::matrixptr m_data = nullptr; ///< dataset with the initial points
 
     /**
      * \brief       build a vector with the index of the points in the neighbourhood of radius b of the point in position pos

@@ -16,12 +16,12 @@ namespace LocallyStationaryModels
 */
 struct FunzioneDaOttimizzare
 {
-    const cd::matrixptr m_empiricvariogram; /// sample variogram matrix
-    const cd::matrixptr m_squaredweights; /// matrix of the squared weights
-    const cd::vectorptr m_mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
-    const cd::vectorptr m_mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
-    size_t m_x0; /// index of the position where to evaluate gammaisoptr
-    std::shared_ptr<VariogramFunction> m_gammaisoptr; /// pointer to the variogram function
+    const cd::matrixptr m_empiricvariogram; ///< sample variogram matrix
+    const cd::matrixptr m_squaredweights; ///< matrix of the squared weights
+    const cd::vectorptr m_mean_x; ///< vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    const cd::vectorptr m_mean_y; ///< vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    size_t m_x0; ///< index of the position where to evaluate gammaisoptr
+    std::shared_ptr<VariogramFunction> m_gammaisoptr; ///< pointer to the variogram function
 
     /**
      * \brief                       constructor
@@ -50,15 +50,15 @@ struct FunzioneDaOttimizzare
 class Opt
 {
 private:
-    cd::matrixptr m_empiricvariogram; /// sample variogram matrix
-    cd::matrixptr m_squaredweights; /// matrix with the squared weights
-    cd::vectorptr m_mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
-    cd::vectorptr m_mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
-    std::string m_id; /// name of the chosen variogram
-    cd::vector m_initialparameters; /// initial parameters for the optimizer
-    cd::vector m_lowerbound; /// lower bounds for the optimizer
-    cd::vector m_upperbound; /// upper bounds for the optimizer
-    cd::matrixptr m_solutions = nullptr; /// matrix with the solution in all the anchor points
+    cd::matrixptr m_empiricvariogram; ///< sample variogram matrix
+    cd::matrixptr m_squaredweights; ///< matrix with the squared weights
+    cd::vectorptr m_mean_x; ///< vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    cd::vectorptr m_mean_y; ///< vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    std::string m_id; ///< name of the chosen variogram
+    cd::vector m_initialparameters; ///< initial parameters for the optimizer
+    cd::vector m_lowerbound; ///< lower bounds for the optimizer
+    cd::vector m_upperbound; ///< upper bounds for the optimizer
+    cd::matrixptr m_solutions = nullptr; ///< matrix with the solution in all the anchor points
 
     /**
      * \brief       find the optimal solution for the point in position pos
@@ -88,7 +88,7 @@ public:
     void findallsolutions();
 
     /**
-     * \brief   return the solutions found by solving the problem of nonlinear optimization
+     * \return  the solutions found by solving the problem of nonlinear optimization
     */
     cd::matrixptr get_solutions() const;
 }; // class Opt

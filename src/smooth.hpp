@@ -16,12 +16,12 @@ namespace LocallyStationaryModels
 class Smt
 {
 private:
-    cd::matrixptr m_solutions = nullptr; /// matrix wiht the solution of the optimization
-    cd::matrixptr m_anchorpos = nullptr; /// anchor points
+    cd::matrixptr m_solutions = nullptr; ///< matrix wiht the solution of the optimization
+    cd::matrixptr m_anchorpos = nullptr; ///< anchor points
 
-    Kernel m_kernel; /// kernel
+    Kernel m_kernel; ///< kernel
 
-    double m_optimal_delta = 0; /// optimal value for delta
+    double m_optimal_delta = 0; ///< optimal value for delta
 
     /**
      * \brief       smooth a single parameter for a point in position pos
@@ -70,15 +70,15 @@ public:
     };
 
     /**
-     * \brief   return a shared pointer to the solutions found by the optimizer
+     * \return  a shared pointer to the solutions found by the optimizer
     */
     const cd::matrixptr get_solutions() const;
     /**
-     * \brief   return the delta found by cross-validation evaluated on sigma, the same delta is used for all the parameters
+     * \return  the delta found by cross-validation evaluated on sigma, the same delta is used for all the parameters
     */
     double get_optimal_delta() const;
     /**
-     * \brief   return a shared pointer the coordinates of the anchorpoints
+     * \return  a shared pointer the coordinates of the anchorpoints
     */
     const cd::matrixptr get_anchorpos() const;
 }; // class Smt

@@ -15,9 +15,9 @@ namespace LocallyStationaryModels
 class Kernel
 {
 private:
-    double m_epsilon; /// bandwidth parameter
-    cd::kernelfunction m_f; /// kernel function
-    cd::matrixptr m_k = std::make_shared<cd::matrix>(0,0); /// kernel matrix
+    double m_epsilon; ///< bandwidth parameter
+    cd::kernelfunction m_f; ///< kernel function
+    cd::matrixptr m_k = std::make_shared<cd::matrix>(0,0); ///< kernel matrix
 
 public:
     /**
@@ -54,7 +54,7 @@ public:
     void build_simple_kernel(const cd::matrixptr &coordinates, const double &epsilon);
 
     /**
-     * \brief   return a shared pointer to the matrix pointed by m_k
+     * \return  a shared pointer to the matrix pointed by m_k
     */
     const cd::matrixptr get_kernel() const;
 }; // class Kernel

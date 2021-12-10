@@ -15,14 +15,14 @@ namespace LocallyStationaryModels
 class Anchor
 {
 private:
-    cd::matrixptr m_data; /// matrix to generate the anchor points
-    double m_n_cubotti; /// number of tiles per row and column of the grid
-    double m_larghezza = 0; /// total width of the grid
-    double m_altezza = 0; /// total height of the grid
-    double m_larghezza_cubo = 0; /// width of each tile
-    double m_altezza_cubo = 0; /// height of each tile
-    double m_origin_x = 0; /// x of the origin of the grid
-    double m_origin_y = 0; /// y of the origin of the gird
+    cd::matrixptr m_data; ///< matrix to generate the anchor points
+    double m_n_cubotti; ///< number of tiles per row and column of the grid
+    double m_larghezza = 0; ///< total width of the grid
+    double m_altezza = 0; ///< total height of the grid
+    double m_larghezza_cubo = 0; ///< width of each tile
+    double m_altezza_cubo = 0; ///< height of each tile
+    double m_origin_x = 0; ///< x of the origin of the grid
+    double m_origin_y = 0; ///< y of the origin of the gird
 
     /**
      * \brief   return the index of the position in the grid of each of the points of the dataset "m_data"
@@ -58,7 +58,8 @@ public:
     Anchor(const cd::matrixptr &data, const double &n_cubotti): m_data(data), m_n_cubotti(n_cubotti){};
 
     /**
-     * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point of the domain in its neighbourhood
+     * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point 
+     * of the domain in its neighbourhood
     */
     const cd::matrix find_anchorpoints()
     {
@@ -86,11 +87,11 @@ public:
     }
 
     /**
-     * \brief   return the coordinates of the origin of the grid
+     * \return  the coordinates of the origin of the grid
     */
     std::pair<double, double> get_origin() const{return std::make_pair(m_origin_x, m_origin_y);}
     /**
-     * \brief   return the dimensions (height and width) of each cell of the grid
+     * \return  the dimensions (height and width) of each cell of the grid
     */
     std::pair<double, double> get_tiles_dimensions() const{return std::make_pair(m_larghezza_cubo, m_altezza_cubo);}
 }; // class Anchor
