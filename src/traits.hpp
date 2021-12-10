@@ -23,18 +23,17 @@ namespace LocallyStationaryModels
 namespace cd
 {
     // defining basic types
-    using scalar = double;
     using vector = Eigen::VectorXd;
     using matrix = Eigen::MatrixXd;
     using matrixI = Eigen::MatrixXi;
     using vectorptr = std::shared_ptr<vector>;
     using matrixptr = std::shared_ptr<matrix>;
     using matrixIptr = std::shared_ptr<matrixI>;
-    using vectorind = std::vector<unsigned int>;
+    using vectorind = std::vector<size_t>;
 
     // defining function types
-    using kernelfunction = std::function<scalar(const vector&, const vector&, const scalar&)>;
-    using gridfunction = std::function<matrixIptr(const matrixptr&, const unsigned int&, const unsigned int&, const double &)>;
+    using kernelfunction = std::function<double(const vector&, const vector&, const double&)>;
+    using gridfunction = std::function<matrixIptr(const matrixptr&, const size_t&, const size_t&, const double&)>;
      
 }; // namespace cd
 } // namespace LocallyStationaryModels

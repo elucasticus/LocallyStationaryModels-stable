@@ -8,7 +8,7 @@ namespace LocallyStationaryModels
 {
 using namespace cd;
 
-double Smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
+double Smt::smooth_value(const size_t &pos, const size_t &n) const
 {
     const matrix &K = *(m_kernel.get_kernel());
 
@@ -27,7 +27,7 @@ double Smt::smooth_value(const unsigned int &pos, const unsigned int &n) const
     return numerator/denominator;
 }
 
-double Smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
+double Smt::smooth_value(const cd::vector &pos, const size_t &n) const
 {
     double numerator = 0;
     double denominator = 0;
@@ -44,12 +44,12 @@ double Smt::smooth_value(const cd::vector &pos, const unsigned int &n) const
     return numerator/denominator;
 }
 
-Smt::Smt(const cd::matrixptr solutions, const matrixptr &anchorpos, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id): 
+Smt::Smt(const cd::matrixptr solutions, const matrixptr &anchorpos, const double &min_delta, const double &max_delta, const std::string &kernel_id): 
     m_anchorpos(anchorpos), m_solutions(solutions), m_kernel(kernel_id, min_delta)
 {
     double min_error= std::numeric_limits<double>::infinity();
     m_optimal_delta = (max_delta-min_delta)/2;
-    const unsigned int n_deltas = Tolerances::n_deltas;
+    const size_t n_deltas = Tolerances::n_deltas;
     // find the optimal value of delta via cross-validation
     for (size_t i=0; i<=n_deltas; i++)
     {

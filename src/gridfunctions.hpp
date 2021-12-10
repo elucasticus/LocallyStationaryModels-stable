@@ -18,7 +18,7 @@ namespace gf
      * \param n_intervals   number of the pieces for each slice of the pizza
      * \param epsilon       the same epsilon regulating the kernel
     */
-    cd::matrixIptr pizza(const cd::matrixptr &data, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon);
+    cd::matrixIptr pizza(const cd::matrixptr &data, const size_t &n_angles, const size_t &n_intervals, const double &epsilon);
 
     /**
      * \brief       allow to select between the preferred method to build the grid

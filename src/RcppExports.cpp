@@ -12,19 +12,19 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // find_anchorpoints
-Rcpp::List find_anchorpoints(const Eigen::MatrixXd& data, const unsigned int& n_cubotti);
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd& data, const size_t& n_cubotti);
 RcppExport SEXP _LocallyStationaryModels_find_anchorpoints(SEXP dataSEXP, SEXP n_cubottiSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_cubotti(n_cubottiSEXP);
+    Rcpp::traits::input_parameter< const size_t& >::type n_cubotti(n_cubottiSEXP);
     rcpp_result_gen = Rcpp::wrap(find_anchorpoints(data, n_cubotti));
     return rcpp_result_gen;
 END_RCPP
 }
 // variogramlsm
-Rcpp::List variogramlsm(const Eigen::VectorXd& z, const Eigen::MatrixXd& data, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const unsigned int& n_angles, const unsigned int& n_intervals, const std::string& kernel_id, const bool print, const int& n_threads);
+Rcpp::List variogramlsm(const Eigen::VectorXd& z, const Eigen::MatrixXd& data, const Eigen::MatrixXd& anchorpoints, const double& epsilon, const size_t& n_angles, const size_t& n_intervals, const std::string& kernel_id, const bool print, const int& n_threads);
 RcppExport SEXP _LocallyStationaryModels_variogramlsm(SEXP zSEXP, SEXP dataSEXP, SEXP anchorpointsSEXP, SEXP epsilonSEXP, SEXP n_anglesSEXP, SEXP n_intervalsSEXP, SEXP kernel_idSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -33,8 +33,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type anchorpoints(anchorpointsSEXP);
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_angles(n_anglesSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_intervals(n_intervalsSEXP);
+    Rcpp::traits::input_parameter< const size_t& >::type n_angles(n_anglesSEXP);
+    Rcpp::traits::input_parameter< const size_t& >::type n_intervals(n_intervalsSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type kernel_id(kernel_idSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
     Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);

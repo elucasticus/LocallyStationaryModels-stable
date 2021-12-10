@@ -6,7 +6,7 @@ namespace kf
 {
     using namespace cd;
 
-    scalar gaussian(const vector &x, const vector &y, const scalar &epsilon)
+    double gaussian(const vector &x, const vector &y, const double &epsilon)
     {
         return std::exp(-(x - y).squaredNorm()/(2*epsilon*epsilon));
     }

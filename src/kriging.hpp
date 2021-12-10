@@ -29,7 +29,7 @@ private:
      * \param pos   a vector of coordinates or the index of the position of the center of the neighbourhood
     */
     cd::vectorind build_neighbourhood(const cd::vector &pos) const;
-    cd::vectorind build_neighbourhood(const unsigned int &pos) const;
+    cd::vectorind build_neighbourhood(const size_t &pos) const;
 
     /**
      * \brief                   build the vector eta necessary to perform kriging on the mean of Y in a point

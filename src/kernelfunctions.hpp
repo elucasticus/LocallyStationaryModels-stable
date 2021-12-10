@@ -14,7 +14,7 @@ namespace kf
     /**
      * \return  e^(-norm(x-y)^2/epsilon^2)
     */
-    cd::scalar gaussian(const cd::vector &x, const cd::vector &y, const cd::scalar &epsilon);
+    double gaussian(const cd::vector &x, const cd::vector &y, const double &epsilon);
 
     /**
      * \brief       allow to select between pre-built kernel functions

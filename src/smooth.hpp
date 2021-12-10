@@ -28,8 +28,8 @@ private:
      * \param pos   a vector of coordinates or the index of the position of the point where to find the smoothed value of the parameter
      * \param n     the index of the parameter to obtain
     */
-    double smooth_value(const unsigned int &pos, const unsigned int &n) const;
-    double smooth_value(const cd::vector &pos, const unsigned int &n) const;
+    double smooth_value(const size_t &pos, const size_t &n) const;
+    double smooth_value(const cd::vector &pos, const size_t &n) const;
 
 public:
     /**
@@ -40,7 +40,7 @@ public:
      * \param min_delta     the minimum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
      * \param max_delta     the maximum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
     */
-    Smt(const cd::matrixptr solutions, const cd::matrixptr &anchorpos, const cd::scalar &min_delta, const cd::scalar &max_delta, const std::string &kernel_id);
+    Smt(const cd::matrixptr solutions, const cd::matrixptr &anchorpos, const double &min_delta, const double &max_delta, const std::string &kernel_id);
     /**
      * \brief constructor
      * \param solutions     a shared pointer to the solutions of the optimization
@@ -62,7 +62,7 @@ public:
     cd::vector smooth_vector(const Input &pos) const
     {
         cd::vector result(m_solutions->cols());
-        for (unsigned int i=0; i<m_solutions->cols(); ++i)
+        for (size_t i=0; i<m_solutions->cols(); ++i)
         {
             result(i) = smooth_value(pos, i);
         }

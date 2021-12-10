@@ -15,7 +15,7 @@ namespace LocallyStationaryModels
 class Kernel
 {
 private:
-    cd::scalar m_epsilon; /// bandwidth parameter
+    double m_epsilon; /// bandwidth parameter
     cd::kernelfunction m_f; /// kernel function
     cd::matrixptr m_k = std::make_shared<cd::matrix>(0,0); /// kernel matrix
 
@@ -25,7 +25,7 @@ public:
 	 * \param id 	        name of the kernel function
      * \param epsilon       value of the bandwidth parameter epsilon
 	*/
-	Kernel(const std::string &id, const cd::scalar &epsilon);
+	Kernel(const std::string &id, const double &epsilon);
 
     /** 
      * \brief   default constuctor with a gaussian kernel and epsilon equal to 1.
@@ -35,7 +35,7 @@ public:
     /**
 	 * \return  f(x ,y) where f is the kernel function
 	*/
-    cd::scalar operator()(const cd::vector &x, const cd::vector &y) const;
+    double operator()(const cd::vector &x, const cd::vector &y) const;
 
     /**
      * \brief                   build the "star" version of the kernel that contains the standardized kernel weights in such
@@ -51,7 +51,7 @@ public:
      * \param epsilon       if needed, replace the old epsilon with a new value
     */
     void build_simple_kernel(const cd::matrixptr &coordinates);
-    void build_simple_kernel(const cd::matrixptr &coordinates, const cd::scalar &epsilon);
+    void build_simple_kernel(const cd::matrixptr &coordinates, const double &epsilon);
 
     /**
      * \brief   return a shared pointer to the matrix pointed by m_k

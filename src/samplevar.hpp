@@ -22,8 +22,8 @@ private:
     cd::matrixptr m_squaredweights = nullptr; /// matrix with the squared weights
     Kernel m_kernel; /// kernel
     Grid m_grid; /// grid
-    unsigned int m_n_angles; /// number of angles of the grid
-    unsigned int m_n_intervals; /// number of intervals per angle of the grid
+    size_t m_n_angles; /// number of angles of the grid
+    size_t m_n_intervals; /// number of intervals per angle of the grid
 
     /**
      * \brief a "helper" function which built the squared weights for the wls problem needed by the optimizer
@@ -38,7 +38,7 @@ public:
      * \param n_intervals   the number of inervals to be passed to the grid
      * \param epsilon       the bandwidth parameter regulating the kernel
 	*/
-    SampleVar(const std::string &kernel_id, const unsigned int &n_angles, const unsigned int &n_intervals, const cd::scalar &epsilon);
+    SampleVar(const std::string &kernel_id, const size_t &n_angles, const size_t &n_intervals, const double &epsilon);
     
     /**
      * \brief a default constructor for the class which calls the default constructors for both the kernel and the grid

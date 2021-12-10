@@ -20,7 +20,7 @@ struct FunzioneDaOttimizzare
     const cd::matrixptr m_squaredweights; /// matrix of the squared weights
     const cd::vectorptr m_mean_x; /// vector with the x of each cell of the grid (mean of the x of all the pairs inside)
     const cd::vectorptr m_mean_y; /// vector with the y of each cell of the grid (mean of the y of all the pairs inside)
-    unsigned int m_x0; /// index of the position where to evaluate gammaisoptr
+    size_t m_x0; /// index of the position where to evaluate gammaisoptr
     std::shared_ptr<VariogramFunction> m_gammaisoptr; /// pointer to the variogram function
 
     /**
@@ -32,15 +32,15 @@ struct FunzioneDaOttimizzare
      * \param x0                    the index of the position x0
      * \param id                    the name of the variogram of your choice
     */
-    FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, unsigned int x0, 
+    FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, size_t x0, 
     const std::string &id);
 
     /**
      * \param params    a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
      * \param grad      a vector containing the previous value of the gradient which is updated at each iteration
     */
-    cd::scalar operator() (const cd::vector &params, cd::vector &grad);
-    cd::scalar operator() (const cd::vector &params);
+    double operator() (const cd::vector &params, cd::vector &grad);
+    double operator() (const cd::vector &params);
 }; // struct FunzioneDaOttimizzare
 
 
@@ -64,7 +64,7 @@ private:
      * \brief       find the optimal solution for the point in position pos
      * \param pos   the index of the position in which find the optimal solution
     */
-    cd::vector findonesolution(const unsigned int pos) const;
+    cd::vector findonesolution(const size_t pos) const;
 
 public:
     /**

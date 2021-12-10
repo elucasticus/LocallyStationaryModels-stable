@@ -11,7 +11,7 @@ using namespace cd;
 vectorind Predictor::build_neighbourhood(const cd::vector &pos) const
 {
     vectorind n;
-    for (unsigned int i=0; i< m_data->rows(); ++i)
+    for (size_t i=0; i< m_data->rows(); ++i)
     {
         vector datapos = m_data->row(i);
         // if datapos is in a neighbourhood of radius m_b
@@ -23,11 +23,11 @@ vectorind Predictor::build_neighbourhood(const cd::vector &pos) const
     return n;
 }
 
-vectorind Predictor::build_neighbourhood(const unsigned int &pos) const
+vectorind Predictor::build_neighbourhood(const size_t &pos) const
 {
     vectorind n;
     const vector &pospos = m_data->row(pos);
-    for (unsigned int i=0; i< m_data->rows(); ++i)
+    for (size_t i=0; i< m_data->rows(); ++i)
     {
         const vector &posi =  m_data->row(i);
         // if pos is in a neighbourhood of radius m_b
@@ -41,13 +41,13 @@ vectorind Predictor::build_neighbourhood(const unsigned int &pos) const
 
 cd::vector Predictor::build_eta(cd::vector &params, vectorind &neighbourhood) const
 {
-    unsigned int n = neighbourhood.size();
+    size_t n = neighbourhood.size();
     matrix gamma(n,n);
     VariogramFunction &gammaiso = *(m_gammaisoptr);
     // compute gamma
-    for (unsigned int i=0; i<n; ++i)
+    for (size_t i=0; i<n; ++i)
     {
-        for (unsigned int j=0; j<n; ++j)
+        for (size_t j=0; j<n; ++j)
         {
             const vector &posi = m_data->row(neighbourhood[i]);
             const vector &posj = m_data->row(neighbourhood[j]);
@@ -73,7 +73,7 @@ cd::vector Predictor::build_eta(cd::vector &params, vectorind &neighbourhood) co
 
 std::pair<cd::vector, double> Predictor::build_etakriging(const cd::vector &params,const cd::vector &pos) const
 {
-    unsigned int n = m_data->rows();
+    size_t n = m_data->rows();
     
     vector etakriging(n);
     vector C0(n);
@@ -81,10 +81,10 @@ std::pair<cd::vector, double> Predictor::build_etakriging(const cd::vector &para
     double sigma2 = params[3]*params[3];
     VariogramFunction &gammaiso = *(m_gammaisoptr);
     // compute the corralation matrix and C0
-    for (unsigned int i=0; i<n; ++i)
+    for (size_t i=0; i<n; ++i)
     {
         const vector &posi = m_data->row(i);
-        for (unsigned int j=0; j<n; ++j)
+        for (size_t j=0; j<n; ++j)
         {
             const vector &posj = m_data->row(j);
             cd::vector s = posi - posj;
@@ -107,13 +107,13 @@ double Predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
     cd::vector params = m_smt.smooth_vector(pos);
     // find the anchorpoints in its neighbourhood
     vectorind neighbourhood = build_neighbourhood(pos);
-    unsigned int n = neighbourhood.size();
+    size_t n = neighbourhood.size();
     // build eta
     vector eta(build_eta(params, neighbourhood));
 
     double result = 0;
     // compute the mean of z in pos
-    for (unsigned int i=0; i<n; ++i)
+    for (size_t i=0; i<n; ++i)
     {
         result += eta(i) * m_z->operator()(neighbourhood[i]);
     }
@@ -122,19 +122,19 @@ double Predictor::predict_mean<cd::vector, double>(const cd::vector &pos) const
 }
 
 template<>
-double Predictor::predict_mean<unsigned int, double>(const unsigned int &pos) const
+double Predictor::predict_mean<size_t, double>(const size_t &pos) const
 {
     // find the value of the parameters relative to the anchorpoint in row pos
     cd::vector params = m_smt.smooth_vector(m_data->row(pos));
     // find the anchropoints in its neighbourhood
     vectorind neighbourhood = build_neighbourhood(pos);
-    unsigned int n = neighbourhood.size();
+    size_t n = neighbourhood.size();
     // build eta
     vector eta(build_eta(params, neighbourhood));
 
     double result = 0;
     // compute the mean of z in position pos
-    for (unsigned int i=0; i<n; ++i) 
+    for (size_t i=0; i<n; ++i) 
     {
         result += eta(i) * m_z->operator()(neighbourhood[i]);
     }
@@ -157,7 +157,7 @@ cd::vector Predictor::predict_mean<cd::matrix, cd::vector>(const cd::matrix &pos
 template<>
 std::pair<double,double> Predictor::predict_z<cd::vector, std::pair<double,double>>(const cd::vector &pos) const
 {
-    unsigned int n = m_data->rows();
+    size_t n = m_data->rows();
     // predict the mean of z in pos
     double m0 = predict_mean<cd::vector, double>(pos);
     double result = m0;
@@ -167,7 +167,7 @@ std::pair<double,double> Predictor::predict_z<cd::vector, std::pair<double,doubl
     std::pair<vector, double> fulletakriging(build_etakriging(params, pos));
     vector &etakriging = fulletakriging.first;
     // predict the value of z(pos)
-    for (unsigned int i=0; i<n; ++i) 
+    for (size_t i=0; i<n; ++i) 
     {
         result += etakriging(i)*(m_z->operator()(i)-m_means->operator()(i));
     } 
@@ -194,9 +194,9 @@ Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &m
     m_means = std::make_shared<vector>(z->size());
     // build a vector with the prediction of the mean of z in every anchorpoint to speed up the next computations
     #pragma omp parallel for
-    for (unsigned int i=0; i<m_means->size(); ++i) 
+    for (size_t i=0; i<m_means->size(); ++i) 
     {
-        m_means->operator()(i) = predict_mean<unsigned int, double>(i);
+        m_means->operator()(i) = predict_mean<size_t, double>(i);
     }
 };
 

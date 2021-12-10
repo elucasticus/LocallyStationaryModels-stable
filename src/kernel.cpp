@@ -9,11 +9,11 @@ namespace LocallyStationaryModels
 {
 using namespace cd;
 
-Kernel::Kernel(const std::string &id, const scalar &epsilon): m_epsilon(epsilon), m_f(kf::make_kernel(id)) {};
+Kernel::Kernel(const std::string &id, const double &epsilon): m_epsilon(epsilon), m_f(kf::make_kernel(id)) {};
 
 Kernel::Kernel(): Kernel("Gaussian", 1.) {};
 
-scalar Kernel::operator()(const vector &x, const vector &y) const
+double Kernel::operator()(const vector &x, const vector &y) const
 {
 	return m_f(x, y, m_epsilon);
 }
@@ -71,7 +71,7 @@ void Kernel::build_simple_kernel(const matrixptr &coordinates)
 	}
 }
 
-void Kernel::build_simple_kernel(const matrixptr &coordinates, const scalar &epsilon)
+void Kernel::build_simple_kernel(const matrixptr &coordinates, const double &epsilon)
 {
 	m_epsilon = epsilon;
 	build_simple_kernel(coordinates);

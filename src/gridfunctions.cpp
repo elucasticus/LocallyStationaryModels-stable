@@ -6,7 +6,7 @@ using namespace cd;
 
 namespace gf
 {
-    matrixIptr pizza(const matrixptr &data, const unsigned int &n_angles, const unsigned int &n_intervals, const double &epsilon)
+    matrixIptr pizza(const matrixptr &data, const size_t &n_angles, const size_t &n_intervals, const double &epsilon)
     {
         double pi = Tolerances::pi;
         // create a square matrix of dimension data->rows()^2 and fill it with -1
@@ -19,13 +19,13 @@ namespace gf
         // for every couple of points i and j in data compute the position of the vector (j - i) in the grid and fill grid(i, j) accordingly
         // since grid is symmetric we only need to fill the upper triangular part of the matrix 
         #pragma omp parallel for
-        for (unsigned int i = 0; i < data->rows() - 1; ++i)
+        for (size_t i = 0; i < data->rows() - 1; ++i)
         {
-            for (unsigned int j = i+1; j < data->rows(); ++j)
+            for (size_t j = i+1; j < data->rows(); ++j)
             {
-                scalar deltax =  data->operator()(j, 0) - data->operator()(i, 0);
-                scalar deltay =  data->operator()(j, 1) - data->operator()(i, 1);
-                scalar radius =  std::sqrt( deltax*deltax + deltay*deltay );
+                double deltax =  data->operator()(j, 0) - data->operator()(i, 0);
+                double deltay =  data->operator()(j, 1) - data->operator()(i, 1);
+                double radius =  std::sqrt( deltax*deltax + deltay*deltay );
 
                 if (radius >= b) 
                 {

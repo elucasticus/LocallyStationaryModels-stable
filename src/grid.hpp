@@ -48,7 +48,7 @@ public:
      * \param n_angles      number of slices of the pizza
      * \param n_intervals   number of the pieces for each slice of the pizza
     */
-    void build_grid(const cd::matrixptr &data, const unsigned int &n_angles, const unsigned int &n_intervals);
+    void build_grid(const cd::matrixptr &data, const size_t &n_angles, const size_t &n_intervals);
 
     /**
      * \brief   return a shared pointer to the grid

@@ -25,7 +25,7 @@ using namespace std::chrono;
  * \param n_cubotti     the number of cells per row and column in the grid of the anchor points
 */
 // [[Rcpp::export]]
-Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const unsigned int& n_cubotti) {
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const size_t& n_cubotti) {
     auto start = high_resolution_clock::now();
     
     matrixptr dd = std::make_shared<matrix>(data);
@@ -54,8 +54,8 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const unsigned int& n_
  * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 // [[Rcpp::export]]
-Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const unsigned int& n_angles, 
-    const unsigned int& n_intervals, const std::string &kernel_id, const bool print, const int &n_threads) {
+Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const size_t& n_angles, 
+    const size_t& n_intervals, const std::string &kernel_id, const bool print, const int &n_threads) {
     // start the clock
     auto start = high_resolution_clock::now();
     // if n_threads is positive open open n_threads threads to process the data

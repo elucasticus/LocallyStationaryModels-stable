@@ -62,7 +62,7 @@ void SampleVar::build_samplevar(const cd::matrixptr &data, const cd::matrixptr &
                     k = g->operator()(i, j);
                     if (k >= 0)
                     {
-                        scalar prodotto = K(l, i) * K(l, j);
+                        double prodotto = K(l, i) * K(l, j);
                         m_variogram->operator()(k, l) += prodotto * Z(i, j);
                         m_denominators->operator()(k, l) += prodotto;
                         counters[k]++;
@@ -104,7 +104,7 @@ void SampleVar::build_squaredweights()
     } 
 }
 
-SampleVar::SampleVar(const std::string &kernel_id, const unsigned int &n_angles, const unsigned int &n_intervals, const scalar &epsilon): m_kernel(kernel_id, epsilon), m_grid("pizza", epsilon), m_n_angles(n_angles), m_n_intervals(n_intervals) {};
+SampleVar::SampleVar(const std::string &kernel_id, const size_t &n_angles, const size_t &n_intervals, const double &epsilon): m_kernel(kernel_id, epsilon), m_grid("pizza", epsilon), m_n_angles(n_angles), m_n_intervals(n_intervals) {};
 
 SampleVar::SampleVar(): m_kernel(), m_grid() {};
 

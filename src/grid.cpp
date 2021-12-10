@@ -9,7 +9,7 @@ namespace LocallyStationaryModels
 {
 using namespace cd;
 
-void Grid::build_grid(const matrixptr &data, const unsigned int &n_angles, const unsigned int &n_intervals)
+void Grid::build_grid(const matrixptr &data, const size_t &n_angles, const size_t &n_intervals)
 {
     m_g = m_f(data, n_angles, n_intervals, m_epsilon);
     build_normh(data);

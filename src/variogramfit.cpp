@@ -9,13 +9,13 @@ namespace LocallyStationaryModels
 using namespace cd;
 using namespace LBFGSpp;
 
-cd::scalar FunzioneDaOttimizzare::operator() (const cd::vector &params)
+double FunzioneDaOttimizzare::operator() (const cd::vector &params)
 {
     VariogramFunction &gammaiso = *(m_gammaisoptr);
     vector w = m_squaredweights->row(m_x0);
     vector truegamma(m_empiricvariogram->rows());
 
-    for (unsigned int h = 0; h < truegamma.size(); ++h)
+    for (size_t h = 0; h < truegamma.size(); ++h)
     {
         truegamma[h] = gammaiso(params, m_mean_x->operator[](h), m_mean_y->operator[](h));
     }
@@ -23,13 +23,13 @@ cd::scalar FunzioneDaOttimizzare::operator() (const cd::vector &params)
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-cd::scalar FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &grad)
+double FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &grad)
 {
     VariogramFunction &gammaiso = *(m_gammaisoptr);
     vector w = m_squaredweights->row(m_x0);
     vector truegamma(m_empiricvariogram->rows());
 
-    for (unsigned int h = 0; h < truegamma.size(); ++h)
+    for (size_t h = 0; h < truegamma.size(); ++h)
     {
         truegamma[h] = gammaiso(params, m_mean_x->operator[](h), m_mean_y->operator[](h));
     }
@@ -39,7 +39,7 @@ cd::scalar FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &
     // partial derivative are calcutated with central differences method
     // the step for the numerical estimation of the gradient is chosen proportionally to the parameter with respect to which we are
     // calculating the derivative
-    for (unsigned int i=0; i<params.size(); ++i)
+    for (size_t i=0; i<params.size(); ++i)
     {
         vector paramsdeltaplus(params);
         vector paramsdeltaminus(params);
@@ -56,7 +56,7 @@ cd::scalar FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-FunzioneDaOttimizzare::FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, unsigned int x0, 
+FunzioneDaOttimizzare::FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, size_t x0, 
     const std::string &id): m_empiricvariogram(empiricvariogram), m_squaredweights(squaredweights), m_mean_x(mean_x), m_mean_y(mean_y), m_x0(x0), m_gammaisoptr(make_variogramiso(id)) {};
 
 Opt::Opt(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, const std::string &id, 
@@ -67,7 +67,7 @@ Opt::Opt(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweight
     m_solutions = std::make_shared<matrix>(matrix::Zero(m_empiricvariogram->cols(),m_initialparameters.size()));
 };
 
-vector Opt::findonesolution(const unsigned int pos) const
+vector Opt::findonesolution(const size_t pos) const
 {
     FunzioneDaOttimizzare fun(m_empiricvariogram, m_squaredweights, m_mean_x,  m_mean_y, pos, m_id);
 
@@ -101,10 +101,10 @@ vector Opt::findonesolution(const unsigned int pos) const
 void Opt::findallsolutions()
 {
     #pragma omp parallel for
-    for (unsigned int i=0; i<m_empiricvariogram->cols(); ++i)
+    for (size_t i=0; i<m_empiricvariogram->cols(); ++i)
     {
         vector sol = findonesolution(i);
-        for (unsigned int j = 0; j < m_initialparameters.size(); ++j)
+        for (size_t j = 0; j < m_initialparameters.size(); ++j)
         {
             m_solutions->operator()(i, j) = sol[j];
         }
