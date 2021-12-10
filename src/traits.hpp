@@ -35,7 +35,7 @@ namespace cd
     using kernelfunction = std::function<double(const vector&, const vector&, const double&)>;
     using gridfunction = std::function<matrixIptr(const matrixptr&, const size_t&, const size_t&, const double&)>;
      
-}; // namespace cd
+} // namespace cd
 } // namespace LocallyStationaryModels
 
 #endif //LOCALLY_STATIONARY_MODELS_TRAITS

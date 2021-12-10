@@ -189,7 +189,7 @@ cd::matrix Predictor::predict_z<cd::matrix, cd::matrix>(const cd::matrix &pos) c
     return result;
 }
 
-Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &data): m_gammaisoptr(make_variogramiso(id)), m_z(z), m_smt(mysmt), m_b(b), m_data(data) 
+Predictor::Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double &b, const cd::matrixptr &data): m_gammaisoptr(make_variogramiso(id)), m_z(z), m_smt(mysmt), m_b(b), m_data(data) 
 {
     m_means = std::make_shared<vector>(z->size());
     // build a vector with the prediction of the mean of z in every anchorpoint to speed up the next computations

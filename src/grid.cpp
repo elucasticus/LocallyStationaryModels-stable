@@ -15,7 +15,7 @@ void Grid::build_grid(const matrixptr &data, const size_t &n_angles, const size_
     build_normh(data);
 }
 
-Grid::Grid(const std::string &id, const double epsilon): m_f(gf::make_grid(id)), m_epsilon(epsilon){};
+Grid::Grid(const std::string &id, const double &epsilon): m_f(gf::make_grid(id)), m_epsilon(epsilon){};
 
 Grid::Grid(): Grid("pizza", 1.) {};
 

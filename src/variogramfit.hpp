@@ -32,8 +32,8 @@ struct FunzioneDaOttimizzare
      * \param x0                    the index of the position x0
      * \param id                    the name of the variogram of your choice
     */
-    FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, size_t x0, 
-    const std::string &id);
+    FunzioneDaOttimizzare(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, const cd::vectorptr &mean_x, 
+    const cd::vectorptr &mean_y, const size_t &x0, const std::string &id);
 
     /**
      * \param params    a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
@@ -64,7 +64,7 @@ private:
      * \brief       find the optimal solution for the point in position pos
      * \param pos   the index of the position in which find the optimal solution
     */
-    cd::vector findonesolution(const size_t pos) const;
+    cd::vector findonesolution(const size_t &pos) const;
 
 public:
     /**
@@ -78,8 +78,9 @@ public:
      * \param lowerbound          the lower bounds for the parameters in the nonlinear optimization problem
      * \param upperbound          the upper bounds for the parameters in the nonlinear optimization problem
     */
-    Opt(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y,
-    const std::string &id, const cd::vector &initialparameters, const cd::vector &lowerbound, const cd::vector &upperbound);
+    Opt(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, const cd::vectorptr &mean_x, 
+    const cd::vectorptr &mean_y, const std::string &id, const cd::vector &initialparameters, const cd::vector &lowerbound, 
+    const cd::vector &upperbound);
 
     /**
      * \brief   find the optimal solution in all the position

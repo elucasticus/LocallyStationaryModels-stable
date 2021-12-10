@@ -55,7 +55,7 @@ public:
      * \param data             shared pointer to the matrix with the coordinates of the dataset points
      * \param n_cubotti        the number of squares per row and column of the grid
     */
-    Anchor(const cd::matrixptr &data, const double n_cubotti): m_data(data), m_n_cubotti(n_cubotti){};
+    Anchor(const cd::matrixptr &data, const double &n_cubotti): m_data(data), m_n_cubotti(n_cubotti){};
 
     /**
      * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point of the domain in its neighbourhood

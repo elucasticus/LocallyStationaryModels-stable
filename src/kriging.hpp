@@ -54,7 +54,7 @@ public:
      * \param b         the radius of the neighbourhood of the point where to perform kriging
      * \param data      a shared pointer to the matrix with the coordinates of the original dataset
     */
-    Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double b, const cd::matrixptr &data);
+    Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double &b, const cd::matrixptr &data);
     /**
      * \brief   gammaiso set by default to exponential
     */

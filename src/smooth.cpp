@@ -44,7 +44,7 @@ double Smt::smooth_value(const cd::vector &pos, const size_t &n) const
     return numerator/denominator;
 }
 
-Smt::Smt(const cd::matrixptr solutions, const matrixptr &anchorpos, const double &min_delta, const double &max_delta, const std::string &kernel_id): 
+Smt::Smt(const cd::matrixptr &solutions, const matrixptr &anchorpos, const double &min_delta, const double &max_delta, const std::string &kernel_id): 
     m_anchorpos(anchorpos), m_solutions(solutions), m_kernel(kernel_id, min_delta)
 {
     double min_error= std::numeric_limits<double>::infinity();
@@ -80,7 +80,7 @@ Smt::Smt(const cd::matrixptr solutions, const matrixptr &anchorpos, const double
     m_kernel.build_simple_kernel(m_anchorpos, m_optimal_delta);
 }
 
-Smt::Smt(const cd::matrixptr solutions, const matrixptr &anchorpos, const double delta, const std::string &kernel_id): m_anchorpos(anchorpos),  m_solutions(solutions),
+Smt::Smt(const cd::matrixptr &solutions, const matrixptr &anchorpos, const double delta, const std::string &kernel_id): m_anchorpos(anchorpos),  m_solutions(solutions),
     m_kernel(kernel_id, delta), m_optimal_delta(delta)
 {
     m_kernel.build_simple_kernel(m_anchorpos);

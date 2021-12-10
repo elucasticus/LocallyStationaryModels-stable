@@ -56,18 +56,20 @@ double FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &grad
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-FunzioneDaOttimizzare::FunzioneDaOttimizzare(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, size_t x0, 
-    const std::string &id): m_empiricvariogram(empiricvariogram), m_squaredweights(squaredweights), m_mean_x(mean_x), m_mean_y(mean_y), m_x0(x0), m_gammaisoptr(make_variogramiso(id)) {};
+FunzioneDaOttimizzare::FunzioneDaOttimizzare(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, 
+    const cd::vectorptr &mean_x, const cd::vectorptr &mean_y, const size_t &x0, const std::string &id): 
+    m_empiricvariogram(empiricvariogram), m_squaredweights(squaredweights), m_mean_x(mean_x), m_mean_y(mean_y), m_x0(x0), m_gammaisoptr(make_variogramiso(id)) {};
 
-Opt::Opt(const cd::matrixptr empiricvariogram, const cd::matrixptr squaredweights, const cd::vectorptr mean_x, const cd::vectorptr mean_y, const std::string &id, 
-    const cd::vector &initialparameters, const cd::vector &lowerbound, const cd::vector &upperbound): 
+Opt::Opt(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, const cd::vectorptr &mean_x, 
+    const cd::vectorptr &mean_y, const std::string &id, const cd::vector &initialparameters, const cd::vector &lowerbound, 
+    const cd::vector &upperbound): 
     m_empiricvariogram(empiricvariogram), m_squaredweights(squaredweights), m_mean_x(mean_x), m_mean_y(mean_y), m_id(id), m_initialparameters(initialparameters), m_lowerbound(lowerbound),
     m_upperbound(upperbound)
 {
     m_solutions = std::make_shared<matrix>(matrix::Zero(m_empiricvariogram->cols(),m_initialparameters.size()));
 };
 
-vector Opt::findonesolution(const size_t pos) const
+vector Opt::findonesolution(const size_t &pos) const
 {
     FunzioneDaOttimizzare fun(m_empiricvariogram, m_squaredweights, m_mean_x,  m_mean_y, pos, m_id);
 

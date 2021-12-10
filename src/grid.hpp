@@ -35,7 +35,7 @@ public:
 	 * \param id 	    name of the grid function
      * \param epsilon   the same epsilon regulating the kernel
 	*/
-	Grid(const std::string &id, const double epsilon);
+	Grid(const std::string &id, const double &epsilon);
 
     /**
      * \brief   use the Pizza style by default

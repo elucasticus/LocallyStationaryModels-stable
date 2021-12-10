@@ -40,7 +40,7 @@ public:
      * \param min_delta     the minimum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
      * \param max_delta     the maximum exponent for the cross-validation of the delta bandwidth parameter for gaussian kernel smoothing
     */
-    Smt(const cd::matrixptr solutions, const cd::matrixptr &anchorpos, const double &min_delta, const double &max_delta, const std::string &kernel_id);
+    Smt(const cd::matrixptr &solutions, const cd::matrixptr &anchorpos, const double &min_delta, const double &max_delta, const std::string &kernel_id);
     /**
      * \brief constructor
      * \param solutions     a shared pointer to the solutions of the optimization
@@ -48,7 +48,7 @@ public:
      * \param d             a shared pointer to the matrix of the coordinates
      * \param delta         a user-chosen value for delta
     */
-    Smt(const cd::matrixptr solutions, const cd::matrixptr &anchorpos, const double delta, const std::string &kernel_id);
+    Smt(const cd::matrixptr &solutions, const cd::matrixptr &anchorpos, const double delta, const std::string &kernel_id);
     /**
      * \brief call the default constructor for kernel_
     */
