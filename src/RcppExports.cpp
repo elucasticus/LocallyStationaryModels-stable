@@ -12,14 +12,14 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // find_anchorpoints
-Rcpp::List find_anchorpoints(const Eigen::MatrixXd& data, const size_t& n_cubotti);
-RcppExport SEXP _LocallyStationaryModels_find_anchorpoints(SEXP dataSEXP, SEXP n_cubottiSEXP) {
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd& data, const size_t& n_pieces);
+RcppExport SEXP _LocallyStationaryModels_find_anchorpoints(SEXP dataSEXP, SEXP n_piecesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< const size_t& >::type n_cubotti(n_cubottiSEXP);
-    rcpp_result_gen = Rcpp::wrap(find_anchorpoints(data, n_cubotti));
+    Rcpp::traits::input_parameter< const size_t& >::type n_pieces(n_piecesSEXP);
+    rcpp_result_gen = Rcpp::wrap(find_anchorpoints(data, n_pieces));
     return rcpp_result_gen;
 END_RCPP
 }

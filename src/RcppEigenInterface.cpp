@@ -22,15 +22,15 @@ using namespace std::chrono;
 /**
  * \brief               finds the anchor points given the position of the points in the initial dataset
  * \param data          a matrix with the coordinates of the points in the original dataset
- * \param n_cubotti     the number of cells per row and column in the grid of the anchor points
+ * \param n_pieces      the number of cells per row and column in the grid of the anchor points
 */
 // [[Rcpp::export]]
-Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const size_t& n_cubotti) {
+Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const size_t& n_pieces) {
     auto start = high_resolution_clock::now();
     
     matrixptr dd = std::make_shared<matrix>(data);
 
-    Anchor a(dd, n_cubotti);
+    Anchor a(dd, n_pieces);
 
     cd::matrix anchorpos = a.find_anchorpoints();
    
