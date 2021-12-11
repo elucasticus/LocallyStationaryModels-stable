@@ -10,8 +10,8 @@
 namespace LocallyStationaryModels
 {
 /**
- * \brief   a simple class to find the anchor points given the data
-*/
+ * \brief a simple class to find the anchor points given the data
+ */
 class Anchor
 {
 private:
@@ -25,8 +25,8 @@ private:
     double m_origin_y = 0; ///< y of the origin of the gird
 
     /**
-     * \brief   return the index of the position in the grid of each of the points of the dataset "m_data"
-    */
+     * \brief return the index of the position in the grid of each of the points of the dataset "m_data"
+     */
     Eigen::VectorXi find_indeces()
     {
         size_t n = m_data->rows();
@@ -51,16 +51,16 @@ private:
 
 public:
     /**
-     * \brief                  constructor
-     * \param data             shared pointer to the matrix with the coordinates of the dataset points
-     * \param n_pieces         the number of squares per row and column of the grid
-    */
+     * \brief constructor
+     * \param data shared pointer to the matrix with the coordinates of the dataset points
+     * \param n_pieces the number of tiles per row and column of the grid
+     */
     Anchor(const cd::matrixptr &data, const double &n_pieces): m_data(data), m_n_pieces(n_pieces){};
 
     /**
-     * \brief   this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point 
+     * \brief this function returns the coordinates of the anchor points in a way such that every anchor point has at least one point 
      * of the domain in its neighbourhood
-    */
+     */
     const cd::matrix find_anchorpoints()
     {
         size_t n = m_data->rows();
@@ -87,12 +87,12 @@ public:
     }
 
     /**
-     * \return  the coordinates of the origin of the grid
-    */
+     * \return the coordinates of the origin of the grid
+     */
     std::pair<double, double> get_origin() const{return std::make_pair(m_origin_x, m_origin_y);}
     /**
-     * \return  the dimensions (height and width) of each cell of the grid
-    */
+     * \return the dimensions (height and width) of each cell of the grid
+     */
     std::pair<double, double> get_tiles_dimensions() const{return std::make_pair(m_piece_width, m_piece_height);}
 }; // class Anchor
 } // namespace LocallyStationaryModels

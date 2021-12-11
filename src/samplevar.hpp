@@ -13,7 +13,7 @@ namespace LocallyStationaryModels
 {
 /**
  * \brief a class to build and store the empiric variogram in all the anchor points
-*/
+ */
 class SampleVar
 {
 private:
@@ -27,63 +27,63 @@ private:
 
     /**
      * \brief a "helper" function which built the squared weights for the wls problem needed by the optimizer
-    */
+     */
     void build_squaredweights();
     
 public:
     /**
-	 * \brief               constructor
-	 * \param kernel_id     the name of the function you want to use for the kernel
-     * \param n_angles      the number of angles to be passed to the grid
-     * \param n_intervals   the number of inervals to be passed to the grid
-     * \param epsilon       the bandwidth parameter regulating the kernel
-	*/
+	 * \brief constructor
+	 * \param kernel_id the name of the function you want to use for the kernel
+     * \param n_angles the number of angles to be passed to the grid
+     * \param n_intervals the number of inervals to be passed to the grid
+     * \param epsilon the bandwidth parameter regulating the kernel
+	 */
     SampleVar(const std::string &kernel_id, const size_t &n_angles, const size_t &n_intervals, const double &epsilon);
     
     /**
      * \brief a default constructor for the class which calls the default constructors for both the kernel and the grid
-    */
+     */
     SampleVar();
 
     /**
-     * \brief                build the matrix of the empiric variogram
-     * \param data           a shared pointer to the matrix of the coordinates of the original dataset
-     * \param anchorpoints   a shared pointer to the matrix of the coordinates of the anchor poitns 
-     * \param z              a shared pointer to the vector of the value of Z
-    */
+     * \brief build the matrix of the empiric variogram
+     * \param data a shared pointer to the matrix of the coordinates of the original dataset
+     * \param anchorpoints a shared pointer to the matrix of the coordinates of the anchor poitns 
+     * \param z a shared pointer to the vector of the value of Z
+     */
     void build_samplevar(const cd::matrixptr &data, const cd::matrixptr &anchorpoints, const cd::vectorptr &z);
 
     /**
-     * \return  a shared pointer to the sample variogram
-    */
+     * \return a shared pointer to the sample variogram
+     */
     const cd::matrixptr get_variogram() const;
     /**
-     * \return  a shared pointer to the matrix of the denominators
-    */
+     * \return a shared pointer to the matrix of the denominators
+     */
     const cd::matrixptr get_denominators() const;
     /**
-     * \return  a shared pointers to the squaredweigths required to evaluate the function to be optimized
-    */
+     * \return a shared pointers to the squaredweigths required to evaluate the function to be optimized
+     */
     const cd::matrixptr get_squaredweights() const;
     /**
-     * \return  m_grid.m_mean_x
-    */
+     * \return m_grid.m_mean_x
+     */
     const cd::vectorptr get_x() const;
     /**
-     * \return  m_grid.m_mean_y
-    */
+     * \return m_grid.m_mean_y
+     */
     const cd::vectorptr get_y() const;
     /**
-     * \return  m_kernel.m_k
-    */
+     * \return m_kernel.m_k
+     */
     const cd::matrixptr get_kernel() const;
     /**
-     * \return  m_grid.m_g
-    */
+     * \return m_grid.m_g
+     */
     const cd::matrixIptr get_grid() const;
     /**
-     * \return  m_grid.m_normh
-    */
+     * \return m_grid.m_normh
+     */
     const cd::vectorptr get_normh() const;
 }; // class SampleVar
 } // namespace LocallyStationaryModels

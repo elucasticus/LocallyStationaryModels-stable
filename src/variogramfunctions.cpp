@@ -53,7 +53,7 @@ double MaternNuFixed::operator()(const cd::vector &params, const double &x, cons
     double lambda2 = params[1];
     double phi = params[2];
     double sigma = params[3];
-    double nu = m_NU;
+    double nu = m_nu;
 
     if (std::abs(x) < Tolerances::min_norm && std::abs(y) < Tolerances::min_norm)
     {

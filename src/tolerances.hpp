@@ -7,6 +7,9 @@
 
 namespace LocallyStationaryModels
 {
+/**
+ * \brief collects all the tolerances and the constants used inside the code
+ */
 struct Tolerances
 {
     /// value of the noise to be added to the anchor points grid to prevent out of domain points

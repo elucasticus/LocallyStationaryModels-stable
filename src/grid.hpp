@@ -11,7 +11,7 @@ namespace LocallyStationaryModels
 {
 /**
  * \brief   class to build the grid
-*/
+ */
 class Grid
 {
 private:
@@ -23,48 +23,48 @@ private:
     double m_epsilon; ///< bandwidth parameter inside
 
     /**
-     * \brief           a "helper" function to build the vector containing the position of the centers of the cells of the grid. 
+     * \brief a "helper" function to build the vector containing the position of the centers of the cells of the grid. 
      * Each pair of coordinates is assigned to a position of the grid.
-     * \param data      a shared pointer to the matrix of the coordinates
-    */
+     * \param data a shared pointer to the matrix of the coordinates
+     */
     void build_normh(const cd::matrixptr &data);
 
 public:
     /**
-	 * \brief           constructor
-	 * \param id 	    name of the grid function
-     * \param epsilon   the same epsilon regulating the kernel
-	*/
+	 * \brief constructor
+	 * \param id name of the grid function
+     * \param epsilon the same epsilon regulating the kernel
+	 */
 	Grid(const std::string &id, const double &epsilon);
 
     /**
-     * \brief   use the Pizza style by default
-    */
+     * \brief constructor. Use the Pizza style by default
+     */
     Grid();
 
     /**
-     * \brief               build the grid
-     * \param data          a shared pointer to the matrix of the coordinates
-     * \param n_angles      number of slices of the pizza
-     * \param n_intervals   number of the pieces for each slice of the pizza
-    */
+     * \brief build the grid
+     * \param data a shared pointer to the matrix of the coordinates
+     * \param n_angles number of slices of the pizza
+     * \param n_intervals number of the pieces for each slice of the pizza
+     */
     void build_grid(const cd::matrixptr &data, const size_t &n_angles, const size_t &n_intervals);
 
     /**
-     * \return  a shared pointer to the grid
-    */
+     * \return a shared pointer to the grid
+     */
     const cd::matrixIptr get_grid() const;
     /**
-     * \return  a shared pointer to m_normh
-    */
+     * \return a shared pointer to m_normh
+     */
     const cd::vectorptr get_normh() const;
     /**
-     * \return  a pointer to the vector containing the xs of the centers of the cells of the grid
-    */
+     * \return a pointer to the vector containing the xs of the centers of the cells of the grid
+     */
     const cd::vectorptr get_x() const;
     /**
-     * \return  a pointer to the vector containing the ys of the centers of the cells of the grid
-    */
+     * \return a pointer to the vector containing the ys of the centers of the cells of the grid
+     */
     const cd::vectorptr get_y() const;
 }; // class Grid
 } // namespace LocallyStationaryModels

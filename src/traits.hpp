@@ -20,6 +20,10 @@
 
 namespace LocallyStationaryModels
 {
+/**
+ * Namespace cd
+ * \brief collects all the typedef used inside the code
+ */
 namespace cd
 {
     // defining basic types
