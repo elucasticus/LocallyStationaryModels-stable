@@ -14,7 +14,7 @@ namespace LocallyStationaryModels
 /**
  * \brief functor to pass to the optimizer that contains the wls to be minimized
  */
-struct FunzioneDaOttimizzare
+struct TargetFunction
 {
     const cd::matrixptr m_empiricvariogram; ///< sample variogram matrix
     const cd::matrixptr m_squaredweights; ///< matrix of the squared weights
@@ -24,24 +24,28 @@ struct FunzioneDaOttimizzare
     std::shared_ptr<VariogramFunction> m_gammaisoptr; ///< pointer to the variogram function
 
     /**
-     * \brief                       constructor
-     * \param empiricvariogram      a shared pointer to the empiric variogram
-     * \param squaredweights        a shared pointer to the squared weights
-     * \param mean_x                a shared pointer to the vector of the abscissas of the centers
-     * \param mean_y                a shared pointer to the vector of the ordinates of the centers
-     * \param x0                    the index of the position x0
-     * \param id                    the name of the variogram of your choice
+     * \brief constructor
+     * \param empiricvariogram a shared pointer to the empiric variogram
+     * \param squaredweights a shared pointer to the squared weights
+     * \param mean_x a shared pointer to the vector of the abscissas of the centers
+     * \param mean_y a shared pointer to the vector of the ordinates of the centers
+     * \param x0 the index of the position x0
+     * \param id the name of the variogram of your choice
      */
-    FunzioneDaOttimizzare(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, const cd::vectorptr &mean_x, 
+    TargetFunction(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, const cd::vectorptr &mean_x, 
     const cd::vectorptr &mean_y, const size_t &x0, const std::string &id);
 
     /**
-     * \param params    a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
-     * \param grad      a vector containing the previous value of the gradient which is updated at each iteration
+     * \param params a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
+     * \param grad a vector containing the previous value of the gradient which is updated at each iteration
      */
     double operator() (const cd::vector &params, cd::vector &grad);
+
+    /**
+     * \param params a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
+     */
     double operator() (const cd::vector &params);
-}; // struct FunzioneDaOttimizzare
+}; // struct TargetFunction
 
 
 /**

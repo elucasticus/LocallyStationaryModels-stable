@@ -9,7 +9,7 @@ namespace LocallyStationaryModels
 using namespace cd;
 using namespace LBFGSpp;
 
-double FunzioneDaOttimizzare::operator() (const cd::vector &params)
+double TargetFunction::operator() (const cd::vector &params)
 {
     VariogramFunction &gammaiso = *(m_gammaisoptr);
     vector w = m_squaredweights->row(m_x0);
@@ -23,7 +23,7 @@ double FunzioneDaOttimizzare::operator() (const cd::vector &params)
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-double FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &grad)
+double TargetFunction::operator() (const cd::vector &params, vector &grad)
 {
     VariogramFunction &gammaiso = *(m_gammaisoptr);
     vector w = m_squaredweights->row(m_x0);
@@ -49,14 +49,14 @@ double FunzioneDaOttimizzare::operator() (const cd::vector &params, vector &grad
         paramsdeltaplus[i] += increment;
         paramsdeltaminus[i] -= increment;
 
-        grad[i] = (FunzioneDaOttimizzare::operator()(paramsdeltaplus) - FunzioneDaOttimizzare::operator()(paramsdeltaminus))/(2*increment);
+        grad[i] = (TargetFunction::operator()(paramsdeltaplus) - TargetFunction::operator()(paramsdeltaminus))/(2*increment);
     }
     
     vector empiricgamma = m_empiricvariogram->col(m_x0);
     return w.dot((truegamma - empiricgamma).cwiseProduct(truegamma - empiricgamma));
 }
 
-FunzioneDaOttimizzare::FunzioneDaOttimizzare(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, 
+TargetFunction::TargetFunction(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, 
     const cd::vectorptr &mean_x, const cd::vectorptr &mean_y, const size_t &x0, const std::string &id): 
     m_empiricvariogram(empiricvariogram), m_squaredweights(squaredweights), m_mean_x(mean_x), m_mean_y(mean_y), m_x0(x0), m_gammaisoptr(make_variogramiso(id)) {};
 
@@ -71,7 +71,7 @@ Opt::Opt(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweig
 
 vector Opt::findonesolution(const size_t &pos) const
 {
-    FunzioneDaOttimizzare fun(m_empiricvariogram, m_squaredweights, m_mean_x,  m_mean_y, pos, m_id);
+    TargetFunction fun(m_empiricvariogram, m_squaredweights, m_mean_x,  m_mean_y, pos, m_id);
 
     // Set up parameters
     LBFGSBParam<double> param;

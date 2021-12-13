@@ -33,7 +33,7 @@ namespace gf
                 } 
                 else if (deltax!=0) 
                 {
-                    grid->operator()(i, j) = floor( radius / cell_length ) + n_intervals *  floor( (pi/2 + std::atan( deltay / deltax )) / cell_angle );
+                    grid->operator()(i, j) = floor(radius / cell_length) + n_intervals * floor((pi/2 + std::atan( deltay / deltax )) / cell_angle);
                 } 
                 else 
                 {

@@ -26,7 +26,7 @@ void Kernel::build_kernel(const matrixptr &data, const matrixptr &anchorpoints)
 
 	m_k->resize(N, n);
 
-	// fill each component of k with the value of the kernel function evaluated between the i-th anchor point and the j-th initial point
+	// fill each component of m_k with the value of the kernel function evaluated between the i-th anchor point and the j-th initial point
 	#pragma omp parallel for
 	for (size_t i = 0; i < N; ++i)
 	{
@@ -36,7 +36,7 @@ void Kernel::build_kernel(const matrixptr &data, const matrixptr &anchorpoints)
 		}
 	}
 
-	// create a vector with the sum on each row of k
+	// create a vector with the sum on each row of m_k
 	vector sums(N);
 	#pragma omp parallel for
 	for (size_t i=0; i < N; ++i)
@@ -44,7 +44,7 @@ void Kernel::build_kernel(const matrixptr &data, const matrixptr &anchorpoints)
 		sums(i) = (m_k->row(i)).sum();
 	}
 
-	// divide each element of k by the sum of the elements of its row to obtained the normalized version of the kernel matrix K*
+	// divide each element of m_k by the sum of the elements of its row to obtained the normalized version of the kernel matrix K*
 	#pragma omp parallel for
 	for (size_t i = 0; i < N; ++i)
 	{
@@ -59,7 +59,7 @@ void Kernel::build_simple_kernel(const matrixptr &coordinates)
 {
 	size_t n = coordinates->rows();
 	m_k->resize(n, n);
-	// fill each component of k with the kernel function evaluated between the i-th and the j-th point of d
+	// fill each component of m_k with the kernel function evaluated between the i-th and the j-th point of d
 	#pragma omp parallel for
 	for (size_t i = 0; i < n; ++i)
 	{
