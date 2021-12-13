@@ -26,10 +26,16 @@ private:
 
     /**
      * \brief smooth a single parameter for a point in position pos
-     * \param pos a vector of coordinates or the index of the position of the point where to find the smoothed value of the parameter
+     * \param pos the index of the position of the point where to find the smoothed value of the parameter
      * \param n the index of the parameter to obtain
      */
     double smooth_value(const size_t &pos, const size_t &n) const;
+    
+    /**
+     * \brief smooth a single parameter for a point in position pos
+     * \param pos a vector with the coordinates of the position of the point where to find the smoothed value of the parameter
+     * \param n the index of the parameter to obtain
+     */
     double smooth_value(const cd::vector &pos, const size_t &n) const;
 
 public:
