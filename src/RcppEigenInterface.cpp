@@ -140,7 +140,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     // solve the nonlinaear optimization problems and store the solutions inside opt_
     opt_.findallsolutions();
     // build the smoother and find delta by cross-validation
-    Smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon/10, epsilon*10, kernel_id);
+    Smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon, epsilon*10, kernel_id);
 
     double delta_ottimale = smt_.get_optimal_delta();
     // stop the clock and calculate the processing time
