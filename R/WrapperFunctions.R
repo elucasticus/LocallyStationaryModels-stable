@@ -24,7 +24,7 @@
 #' solu3 <- findsolutions.lsm(vario, "matern", c(200,200,0.01,100,10))
 #' solu4 <- findsolutions.lsm(vario, "maternNuFixed 18.5", c(200,200,0.01,100))
 #' print(solu)
-findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), lower.delta = 1, upper.delta = 10, remove_not_convergent = FALSE, print_output = TRUE, n_threads = -1)
+findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), lower.delta = 0.1, upper.delta = 10, remove_not_convergent = FALSE, print_output = TRUE, n_threads = -1)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
   {
