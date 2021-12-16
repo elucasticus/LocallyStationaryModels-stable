@@ -24,7 +24,7 @@
 #' solu3 <- findsolutions.lsm(vario, "matern", c(200,200,0.01,100,10))
 #' solu4 <- findsolutions.lsm(vario, "maternNuFixed 18.5", c(200,200,0.01,100))
 #' print(solu)
-findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), remove_not_convergent = FALSE, print_output = TRUE, n_threads = -1)
+findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), lower.delta = 1, upper.delta = 10, remove_not_convergent = FALSE, print_output = TRUE, n_threads = -1)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
   {
@@ -38,7 +38,7 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,
   {
     stop("wrong number of initial parameters")
   }
-  result <- findsolutionslsm(vario$anchorpoints,vario$empiricvariogram,vario$squaredweigths,vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position, lower.bound, upper.bound, vario$epsilon, print_output, n_threads)
+  result <- findsolutionslsm(vario$anchorpoints, vario$empiricvariogram, vario$squaredweigths, vario$mean.x, vario$mean.y, id, vario$kernel_id, initial.position, lower.bound, upper.bound, vario$epsilon, lower.delta, upper.delta, print_output, n_threads)
   if (remove_not_convergent)
   {
     for (i in 1:dim(result$solutions)[1])

@@ -9,8 +9,8 @@ variogramlsm <- function(z, data, anchorpoints, epsilon, n_angles, n_intervals, 
     .Call('_LocallyStationaryModels_variogramlsm', PACKAGE = 'LocallyStationaryModels', z, data, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print, n_threads)
 }
 
-findsolutionslsm <- function(anchorpoints, empiricvariogram, squaredweights, mean_x, mean_y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print, n_threads) {
-    .Call('_LocallyStationaryModels_findsolutionslsm', PACKAGE = 'LocallyStationaryModels', anchorpoints, empiricvariogram, squaredweights, mean_x, mean_y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print, n_threads)
+findsolutionslsm <- function(anchorpoints, empiricvariogram, squaredweights, mean_x, mean_y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, lowerdelta, upperdelta, print, n_threads) {
+    .Call('_LocallyStationaryModels_findsolutionslsm', PACKAGE = 'LocallyStationaryModels', anchorpoints, empiricvariogram, squaredweights, mean_x, mean_y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, lowerdelta, upperdelta, print, n_threads)
 }
 
 predikt <- function(z, data, anchorpoints, epsilon, delta, solutions, positions, variogram_id, kernel_id, print, n_threads) {

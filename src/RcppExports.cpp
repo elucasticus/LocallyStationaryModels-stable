@@ -43,8 +43,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // findsolutionslsm
-Rcpp::List findsolutionslsm(const Eigen::MatrixXd& anchorpoints, const Eigen::MatrixXd& empiricvariogram, const Eigen::MatrixXd& squaredweights, const Eigen::VectorXd& mean_x, const Eigen::VectorXd& mean_y, std::string& variogram_id, const std::string& kernel_id, const Eigen::VectorXd& parameters, const Eigen::VectorXd& lowerbound, const Eigen::VectorXd& upperbound, const double& epsilon, const bool print, const int& n_threads);
-RcppExport SEXP _LocallyStationaryModels_findsolutionslsm(SEXP anchorpointsSEXP, SEXP empiricvariogramSEXP, SEXP squaredweightsSEXP, SEXP mean_xSEXP, SEXP mean_ySEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP parametersSEXP, SEXP lowerboundSEXP, SEXP upperboundSEXP, SEXP epsilonSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
+Rcpp::List findsolutionslsm(const Eigen::MatrixXd& anchorpoints, const Eigen::MatrixXd& empiricvariogram, const Eigen::MatrixXd& squaredweights, const Eigen::VectorXd& mean_x, const Eigen::VectorXd& mean_y, std::string& variogram_id, const std::string& kernel_id, const Eigen::VectorXd& parameters, const Eigen::VectorXd& lowerbound, const Eigen::VectorXd& upperbound, const double& epsilon, const double& lowerdelta, const double& upperdelta, const bool print, const int& n_threads);
+RcppExport SEXP _LocallyStationaryModels_findsolutionslsm(SEXP anchorpointsSEXP, SEXP empiricvariogramSEXP, SEXP squaredweightsSEXP, SEXP mean_xSEXP, SEXP mean_ySEXP, SEXP variogram_idSEXP, SEXP kernel_idSEXP, SEXP parametersSEXP, SEXP lowerboundSEXP, SEXP upperboundSEXP, SEXP epsilonSEXP, SEXP lowerdeltaSEXP, SEXP upperdeltaSEXP, SEXP printSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -59,9 +59,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type lowerbound(lowerboundSEXP);
     Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type upperbound(upperboundSEXP);
     Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
+    Rcpp::traits::input_parameter< const double& >::type lowerdelta(lowerdeltaSEXP);
+    Rcpp::traits::input_parameter< const double& >::type upperdelta(upperdeltaSEXP);
     Rcpp::traits::input_parameter< const bool >::type print(printSEXP);
     Rcpp::traits::input_parameter< const int& >::type n_threads(n_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(findsolutionslsm(anchorpoints, empiricvariogram, squaredweights, mean_x, mean_y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, print, n_threads));
+    rcpp_result_gen = Rcpp::wrap(findsolutionslsm(anchorpoints, empiricvariogram, squaredweights, mean_x, mean_y, variogram_id, kernel_id, parameters, lowerbound, upperbound, epsilon, lowerdelta, upperdelta, print, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -106,7 +108,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_LocallyStationaryModels_find_anchorpoints", (DL_FUNC) &_LocallyStationaryModels_find_anchorpoints, 2},
     {"_LocallyStationaryModels_variogramlsm", (DL_FUNC) &_LocallyStationaryModels_variogramlsm, 9},
-    {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 13},
+    {"_LocallyStationaryModels_findsolutionslsm", (DL_FUNC) &_LocallyStationaryModels_findsolutionslsm, 15},
     {"_LocallyStationaryModels_predikt", (DL_FUNC) &_LocallyStationaryModels_predikt, 11},
     {"_LocallyStationaryModels_smoothing", (DL_FUNC) &_LocallyStationaryModels_smoothing, 6},
     {NULL, NULL, 0}
