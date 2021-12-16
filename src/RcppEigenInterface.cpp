@@ -20,9 +20,9 @@ using namespace std::chrono;
 // [[Rcpp::depends(RcppEigen)]]
 
 /**
- * \brief               finds the anchor points given the position of the points in the initial dataset
- * \param data          a matrix with the coordinates of the points in the original dataset
- * \param n_pieces      the number of cells per row and column in the grid of the anchor points
+ * \brief finds the anchor points given the position of the points in the initial dataset
+ * \param data a matrix with the coordinates of the points in the original dataset
+ * \param n_pieces the number of cells per row and column in the grid of the anchor points
 */
 // [[Rcpp::export]]
 Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const size_t& n_pieces) {
@@ -42,16 +42,16 @@ Rcpp::List find_anchorpoints(const Eigen::MatrixXd &data, const size_t& n_pieces
 }
 
 /**
- * \brief                   calculate the empiric variogram in each anchor points
- * \param z                 a vector with the values of Z for each point in the dataset data
- * \param data              a matrix with the coordinates of the points in the original dataset
- * \param anchorpoints      a matrix with the coordinates of each anchor point
- * \param epsilon           the value of the bandwidth parameter epsilon
- * \param n_angles          the number of the angles for the grid
- * \param n_intervals       the number of intervals for the grid
- * \param kernel_id         the type of kernel to be used
- * \param print             if set to true print on console the time required to process the output
- * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
+ * \brief calculate the empiric variogram in each anchor points
+ * \param z a vector with the values of Z for each point in the dataset data
+ * \param data a matrix with the coordinates of the points in the original dataset
+ * \param anchorpoints  a matrix with the coordinates of each anchor point
+ * \param epsilon the value of the bandwidth parameter epsilon
+ * \param n_angles the number of the angles for the grid
+ * \param n_intervals the number of intervals for the grid
+ * \param kernel_id the type of kernel to be used
+ * \param print if set to true print on console the time required to process the output
+ * \param n_threads the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 // [[Rcpp::export]]
 Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const size_t& n_angles, 
@@ -97,21 +97,21 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, c
 }
 
 /**
- * \brief                       for each anchorpoints solves a problem of nonlinear optimization and returns the results
- * \param anchorpoints          a matrix with the coordinates of each anchor point
- * \param empiricvariogram      the empiric variogram returned by the previour function
- * \param squaredweights        squared weigths returned by the previous function
- * \param mean_x                mean.x returned by the previous function
- * \param mean_y                mean.y returned by the previous function
- * \param variogram_id          the variogram to be used
- * \param parameters            the starting position to be given to the optimizer
- * \param lowerbounds           the lower bounds for the optimizer
- * \param upperbounds           the upper bounds for the optimizer
- * \param epsilon               the value of epsilon regulating the kernel
- * \param lowerdelta            set the minimum value for Cross-Validation search for optimal delta in smoothing equal to lowerdelta*epsilon
- * \param upperdelta            set the maximum value for Cross-Validation search for optimal delta in smoothing equal to upperdelta*epsilon
- * \param print                 if set to true print on console the time required to process the output
- * \param n_threads             the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
+ * \brief for each anchorpoints solves a problem of nonlinear optimization and returns the results
+ * \param anchorpoints a matrix with the coordinates of each anchor point
+ * \param empiricvariogram the empiric variogram returned by the previour function
+ * \param squaredweights squared weigths returned by the previous function
+ * \param mean_x mean.x returned by the previous function
+ * \param mean_y mean.y returned by the previous function
+ * \param variogram_id the variogram to be used
+ * \param parameters the starting position to be given to the optimizer
+ * \param lowerbounds the lower bounds for the optimizer
+ * \param upperbounds the upper bounds for the optimizer
+ * \param epsilon the value of epsilon regulating the kernel
+ * \param lowerdelta set the minimum value for Cross-Validation search for optimal delta in smoothing equal to lowerdelta*epsilon
+ * \param upperdelta set the maximum value for Cross-Validation search for optimal delta in smoothing equal to upperdelta*epsilon
+ * \param print if set to true print on console the time required to process the output
+ * \param n_threads the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &mean_x, const Eigen::VectorXd &mean_y, std::string &variogram_id,
@@ -160,18 +160,18 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
 }
 
 /**
- * \brief                   predict the mean value and the punctual value of Z
- * \param z                 a vector with the values of Z for each point in the dataset data
- * \param data              a matrix with the coordinates of the points in the original dataset
- * \param anchorpoints      a matrix with the coordinates of each anchor point
- * \param epsilon           bandwidth parameter epsilon regulating the kernel
- * \param delta             delta regulating the smoothing
- * \param solutions         the solution of the nonlinear optimization problem returned by the previous function
- * \param positions         the position in which to perform the kriging
- * \param variogram_id      the variogram to be used
- * \param kernel_id         the kernel to be used inside the smoother
- * \param print             if set to true print on console the time required to process the output
- * \param n_threads         the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
+ * \brief predict the mean value and the punctual value of Z
+ * \param z a vector with the values of Z for each point in the dataset data
+ * \param data a matrix with the coordinates of the points in the original dataset
+ * \param anchorpoints a matrix with the coordinates of each anchor point
+ * \param epsilon bandwidth parameter epsilon regulating the kernel
+ * \param delta delta regulating the smoothing
+ * \param solutions the solution of the nonlinear optimization problem returned by the previous function
+ * \param positions the position in which to perform the kriging
+ * \param variogram_id the variogram to be used
+ * \param kernel_id the kernel to be used inside the smoother
+ * \param print if set to true print on console the time required to process the output
+ * \param n_threads the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 // [[Rcpp::export]]
 Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const Eigen::MatrixXd &anchorpoints, const double& epsilon, const double &delta, const Eigen::MatrixXd &solutions,
@@ -214,13 +214,13 @@ Rcpp::List predikt(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, const 
 }
 
 /**
- * \brief                find the value of the parameters regulating the variogram
- * \param solutions      the solution of the nonlinear optimization problem returned by the previous function
- * \param anchorpoints   the coordinates of the anchorpoints in which the optimization problem has been solved
- * \param delta          the value of delta regulating the smoothing
- * \param positions      where to smooth the parameters
- * \param kernel_id      the kernel to be used inside the smoother
- * \param n_threads      the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
+ * \brief find the value of the parameters regulating the variogram
+ * \param solutions the solution of the nonlinear optimization problem returned by the previous function
+ * \param anchorpoints the coordinates of the anchorpoints in which the optimization problem has been solved
+ * \param delta the value of delta regulating the smoothing
+ * \param positions where to smooth the parameters
+ * \param kernel_id the kernel to be used inside the smoother
+ * \param n_threads the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 // [[Rcpp::export]]
 Rcpp::List smoothing(const Eigen::MatrixXd solutions, const Eigen::MatrixXd &anchorpoints, const double &delta, const Eigen::MatrixXd &positions, const std::string &kernel_id,

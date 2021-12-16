@@ -8,6 +8,8 @@
 #' @param initial.position the starting position to be given to the optimizer
 #' @param lower.bound the lower bound for the optimization, by default (1e-8, 1e-8, ...)
 #' @param upper.bound the upper bound for the optimizaion, by default (Inf, Inf, pi/2, Inf, Inf, ...)
+#' @param lower.delta set the minimum value for Cross-Validation search for optimal delta in smoothing equal to lowerdelta*epsilon
+#' @param upper.delta set the maximum value for Cross-Validation search for optimal delta in smoothing equal to upperdelta*epsilon
 #' @param remove_not_convergent if set to TRUE removes the anchorpoints which cause troubles to the optimizer, by default is TRUE
 #' @param print_output if set to FALSE suppress the console output, by default is TRUE
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.

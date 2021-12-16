@@ -12,10 +12,12 @@
 #' @param initial.position the starting position to be given to the optimizer
 #' @param lower.bound the lower bound for the optimization, by default (1e-8, 1e-8, ...)
 #' @param upper.bound the upper bound for the optimization, by default (Inf, Inf, pi/2, Inf, Inf, ...)
+#' @param lower.delta set the minimum value for Cross-Validation search for optimal delta in smoothing equal to lowerdelta*epsilon
+#' @param upper.delta set the maximum value for Cross-Validation search for optimal delta in smoothing equal to upperdelta*epsilon
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
 #' @examples 
 #' MSE <- cv.lsm(y,d,a$anchorpoints,350,8,8,"gaussian","exponential", c(200,200,0.01,100))
-cv.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), n_threads = -1){
+cv.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), lower.delta = 0.1, upper.delta = 10, n_threads = -1){
   # set the MSE to 0
   MSE=0
   
@@ -33,7 +35,7 @@ cv.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id
     
     # predict the value of f(d[i, ]) and update the MSE
     vario <- variogram.lsm(znew,dnew,anchorpoints,epsilon,n_angles,n_intervals,kernel_id,FALSE, n_threads = n_threads)
-    solu <- findsolutions.lsm(vario, id, initial.position,lower.bound, upper.bound, print=FALSE, n_threads = n_threads)
+    solu <- findsolutions.lsm(vario, id, initial.position, lower.bound, upper.bound, lower.delta, upper.delta, print=FALSE, n_threads = n_threads)
     previsions <- predict.lsm(solu, rbind(d[i,]),FALSE,FALSE, n_threads = n_threads)
     MSE <- MSE + (previsions$zpredicted - z[i])^2
     
