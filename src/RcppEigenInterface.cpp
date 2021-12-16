@@ -108,12 +108,14 @@ Rcpp::List variogramlsm(const Eigen::VectorXd &z, const Eigen::MatrixXd &data, c
  * \param lowerbounds           the lower bounds for the optimizer
  * \param upperbounds           the upper bounds for the optimizer
  * \param epsilon               the value of epsilon regulating the kernel
+ * \param lowerdelta            Minimum value for Cross-Validation search for optimal delta in smoothing is lowerdelta*epsilon
+ * \param upperdelta            Maximum value for Cross-Validation search for optimal delta in smoothing is upperdelta*epsilon
  * \param print                 if set to true print on console the time required to process the output
  * \param n_threads             the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many threads to open
 */
 //[[Rcpp::export]]
 Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::MatrixXd &empiricvariogram, const Eigen::MatrixXd &squaredweights, const Eigen::VectorXd &mean_x, const Eigen::VectorXd &mean_y, std::string &variogram_id,
-    const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon, const bool print,
+    const std::string &kernel_id, const Eigen::VectorXd &parameters, const Eigen::VectorXd &lowerbound, const Eigen::VectorXd &upperbound, const double &epsilon, const double &lowerdelta, const double &upperdelta, const bool print,
     const int &n_threads) {
     // start the clock
     auto start = high_resolution_clock::now();
@@ -140,7 +142,7 @@ Rcpp::List findsolutionslsm(const Eigen::MatrixXd &anchorpoints, const Eigen::Ma
     // solve the nonlinaear optimization problems and store the solutions inside opt_
     opt_.findallsolutions();
     // build the smoother and find delta by cross-validation
-    Smt smt_(opt_.get_solutions(), anchorpointsptr, epsilon, epsilon*10, kernel_id);
+    Smt smt_(opt_.get_solutions(), anchorpointsptr, lowerdelta*epsilon, upperdelta*epsilon, kernel_id);
 
     double delta_ottimale = smt_.get_optimal_delta();
     // stop the clock and calculate the processing time
