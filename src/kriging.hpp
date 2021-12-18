@@ -9,13 +9,11 @@
 #include "traits.hpp"
 #include "variogramfit.hpp"
 
-namespace LocallyStationaryModels
-{
+namespace LocallyStationaryModels {
 /**
  * \brief class to perform kriging on the data
  */
-class Predictor
-{
+class Predictor {
 private:
     std::shared_ptr<VariogramFunction> m_gammaisoptr; ///< variogram function
     cd::vectorptr m_z = nullptr; ///< z(m_data)
@@ -28,23 +26,23 @@ private:
      * \brief build a vector with the index of the points in the neighbourhood of radius b of the point in position pos
      * \param pos a vector of coordinates or the index of the position of the center of the neighbourhood
      */
-    cd::vectorind build_neighbourhood(const cd::vector &pos) const;
-    cd::vectorind build_neighbourhood(const size_t &pos) const;
+    cd::vectorind build_neighbourhood(const cd::vector& pos) const;
+    cd::vectorind build_neighbourhood(const size_t& pos) const;
 
     /**
      * \brief build the vector eta necessary to perform kriging on the mean of Y in a point
      * \param params the params obtained by smoothing in the center of the neighbourhood
      * \param neighbourhood a "neighbourhood" vector build with the previous functions
      */
-    cd::vector build_eta(cd::vector &params, cd::vectorind &neighbourhood) const;
+    cd::vector build_eta(cd::vector& params, cd::vectorind& neighbourhood) const;
 
     /**
      * \brief build the vector eta necessary to perform kriging on Y in a point
      * \param params the params obtained by smoothing in the center of the neighbourhood
      * \param neighbourhood a "neighbourhood" vector build with the previous functions
      */
-    std::pair<cd::vector, double> build_etakriging(const cd::vector &params, const cd::vector &pos) const;
-    
+    std::pair<cd::vector, double> build_etakriging(const cd::vector& params, const cd::vector& pos) const;
+
 public:
     /**
      * \brief constructor
@@ -54,7 +52,8 @@ public:
      * \param b the radius of the neighbourhood of the point where to perform kriging
      * \param data a shared pointer to the matrix with the coordinates of the original dataset
      */
-    Predictor(const std::string &id, const cd::vectorptr &z, const Smt &mysmt, const double &b, const cd::matrixptr &data);
+    Predictor(
+        const std::string& id, const cd::vectorptr& z, const Smt& mysmt, const double& b, const cd::matrixptr& data);
     /**
      * \brief gammaiso set by default to exponential
      */
@@ -63,15 +62,13 @@ public:
     /**
      * \brief predict the mean
      */
-    template<typename Input, typename Output>    
-    Output predict_mean(const Input &pos) const;
+    template <typename Input, typename Output> Output predict_mean(const Input& pos) const;
 
     /**
      * \brief predict Z
      */
-    template<typename Input, typename Output>
-    Output predict_z(const Input &pos) const;
+    template <typename Input, typename Output> Output predict_z(const Input& pos) const;
 }; // class Predictor
 } // namespace LocallyStationaryModels
 
-#endif //LOCALLY_STATIONARY_MODELS_KRIGING
+#endif // LOCALLY_STATIONARY_MODELS_KRIGING

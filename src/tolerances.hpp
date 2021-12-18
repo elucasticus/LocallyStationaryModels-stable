@@ -5,18 +5,16 @@
 #ifndef LOCALLY_STATIONARY_MODELS_TOLERANCES
 #define LOCALLY_STATIONARY_MODELS_TOLERANCES
 
-namespace LocallyStationaryModels
-{
+namespace LocallyStationaryModels {
 /**
  * \brief collects all the tolerances and the constants used inside the code
  */
-struct Tolerances
-{
+struct Tolerances {
     /// value of the noise to be added to the anchor points grid to prevent out of domain points
     static constexpr double anchor_tolerance = 1e-6;
     /// default value of pi
-    inline static double pi = 4*std::atan(1.);
-    /// minimum threshold below which the determinant of a matrix is considered to be 0  
+    inline static double pi = 4 * std::atan(1.);
+    /// minimum threshold below which the determinant of a matrix is considered to be 0
     static constexpr double min_determinant = 1e-12;
     /// optimization termination condition parameter epsilon
     static constexpr double param_epsilon = 1e-6;
@@ -31,4 +29,4 @@ struct Tolerances
 }; // struct Tolerances
 } // namespace LocallyStationaryModels
 
-#endif //LOCALLY_STATIONARY_MODELS_TOLERANCES
+#endif // LOCALLY_STATIONARY_MODELS_TOLERANCES

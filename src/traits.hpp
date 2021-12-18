@@ -18,14 +18,12 @@
 #include "Eigen/Dense"
 #include "tolerances.hpp"
 
-namespace LocallyStationaryModels
-{
+namespace LocallyStationaryModels {
 /**
  * Namespace cd
  * \brief collects all the typedef used inside the code
  */
-namespace cd
-{
+namespace cd {
     // defining basic types
     using vector = Eigen::VectorXd;
     using matrix = Eigen::MatrixXd;
@@ -38,8 +36,8 @@ namespace cd
     // defining function types
     using kernelfunction = std::function<double(const vector&, const vector&, const double&)>;
     using gridfunction = std::function<matrixIptr(const matrixptr&, const size_t&, const size_t&, const double&)>;
-     
+
 } // namespace cd
 } // namespace LocallyStationaryModels
 
-#endif //LOCALLY_STATIONARY_MODELS_TRAITS
+#endif // LOCALLY_STATIONARY_MODELS_TRAITS

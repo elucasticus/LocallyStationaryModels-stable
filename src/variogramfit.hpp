@@ -9,17 +9,17 @@
 #include "traits.hpp"
 #include "variogramfunctions.hpp"
 
-namespace LocallyStationaryModels
-{
+namespace LocallyStationaryModels {
 /**
  * \brief functor to pass to the optimizer that contains the wls to be minimized
  */
-struct TargetFunction
-{
+struct TargetFunction {
     const cd::matrixptr m_empiricvariogram; ///< sample variogram matrix
     const cd::matrixptr m_squaredweights; ///< matrix of the squared weights
-    const cd::vectorptr m_mean_x; ///< vector with the x of each cell of the grid (mean of the x of all the pairs inside)
-    const cd::vectorptr m_mean_y; ///< vector with the y of each cell of the grid (mean of the y of all the pairs inside)
+    const cd::vectorptr
+        m_mean_x; ///< vector with the x of each cell of the grid (mean of the x of all the pairs inside)
+    const cd::vectorptr
+        m_mean_y; ///< vector with the y of each cell of the grid (mean of the y of all the pairs inside)
     size_t m_x0; ///< index of the position where to evaluate gammaisoptr
     std::shared_ptr<VariogramFunction> m_gammaisoptr; ///< pointer to the variogram function
 
@@ -32,27 +32,28 @@ struct TargetFunction
      * \param x0 the index of the position x0
      * \param id the name of the variogram of your choice
      */
-    TargetFunction(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, const cd::vectorptr &mean_x, 
-    const cd::vectorptr &mean_y, const size_t &x0, const std::string &id);
+    TargetFunction(const cd::matrixptr& empiricvariogram, const cd::matrixptr& squaredweights,
+        const cd::vectorptr& mean_x, const cd::vectorptr& mean_y, const size_t& x0, const std::string& id);
 
     /**
-     * \param params a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
-     * \param grad a vector containing the previous value of the gradient which is updated at each iteration
+     * \param params a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi,
+     * sigma, etc.) \param grad a vector containing the previous value of the gradient which is updated at each
+     * iteration
      */
-    double operator() (const cd::vector &params, cd::vector &grad);
+    double operator()(const cd::vector& params, cd::vector& grad);
 
     /**
-     * \param params a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi, sigma, etc.)
+     * \param params a vector containing the previous value of the parameters of the function (lambda1, lambda2, phi,
+     * sigma, etc.)
      */
-    double operator() (const cd::vector &params);
+    double operator()(const cd::vector& params);
 }; // struct TargetFunction
 
-
 /**
- * \brief a class to estimate the value of the parameters of the variogram in each point by optimizing the correspondent funzionedaottimizzare relying on the library LBFGSpp
+ * \brief a class to estimate the value of the parameters of the variogram in each point by optimizing the correspondent
+ * funzionedaottimizzare relying on the library LBFGSpp
  */
-class Opt
-{
+class Opt {
 private:
     cd::matrixptr m_empiricvariogram; ///< sample variogram matrix
     cd::matrixptr m_squaredweights; ///< matrix with the squared weights
@@ -68,7 +69,7 @@ private:
      * \brief find the optimal solution for the point in position pos
      * \param pos the index of the position in which find the optimal solution
      */
-    cd::vector findonesolution(const size_t &pos) const;
+    cd::vector findonesolution(const size_t& pos) const;
 
 public:
     /**
@@ -78,13 +79,13 @@ public:
      * \param mean_x a shared pointer to the vector of the abscissas of the centers
      * \param mean_y a shared pointer to the vector of the ordinates of the centers
      * \param id the name of the variogram of your choice
-     * \param initialparameters the initial value of the parameters required from the optimizer to start the search for a minimum
-     * \param lowerbound the lower bounds for the parameters in the nonlinear optimization problem
-     * \param upperbound the upper bounds for the parameters in the nonlinear optimization problem
+     * \param initialparameters the initial value of the parameters required from the optimizer to start the search for
+     * a minimum \param lowerbound the lower bounds for the parameters in the nonlinear optimization problem \param
+     * upperbound the upper bounds for the parameters in the nonlinear optimization problem
      */
-    Opt(const cd::matrixptr &empiricvariogram, const cd::matrixptr &squaredweights, const cd::vectorptr &mean_x, 
-    const cd::vectorptr &mean_y, const std::string &id, const cd::vector &initialparameters, const cd::vector &lowerbound, 
-    const cd::vector &upperbound);
+    Opt(const cd::matrixptr& empiricvariogram, const cd::matrixptr& squaredweights, const cd::vectorptr& mean_x,
+        const cd::vectorptr& mean_y, const std::string& id, const cd::vector& initialparameters,
+        const cd::vector& lowerbound, const cd::vector& upperbound);
 
     /**
      * \brief find the optimal solution in all the position
@@ -98,4 +99,4 @@ public:
 }; // class Opt
 } // namespace LocallyStationaryModels
 
-#endif //LOCALLY_STATIONARY_MODELS_GRADIENT
+#endif // LOCALLY_STATIONARY_MODELS_GRADIENT

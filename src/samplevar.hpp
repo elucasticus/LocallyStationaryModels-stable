@@ -5,17 +5,15 @@
 #ifndef LOCALLY_STATIONARY_MODELS_SAMPLEVAR
 #define LOCALLY_STATIONARY_MODELS_SAMPLEVAR
 
-#include "kernel.hpp"
 #include "grid.hpp"
+#include "kernel.hpp"
 #include "traits.hpp"
 
-namespace LocallyStationaryModels
-{
+namespace LocallyStationaryModels {
 /**
  * \brief a class to build and store the empiric variogram in all the anchor points
  */
-class SampleVar
-{
+class SampleVar {
 private:
     cd::matrixptr m_variogram = nullptr; ///< sample variogram matrix
     cd::matrixptr m_denominators = nullptr; ///< a matrix with the denominators necessary to compute the squared weights
@@ -29,17 +27,17 @@ private:
      * \brief a "helper" function which built the squared weights for the wls problem needed by the optimizer
      */
     void build_squaredweights();
-    
+
 public:
     /**
-	 * \brief constructor
-	 * \param kernel_id the name of the function you want to use for the kernel
+     * \brief constructor
+     * \param kernel_id the name of the function you want to use for the kernel
      * \param n_angles the number of angles to be passed to the grid
      * \param n_intervals the number of inervals to be passed to the grid
      * \param epsilon the bandwidth parameter regulating the kernel
-	 */
-    SampleVar(const std::string &kernel_id, const size_t &n_angles, const size_t &n_intervals, const double &epsilon);
-    
+     */
+    SampleVar(const std::string& kernel_id, const size_t& n_angles, const size_t& n_intervals, const double& epsilon);
+
     /**
      * \brief a default constructor for the class which calls the default constructors for both the kernel and the grid
      */
@@ -48,10 +46,10 @@ public:
     /**
      * \brief build the matrix of the empiric variogram
      * \param data a shared pointer to the matrix of the coordinates of the original dataset
-     * \param anchorpoints a shared pointer to the matrix of the coordinates of the anchor poitns 
+     * \param anchorpoints a shared pointer to the matrix of the coordinates of the anchor poitns
      * \param z a shared pointer to the vector of the value of Z
      */
-    void build_samplevar(const cd::matrixptr &data, const cd::matrixptr &anchorpoints, const cd::vectorptr &z);
+    void build_samplevar(const cd::matrixptr& data, const cd::matrixptr& anchorpoints, const cd::vectorptr& z);
 
     /**
      * \return a shared pointer to the sample variogram
