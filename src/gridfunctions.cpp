@@ -14,9 +14,9 @@ namespace gf {
         double cell_length = b / n_intervals;
         double cell_angle = pi / (n_angles);
 
-    // for every couple of points i and j in data compute the position of the vector (j - i) in the grid and fill grid(i, j)
-    // accordingly since grid is symmetric we only need to fill the upper triangular part of the matrix
-    #pragma omp parallel for
+        // for every couple of points i and j in data compute the position of the vector (j - i) in the grid and fill grid(i, j)
+        // accordingly since grid is symmetric we only need to fill the upper triangular part of the matrix
+        #pragma omp parallel for
         for (size_t i = 0; i < data->rows() - 1; ++i) {
             for (size_t j = i + 1; j < data->rows(); ++j) {
                 double deltax = data->operator()(j, 0) - data->operator()(i, 0);

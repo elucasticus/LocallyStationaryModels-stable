@@ -56,8 +56,8 @@ Smt::Smt(const cd::matrixptr& solutions, const matrixptr& anchorpos, const doubl
         const matrix& Kk = *(m_kernel.get_kernel());
 
         double error = 0;
-    // find the value of the error function for the current value of delta
-    #pragma omp parallel for reduction(+ : error)
+        // find the value of the error function for the current value of delta
+        #pragma omp parallel for reduction(+ : error)
         for (size_t j = 0; j < m_anchorpos->rows(); ++j) {
             cd::vector Kkrow = Kk.row(j);
             double predicted_value = smooth_value(j, 3);

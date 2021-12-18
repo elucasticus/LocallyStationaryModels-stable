@@ -45,8 +45,8 @@ void SampleVar::build_samplevar(const cd::matrixptr& data, const cd::matrixptr& 
     #pragma omp parallel
     {
         int k = 0;
-    // for every location in d
-    #pragma omp for
+        // for every location in d
+        #pragma omp for
         for (size_t l = 0; l < N; ++l) {
             Eigen::VectorXi counters = Eigen::VectorXi::Zero(max_index + 1);
             // for every couple of locations in d
