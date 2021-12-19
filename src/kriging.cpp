@@ -187,7 +187,5 @@ Predictor::Predictor(
 };
 
 Predictor::Predictor()
-    : m_gammaisoptr(make_variogramiso("esponenziale"))
-{
-}
+    : m_gammaisoptr(make_variogramiso("esponenziale")) {}
 } // namespace LocallyStationaryModels
