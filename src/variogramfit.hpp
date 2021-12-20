@@ -80,8 +80,9 @@ public:
      * \param mean_y a shared pointer to the vector of the ordinates of the centers
      * \param id the name of the variogram of your choice
      * \param initialparameters the initial value of the parameters required from the optimizer to start the search for
-     * a minimum \param lowerbound the lower bounds for the parameters in the nonlinear optimization problem \param
-     * upperbound the upper bounds for the parameters in the nonlinear optimization problem
+     * a minimum 
+     * \param lowerbound the lower bounds for the parameters in the nonlinear optimization problem 
+     * \param upperbound the upper bounds for the parameters in the nonlinear optimization problem
      */
     Opt(const cd::matrixptr& empiricvariogram, const cd::matrixptr& squaredweights, const cd::vectorptr& mean_x,
         const cd::vectorptr& mean_y, const std::string& id, const cd::vector& initialparameters,
