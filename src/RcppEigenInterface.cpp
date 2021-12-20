@@ -107,8 +107,10 @@ Rcpp::List variogramlsm(const Eigen::VectorXd& z, const Eigen::MatrixXd& data, c
  * \param upperbounds the upper bounds for the optimizer
  * \param epsilon the value of epsilon regulating the kernel
  * \param lowerdelta set the minimum value for Cross-Validation search for optimal delta in smoothing equal to
- * lowerdelta*epsilon \param upperdelta set the maximum value for Cross-Validation search for optimal delta in smoothing
- * equal to upperdelta*epsilon \param print if set to true print on console the time required to process the output
+ * lowerdelta*epsilon 
+ * \param upperdelta set the maximum value for Cross-Validation search for optimal delta in smoothing
+ * equal to upperdelta*epsilon 
+ * \param print if set to true print on console the time required to process the output
  * \param n_threads the number of threads to be used by OPENMP. If negative, let OPENMP autonomously decide how many
  * threads to open
  */
