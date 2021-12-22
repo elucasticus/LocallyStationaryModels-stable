@@ -19,6 +19,11 @@ namespace kf {
     double gaussian(const cd::vector& x, const cd::vector& y, const double& epsilon);
 
     /**
+     * \return 1 only if the norm of the difference between x and y is less the the square of epsilon
+     */
+    double identity(const cd::vector& x, const cd::vector& y, const double& epsilon);
+
+    /**
      * \brief allow to select between pre-built kernel functions
      * \param id a string with the name of the kernel function you want to use
      */
