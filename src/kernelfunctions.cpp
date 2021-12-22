@@ -18,6 +18,15 @@ namespace kf {
         }
     }
 
-    kernelfunction make_kernel(const std::string& id) { return gaussian; }
+    kernelfunction make_kernel(const std::string& id)
+    {
+        if (id == "Gaussian" || id == "gaussian") {
+            return gaussian;
+        } else if (id == "Identity" || id == "identity") {
+            return identity;
+        } else {
+            return gaussian;
+        }
+    }
 } // namespace kf
 } // namespace LocallyStationaryModels
