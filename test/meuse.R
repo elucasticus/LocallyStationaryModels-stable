@@ -3,7 +3,6 @@ rm(list = ls())
 
 # Load the libraries
 library(LocallyStationaryModels)
-library(sp)
 
 # Load the data
 data(meuse)
