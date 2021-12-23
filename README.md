@@ -1,10 +1,6 @@
 # **LocallyStationaryModels**
 ***authors:*** Luca Crippa, Giacomo De Carlo<br>
 ***mailto:*** <luca7.crippa@mail.polimi.it>, <giacomo.decarlo@mail.polimi.it><br>
-## **Latest updates**
-*02/11* Added the matern variogram with `nu` fixed.<br>
-*01/11* Added the function `cv.lsm(...)` to calculate the mean squared error via cross-validation.<br>
-*30/10* ⚠️ The use of the function `variogramlsm(...)` is now deprecated. Use `variogram.lsm(...)` instead.
 ## **Installation**
 ### **Step 1: install R and Rstudio (optional)**
 #### **Windows:**
@@ -18,6 +14,7 @@ and install the `r` package for R.
 To get Rstudio (optional), install an AUR helper of your choice such as <https://github.com/Jguer/yay> and then on the terminal
 
     yay -S rstudio-desktop-bin
+
 Refer to <https://wiki.archlinux.org/title/r> for further details.
 #### **Ubuntu:**
 Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for R.
@@ -26,15 +23,11 @@ For Rstudio (optional) you can download the `.deb` file from <https://www.rstudi
 Open R then type
 
     install.packages("devtools")
+
+to install `devtools`. Then type
+
     library(devtools)
     devtools::install_github("giacomodecarlo/LocallyStationaryModels")
 
-`LocallyStaionaryModels` requires `ggplot2`, `ggforce` and `cowplot` to plot the results. If needed you can install them from CRAN via the commands
+to install `LocallyStationaryModels`.
 
-    install.packages("ggplot2")
-    install.packages("ggforce")
-    install.packages("cowplot")
-
-You can access the dataset *meuse* to run the examples via the `sp` library. Just open R and type
-
-    install.packages("sp")
