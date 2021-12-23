@@ -15,5 +15,10 @@ plotgrid(variogram, index)
 A function to plot segments for all pairs of locations belonging to the same vector neighborhood.
 }
 \examples{
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
+a <- find_anchorpoints.lsm(d,12,FALSE)
+vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 plotgrid(vario, 0)
 }

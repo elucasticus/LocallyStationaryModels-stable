@@ -25,5 +25,11 @@ parameters regulating the variogram function in other points beyond the anchor o
 delta which does not need to be evaluated again.
 }
 \examples{
-newparams <- smooth.lsm(solu, newpos)
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
+a <- find_anchorpoints.lsm(d,12,FALSE)
+vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+newparams <- smooth.lsm(solu, d)
 }

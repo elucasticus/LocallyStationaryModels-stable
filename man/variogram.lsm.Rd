@@ -50,5 +50,9 @@ the function requires to be given as input all the information about the constru
 Fouedjio.
 }
 \examples{
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
+a <- find_anchorpoints.lsm(d,12,FALSE)
 vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 }

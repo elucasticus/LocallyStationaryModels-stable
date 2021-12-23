@@ -29,5 +29,11 @@ given an object of type "lsm" returned by findsolutions.lsm this function perfor
 and possibly plot the results found
 }
 \examples{
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
+a <- find_anchorpoints.lsm(d,12,FALSE)
+vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 previsions <- predict.lsm(solu, d)
 }

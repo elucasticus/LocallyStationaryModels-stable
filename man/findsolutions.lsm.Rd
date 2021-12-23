@@ -55,9 +55,10 @@ to find the optimum must be provided by the user, which can also provide the upp
 the order of the parameters is always lambda1, lambda2, phi and sigma followed by additional ones required by the chosen variogram function
 }
 \examples{
-solu1 <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
-solu2 <- findsolutions.lsm(vario, "gaussian", c(200,200,0.01,100))
-solu3 <- findsolutions.lsm(vario, "matern", c(200,200,0.01,100,10))
-solu4 <- findsolutions.lsm(vario, "maternNuFixed 18.5", c(200,200,0.01,100))
-print(solu)
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
+a <- find_anchorpoints.lsm(d,12,FALSE)
+vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 }

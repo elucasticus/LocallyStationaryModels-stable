@@ -50,5 +50,11 @@ a bubble plot of the initial data, a pair of plots with the anisotropy ellipses 
 two plots with the values of the mean and punctual value of z predicted.
 }
 \examples{
-mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 10, points_arrangement = "random", kriging = TRUE)
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
+a <- find_anchorpoints.lsm(d,12,FALSE)
+vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 3, points_arrangement = "straight", kriging = TRUE, ellipse_scale = 2, arrow_scale = 1.5)
 }

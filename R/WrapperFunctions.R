@@ -21,11 +21,12 @@
 #' to find the optimum must be provided by the user, which can also provide the upper and lower bounds for the solutions. Always remember that
 #' the order of the parameters is always lambda1, lambda2, phi and sigma followed by additional ones required by the chosen variogram function
 #' @examples
-#' solu1 <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
-#' solu2 <- findsolutions.lsm(vario, "gaussian", c(200,200,0.01,100))
-#' solu3 <- findsolutions.lsm(vario, "matern", c(200,200,0.01,100,10))
-#' solu4 <- findsolutions.lsm(vario, "maternNuFixed 18.5", c(200,200,0.01,100))
-#' print(solu)
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+#' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), lower.delta = 0.1, upper.delta = 10, remove_not_convergent = FALSE, print_output = TRUE, n_threads = -1)
 {
   if(grepl("maternNuFixed", id, fixed = TRUE))
@@ -73,6 +74,12 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,
 #' @details given an object of type "lsm" returned by findsolutions.lsm this function performs kriging on the coordinates provided by newpos
 #' and possibly plot the results found
 #' @examples
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+#' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 #' previsions <- predict.lsm(solu, d)
 predict.lsm<-function(sol, newpos, plot_output = TRUE, print_output = TRUE, n_threads = -1)
 {
@@ -104,6 +111,9 @@ predict.lsm<-function(sol, newpos, plot_output = TRUE, print_output = TRUE, n_th
 #' @details given a set of points this function builds n*n grid covering all the locations. Then takes as anchor points all the
 #' centers of the cells such that at least one of the points of d belongs to the same cell 
 #' @examples
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
 #' a <- find_anchorpoints.lsm(d,12)
 find_anchorpoints.lsm<-function(dataset, n, plot_output = TRUE)
 {
@@ -151,6 +161,10 @@ find_anchorpoints.lsm<-function(dataset, n, plot_output = TRUE)
 #' the function requires to be given as input all the information about the construction of the grid and of the kernel as in the paper by
 #' Fouedjio.
 #' @examples
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
 #' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, print_output=TRUE, n_threads = -1)
 {
@@ -179,7 +193,13 @@ variogram.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, ke
 #' parameters regulating the variogram function in other points beyond the anchor ones. model$delta already contains the optimal value of 
 #' delta which does not need to be evaluated again.
 #' @examples 
-#' newparams <- smooth.lsm(solu, newpos)
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+#' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+#' newparams <- smooth.lsm(solu, d)
 smooth.lsm <- function(model, newpoints, n_threads = -1)
 {
   result <- smoothing(model$solutions,model$anchorpoints,model$delta,newpoints,model$kernel_id,n_threads)

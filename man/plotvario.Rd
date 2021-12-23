@@ -15,5 +15,10 @@ plotvario(variogram, pos)
 plot all directional empiric variograms sequentially in n_angles number of directions, from -pi to pi in radians.
 }
 \examples{
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
+a <- find_anchorpoints.lsm(d,12,FALSE)
+vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 pltovario(vario, 0)
 }

@@ -24,5 +24,8 @@ given a set of points this function builds n*n grid covering all the locations. 
 centers of the cells such that at least one of the points of d belongs to the same cell
 }
 \examples{
+data(meuse)
+d <- cbind(meuse$x, meuse$y)
+y <- meuse$elev
 a <- find_anchorpoints.lsm(d,12)
 }

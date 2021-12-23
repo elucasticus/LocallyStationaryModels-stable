@@ -17,7 +17,13 @@
 # 'a plot with the values of lambda1, lambda2, phi and sigma in the plane and 
 #' two plots with the values of the mean and punctual value of z predicted.
 #' @examples
-#' mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 10, points_arrangement = "random", kriging = TRUE)
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+#' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+#' mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 3, points_arrangement = "straight", kriging = TRUE, ellipse_scale = 2, arrow_scale = 1.5)
 plot.lsm<-function(model, a, z, d, n_points = 3, seed = 69, points_arrangement = "straight", n_threads = -1, kriging = FALSE, ellipse_scale = 1, arrow_scale = 1)
 {
   d <- model$initial_coordinates
@@ -154,10 +160,17 @@ plot.lsm<-function(model, a, z, d, n_points = 3, seed = 69, points_arrangement =
 #' 
 #' @description sequential plot of all the paramters obtained by smoothing
 #' @param allpoints a dataframe containing the coordinates and the value of the parameters
-#' @details given a dataframe containing the coordinates and the the value of the parameters for a set of points
+#' @details given a dataframe containing the coordinates and the value of the parameters for a set of points
 #' this functions provides the plot in the plane of the trend of all the parameters. You can use this function, for example, with
 #' the dataframe returned by plot.lsm to visualize other parameters from the four that are already plot by the previous function
 #' @examples 
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
+#' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
+#' mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 3, points_arrangement = "straight", kriging = FALSE, ellipse_scale = 2, arrow_scale = 1.5)
 #' plot.parameters(mypoints)
 plot.parameters<-function(allpoints)
 {
@@ -174,7 +187,12 @@ plot.parameters<-function(allpoints)
 #' @description  A function to plot segments for all pairs of locations belonging to the same vector neighborhood.        
 #' @param variogram an object of type "sample_variogram" built via variogram.lsm
 #' @param index  the index of the vector neighborhood for which segments are going to be plotted.
-#' @examples 
+#' @examples
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 #' plotgrid(vario, 0)
 plotgrid<-function(variogram, index){
   d <- variogram$initial_coordinates
@@ -198,6 +216,11 @@ plotgrid<-function(variogram, index){
 #' @param variogram  a variogram object returned by variogram.lsm
 #' @param pos the index of an anchor point where the empiric variogram is plotted
 #' @examples 
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 #' pltovario(vario, 0)
 plotvario<-function(variogram, pos){
   n_angles <- variogram$n_angles

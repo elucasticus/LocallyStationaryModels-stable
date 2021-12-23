@@ -16,7 +16,11 @@
 #' @param upper.delta set the maximum value for Cross-Validation search for optimal delta in smoothing equal to upperdelta*epsilon
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
 #' @examples 
-#' MSE <- cv.lsm(y,d,a$anchorpoints,350,8,8,"gaussian","exponential", c(200,200,0.01,100))
+#' data(meuse)
+#' d <- cbind(meuse$x, meuse$y)
+#' y <- meuse$elev
+#' a <- find_anchorpoints.lsm(d,12,FALSE)
+#' cv.lsm(y,d,a$anchorpoints,350,8,8,"gaussian","exponential", c(200,200,0.01,100))
 cv.lsm <- function(z, d, anchorpoints, epsilon, n_angles, n_intervals, kernel_id, id, initial.position, lower.bound = rep(1e-8,length(initial.position)), upper.bound = c(c(Inf,Inf,pi/2), rep(Inf, length(initial.position)-3)), lower.delta = 0.1, upper.delta = 10, n_threads = -1){
   # set the MSE to 0
   MSE=0
