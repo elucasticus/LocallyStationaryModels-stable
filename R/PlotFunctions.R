@@ -24,7 +24,7 @@
 #' vario <- variogram.lsm(y,d,a$anchorpoints,370,8,8,"gaussian")
 #' solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 #' mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 3, points_arrangement = "straight", kriging = TRUE, ellipse_scale = 2, arrow_scale = 1.5)
-plot.lsm<-function(model, a, z, d, n_points = 3, seed = 69, points_arrangement = "straight", n_threads = -1, kriging = FALSE, ellipse_scale = 1, arrow_scale = 1)
+plot.lsm<-function(model, a, z, d, n_points = 3, seed = 68, points_arrangement = "straight", n_threads = -1, kriging = FALSE, ellipse_scale = 1, arrow_scale = 1)
 {
   d <- model$initial_coordinates
   z <- model$initial_z
@@ -96,14 +96,14 @@ plot.lsm<-function(model, a, z, d, n_points = 3, seed = 69, points_arrangement =
   if (max(ellissi$lambda1) > max(ellissi$lambda2))
   {
     r <- a$width/ellipse_scale
-    ellissi$lambda2 <- ellissi$lambda2/(ellissi$lambda1/r)
-    ellissi$lambda1 <- r
+    ellissi$lambda1 <- ellissi$lambda2/(ellissi$lambda1/r)
+    ellissi$lambda2 <- r
   }
   else
   {
     r <- a$height/ellipse_scale
-    ellissi$lambda1 <- ellissi$lambda1/(ellissi$lambda2/r)
-    ellissi$lambda2 <- r
+    ellissi$lambda2 <- ellissi$lambda1/(ellissi$lambda2/r)
+    ellissi$lambda1 <- r
   }
   p1 <- ggplot2::ggplot(ellissi, ggplot2::aes(x=X, y=Y)) + ggforce::geom_ellipse(ggplot2::aes(x0 = X, y0 = Y, a = lambda1, b = lambda2, angle = phi), data = ellissi) + ggplot2::coord_fixed() + ggplot2::theme_light()
   p2 <- ggplot2::ggplot(ellissi, ggplot2::aes(x=X, y=Y)) + ggplot2::geom_segment(ggplot2::aes(x=X, y=Y, xend=X+a$width*cos(phi)/arrow_scale, yend=Y+a$width*sin(phi)/arrow_scale), arrow = ggplot2::arrow(length = ggplot2::unit(2/arrow_scale, "mm")), data = ellissi)
