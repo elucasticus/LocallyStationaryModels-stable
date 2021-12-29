@@ -71,7 +71,7 @@ findsolutions.lsm<-function(vario, id, initial.position, lower.bound = rep(1e-8,
 #' @param n_threads the number of threads for OpenMP, by default is equal to -1, which means that OpenMP will use all the available threads.
 #' @return an object containing the vector with the means, the vector with the punctual predictions and the vector with the kriging variance
 #' in newpos
-#' @details given an object of type "lsm" returned by findsolutions.lsm this function performs kriging on the coordinates provided by newpos
+#' @details given an object of type "lsm" returned by findsolutions.lsm, this function performs kriging on the coordinates provided by newpos
 #' and possibly plot the results found
 #' @examples
 #' data(meuse)
