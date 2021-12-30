@@ -6,12 +6,12 @@
 #### **Windows:**
 Download R from <https://cran.r-project.org/bin/windows/base/> and (optional) Rstudio from <https://www.rstudio.com/products/rstudio/download/>.
 #### **Arch Linux:**
-Open the terminal then type
+Open the terminal then type:
 
     sudo pacman -S r
 
 and install the `r` package for R.
-To get Rstudio (optional), install an AUR helper of your choice such as <https://github.com/Jguer/yay> and then on the terminal
+To get Rstudio (optional), install an AUR helper of your choice such as <https://github.com/Jguer/yay> and then on the terminal:
 
     yay -S rstudio-desktop-bin
 
@@ -21,11 +21,11 @@ Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for R.
 For Rstudio (optional) you can download the `.deb` file from <https://www.rstudio.com/products/rstudio/download/>.
 ### **Step 2: install LocallyStationaryModels**
 #### **Option 1: via devtools:**
-Open R and type
+Open R and type:
 
     install.packages("devtools")
 
-to install `devtools`. Then type
+to install `devtools`. Then type:
 
     library(devtools)
     devtools::install_github("elucasticus/LocallyStationaryModels")
