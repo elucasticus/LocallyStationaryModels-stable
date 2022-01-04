@@ -31,7 +31,6 @@ double TargetFunction::operator()(const cd::vector& params, vector& grad)
         truegamma[h] = gammaiso(params, m_mean_x->operator[](h), m_mean_y->operator[](h));
     }
 
-    double c = 10e-8;
     // we update the gradient of the function
     // partial derivative are calcutated with central differences method
     // the step for the numerical estimation of the gradient is chosen proportionally to the parameter with respect to
@@ -40,7 +39,7 @@ double TargetFunction::operator()(const cd::vector& params, vector& grad)
         vector paramsdeltaplus(params);
         vector paramsdeltaminus(params);
 
-        double increment = c * params[i];
+        double increment = Tolerances::gradient_step * params[i];
 
         paramsdeltaplus[i] += increment;
         paramsdeltaminus[i] -= increment;
