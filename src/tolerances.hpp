@@ -26,6 +26,8 @@ struct Tolerances {
     static constexpr double infinity = 1e12;
     /// number of delta between min_delta and max_delta to perform cross-validation
     static constexpr double n_deltas = 1000;
+    /// step for the numerical computation of the gradient
+    static constexpr double gradient_step = 10e-8;
 }; // struct Tolerances
 } // namespace LocallyStationaryModels
 
