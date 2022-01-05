@@ -18,7 +18,7 @@ solu <- findsolutions.lsm(vario, "exponential", c(200,200,0.01,100))
 # Plot of the solutions
 x11()
 mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 3, points_arrangement = "straight", kriging = FALSE, 
-                   ellipse_scale = 2, arrow_scale = 1.5)
+                   ellipse_scale = 2.5, arrow_scale = 1.5)
 
 # Kriging on the original data
 x11()
