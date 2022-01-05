@@ -23,5 +23,5 @@ mypoints<-plot.lsm(model = solu, a = a, z = y, d = d, n_points = 5, points_arran
 
 # Kriging on the original data
 x11()
-previsions <- predict.lsm(solu, d, y, d)
-max(previsions$zpredicted - y)
+previsions <- predict.lsm(solu, d)
+max(previsions$zpredicted - z)
