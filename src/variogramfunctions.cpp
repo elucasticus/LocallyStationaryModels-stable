@@ -1,6 +1,5 @@
-/// Copyright (C) Luca Crippa <luca7.crippa@mail.polimi.it>
-/// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
-/// Under MIT license
+// Copyright (C) Luca Crippa <luca7.crippa@mail.polimi.it>
+// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
 
 #include "variogramfunctions.hpp"
 

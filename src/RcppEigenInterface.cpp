@@ -1,8 +1,7 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 
-/// Copyright (C) Luca Crippa <luca7.crippa@mail.polimi.it>
-/// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
-/// Under MIT license
+// Copyright (C) Luca Crippa <luca7.crippa@mail.polimi.it>
+// Copyright (C) Giacomo De Carlo <giacomo.decarlo@mail.polimi.it>
 
 #include <RcppEigen.h>
 #include <chrono>
