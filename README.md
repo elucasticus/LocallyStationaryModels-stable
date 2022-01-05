@@ -20,7 +20,7 @@ Refer to <https://wiki.archlinux.org/title/r> for further details.
 Refer to <https://cran.r-project.org/bin/linux/ubuntu/> for R.
 For Rstudio (optional) you can download the `.deb` file from <https://www.rstudio.com/products/rstudio/download/>.
 ### **Step 2: install LocallyStationaryModels**
-#### **Option 1: via devtools:**
+#### **Option 1: via devtools (suggested)**
 Open R and type:
 
     install.packages("devtools")
