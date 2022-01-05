@@ -37,3 +37,4 @@ In alternative you can download the source code from github, unzip the file and 
 
     R CMD INSTALL <path name of the package to be installed> -l <path name of the R library tree>
 
+⚠️ **Beware:** since `LocallyStationaryModels` is written in C++, it requires the appropriate tools to be compiled and runned. On Windows this can be done by installing <https://cran.r-project.org/bin/windows/Rtools/rtools40.html> (don't worry, R itself will redirect you to the appropriate web page if it's not present on your pc), while on Linux you have to manually install them from the repositories of your distribution.
