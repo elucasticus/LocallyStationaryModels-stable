@@ -1,3 +1,4 @@
+![LSM logo](/LSM.png)
 # **LocallyStationaryModels**
 ***authors:*** Luca Crippa, Giacomo De Carlo<br>
 ***mailto:*** <luca7.crippa@mail.polimi.it>, <giacomo.decarlo@mail.polimi.it><br>
