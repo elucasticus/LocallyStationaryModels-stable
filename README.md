@@ -1,4 +1,4 @@
-<img src="LSM.png" alt="drawing" width="100"/><br>
+<img src="LSM.png" alt="drawing" width="100"/> <br>
 # **LocallyStationaryModels**
 ***authors:*** Luca Crippa, Giacomo De Carlo<br>
 ***mailto:*** <luca7.crippa@mail.polimi.it>, <giacomo.decarlo@mail.polimi.it><br>
